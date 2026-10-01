@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>세종 대왕테니스 클럽</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+    
+    /* 사계절 테마 변수 (여름: 윔블던 그린 / 봄: 벚꽃 핑크 / 가을: 클레이 오렌지 / 겨울: US오픈 블루) */
+    :root, body[data-theme="summer"] {
+      --bg-body: #0d2818;
+      --hdr-from: #022c22;
+      --hdr-to: #064e3b;
+      --accent: #a3e635;
+      --primary: #166534;
+      --primary-hover: #14532d;
+      --primary-light: #dcfce7;
+      --border-accent: rgba(22, 101, 52, 0.35);
+    }
+    body[data-theme="spring"] {
+      --bg-body: #3b0718;
+      --hdr-from: #831843;
+      --hdr-to: #9d174d;
+      --accent: #fbcfe8;
+      --primary: #be185d;
+      --primary-hover: #9d174d;
+      --primary-light: #fce7f3;
+      --border-accent: rgba(190, 24, 93, 0.35);
+    }
+    body[data-theme="autumn"] {
+      --bg-body: #2e1005;
+      --hdr-from: #7c2d12;
+      --hdr-to: #9a3412;
+      --accent: #fed7aa;
+      --primary: #c2410c;
+      --primary-hover: #9a3412;
+      --primary-light: #ffedd5;
+      --border-accent: rgba(194, 65, 12, 0.35);
+    }
+    body[data-theme="winter"] {
+      --bg-body: #081a36;
+      --hdr-from: #0f172a;
+      --hdr-to: #1e3a8a;
+      --accent: #7dd3fc;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-light: #e0f2fe;
+      --border-accent: rgba(29, 78, 216, 0.35);
+    }
+
+    body {
+      background-color: var(--bg-body);
+      overflow-x: hidden;
+      transition: background-color 0.3s ease;
+    }
+    .theme-header {
+      background: linear-gradient(to bottom, var(--hdr-from), var(--hdr-to));
+    }
+    .theme-primary-bg {
+      background-color: var(--primary) !important;
+    }
+    .theme-accent-text {
+      color: var(--accent) !important;
+    }
+    .theme-primary-text {
+      color: var(--primary) !important;
+    }
+    .theme-border {
+      border-color: var(--border-accent) !important;
+    }
+    .theme-card-win {
+      border-color: var(--primary) !important;
+      background-color: var(--primary-light) !important;
+    }
+    input::placeholder {
+      color: #94a3b8;
+      font-weight: 400;
+    }
+    /* Chrome, Safari, Edge, Opera 에서 input number 화살표 제거 */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    ::-webkit-scrollbar { width: 3px; height: 3px; }
+    ::-webkit-scrollbar-thumb { background: #15803d; border-radius: 4px; }
+  </style>
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col items-center justify-start p-1.5 sm:p-4">
+
+  <!-- 메인 컨테이너 -->
+  <div class="w-full max-w-lg bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border theme-border transition-colors duration-300">
+
+    <!-- 1. 메인 타이틀: 초단위 실시간 시계 + 클럽명 크게 중앙 + 서브 경기명 -->
+    <header class="theme-header text-white text-center pt-3 pb-2.5 px-4 shadow transition-colors duration-300 relative">
+      <!-- 실시간 초단위 시계 -->
+      <div class="inline-flex items-center gap-1.5 bg-black/40 theme-accent-text px-3 py-0.5 rounded-full text-[11px] font-mono tracking-tight shadow-inner">
+        <i class="far fa-clock"></i>
+        <span id="liveDateTime">2026.00.00 (화) 00:00:00</span>
+      </div>
+      
+      <!-- 클럽명 크게 중앙 (테니스 공 클릭 시 사계절 테마 변경 팝업) -->
+      <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight mt-1 flex items-center justify-center gap-2 select-none">
+        <button 
+          onclick="openThemeModal()" 
+          title="테니스 공을 눌러 사계절 테마 변경" 
+          class="focus:outline-none transition transform hover:scale-125 active:scale-95 animate-pulse inline-block"
+        >
+          🎾
+        </button>
+        <span>세종 대왕테니스 클럽</span>
+      </h1>
+
+      <!-- 서브 경기명 -->
+      <div class="mt-1">
+        <input 
+          id="eventTitle" 
+          type="text" 
+          value="주말 친선 대회" 
+          oninput="saveState()"
+          class="text-center text-xs font-bold theme-accent-text bg-white/10 hover:bg-white/15 focus:bg-white/20 border border-white/20 rounded-full px-3 py-0.5 w-44 focus:outline-none focus:ring-1 focus:ring-white/50 transition placeholder:text-white/60"
+          placeholder="경기명 입력"
+        />
+      </div>
+    </header>
+
+    <!-- 2. 직관적인 3대 메뉴바 (선수 / 대진 / 결과) - 큼직하고 세련된 프리미엄 스타일 -->
+    <nav class="grid grid-cols-3 gap-1.5 bg-slate-100/90 p-2 border-b border-slate-200">
+      <button id="tabBtn-players" onclick="switchTab('players')" class="py-2.5 sm:py-3 text-sm sm:text-base font-black tracking-tight rounded-xl transition-all duration-200 text-white theme-primary-bg shadow-md flex items-center justify-center gap-2 active:scale-95 border border-white/20">
+        <i class="fas fa-users text-base sm:text-lg"></i>
+        <span>선수</span>
+      </button>
+      <button id="tabBtn-matches" onclick="switchTab('matches')" class="py-2.5 sm:py-3 text-sm sm:text-base font-black tracking-tight rounded-xl transition-all duration-200 text-slate-700 bg-white/80 hover:bg-white hover:text-slate-900 border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 active:scale-95">
+        <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 테니스 라켓 헤드 -->
+          <circle cx="9.5" cy="9.5" r="6.5"></circle>
+          <!-- 라켓 스트링 격자 -->
+          <line x1="9.5" y1="3" x2="9.5" y2="16"></line>
+          <line x1="3" y1="9.5" x2="16" y2="9.5"></line>
+          <!-- 라켓 샤프트 및 핸들 그립 -->
+          <line x1="14.2" y1="14.2" x2="21.5" y2="21.5" stroke-width="2.5"></line>
+          <!-- 테니스 공 (라임/그린 포인트) -->
+          <circle cx="18" cy="6.5" r="3.2" fill="#a3e635" stroke="#166534" stroke-width="1.2"></circle>
+        </svg>
+        <span>대진</span>
+      </button>
+      <button id="tabBtn-results" onclick="switchTab('results')" class="py-2.5 sm:py-3 text-sm sm:text-base font-black tracking-tight rounded-xl transition-all duration-200 text-slate-700 bg-white/80 hover:bg-white hover:text-slate-900 border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 active:scale-95">
+        <i class="fas fa-trophy text-base sm:text-lg text-amber-500"></i>
+        <span>결과</span>
+      </button>
+    </nav>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="p-3 bg-slate-50 flex-1 flex flex-col justify-between min-h-[420px]">
+
+      <!-- [탭 1: 선수 등록] -->
+      <section id="tab-players" class="flex flex-col justify-between flex-1">
+        <div>
+          <!-- 상단 조작바: 참석 인원 선택 -->
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-extrabold text-slate-800">참석인원</span>
+              <select id="playerCountSelect" onchange="changePlayerCount(this.value)" class="bg-white border-2 border-emerald-700 text-emerald-950 font-black text-xs rounded-lg px-2.5 py-1 focus:outline-none shadow-sm cursor-pointer">
+                <option value="4">4명 (1코트)</option>
+                <option value="5">5명</option>
+                <option value="6">6명</option>
+                <option value="7">7명</option>
+                <option value="8" selected>8명 (2코트)</option>
+                <option value="9">9명</option>
+                <option value="10">10명</option>
+                <option value="12">12명 (3코트)</option>
+                <option value="16">16명 (4코트)</option>
+              </select>
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium">이름 입력 시 대진표 즉시 반영</span>
+          </div>
+
+          <!-- 순번별 이름 바로 입력 (엔터치면 다음칸, 빈공간 흐릿하게 선수입력) -->
+          <div id="playerInputGrid" class="grid grid-cols-2 gap-1.5 max-h-[320px] overflow-y-auto pr-0.5">
+            <!-- JS 동적 생성 -->
+          </div>
+        </div>
+
+        <!-- 하단 바로가기 안내 -->
+        <div class="pt-3 mt-2 border-t border-slate-200 flex items-center justify-between">
+          <span class="text-[11px] text-emerald-800 font-bold flex items-center gap-1">
+            <i class="fas fa-bolt text-amber-500"></i> 번호별 이름 즉시 대진표 연동
+          </span>
+          <button onclick="switchTab('matches')" class="bg-emerald-800 hover:bg-emerald-900 text-lime-300 text-xs font-black px-3.5 py-2 rounded-xl shadow-md active:scale-95 transition flex items-center gap-1.5">
+            대진표 바로가기 <i class="fas fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- [탭 2: 대진표 & 점수 숫자 바로입력] -->
+      <section id="tab-matches" class="flex flex-col flex-1 hidden">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 gap-1 whitespace-nowrap">
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-emerald-800 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9.5" cy="9.5" r="6.5"></circle>
+                <line x1="9.5" y1="3" x2="9.5" y2="16"></line>
+                <line x1="3" y1="9.5" x2="16" y2="9.5"></line>
+                <line x1="14.2" y1="14.2" x2="21.5" y2="21.5" stroke-width="2.5"></line>
+                <circle cx="18" cy="6.5" r="3.2" fill="#a3e635" stroke="#166534" stroke-width="1.2"></circle>
+              </svg>
+              <span>KDK 대진</span>
+            </span>
+            <span id="matchStat" class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300 shrink-0">
+              0/0 완료
+            </span>
+          </div>
+          <!-- 조작 버튼 1줄 고정 (전체초기화 & 대진재배정) -->
+          <div class="flex items-center gap-1 shrink-0">
+            <button onclick="resetAllScores()" title="전체초기화" class="flex items-center gap-1 text-[11px] bg-rose-50 hover:bg-rose-100 text-rose-700 font-black px-2 py-1 rounded-lg border border-rose-200 shadow-sm active:scale-95 transition">
+              <i class="fas fa-rotate-left text-[10px]"></i> 전체초기화
+            </button>
+            <button onclick="rebuildMatchesFresh()" title="대진재배정" class="flex items-center gap-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-800 font-black px-2 py-1 rounded-lg border border-slate-300 shadow-sm active:scale-95 transition">
+              <i class="fas fa-shuffle text-[10px]"></i> 대진재배정
+            </button>
+          </div>
+        </div>
+
+        <!-- 2줄 선수명 + 1줄 정보/아이콘 대진표 리스트 -->
+        <div id="matchesCompactList" class="flex-1 overflow-y-auto space-y-2 max-h-[350px] pr-0.5">
+          <!-- JS 동적 생성 -->
+        </div>
+      </section>
+
+      <!-- [탭 3: 실시간 결과 및 카톡 공유] -->
+      <section id="tab-results" class="flex flex-col justify-between flex-1 hidden">
+        <div>
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
+            <span class="text-xs font-black text-slate-800 flex items-center gap-1">
+              🏆 실시간 순위표
+            </span>
+            <span class="text-[10px] text-slate-500 font-bold">
+              승수 > 득실차 > 다득점 순
+            </span>
+          </div>
+
+          <!-- 순위 테이블 -->
+          <div class="overflow-y-auto max-h-[290px] rounded-lg border border-slate-200 bg-white">
+            <table class="w-full text-xs text-center border-collapse">
+              <thead class="bg-slate-100 text-slate-700 font-black border-b border-slate-200 sticky top-0">
+                <tr>
+                  <th class="py-2 w-12">순위</th>
+                  <th class="py-2 text-left px-2">선수명</th>
+                  <th class="py-2 w-12">경기</th>
+                  <th class="py-2 w-16">승-패</th>
+                  <th class="py-2 w-14">득실</th>
+                  <th class="py-2 w-14">승률</th>
+                </tr>
+              </thead>
+              <tbody id="rankTableBody" class="divide-y divide-slate-100 font-semibold">
+                <!-- JS 동적 생성 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 카톡 전송 및 공유 버튼 -->
+        <div class="pt-3 mt-2 border-t border-slate-200 flex gap-2">
+          <button onclick="copyKakaoReport()" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-amber-950 font-black py-2.5 rounded-xl text-xs shadow-md flex items-center justify-center gap-1.5 active:scale-95 transition">
+            <i class="fas fa-comment text-amber-900 text-sm"></i> 카톡 결과 복사하기
+          </button>
+          <button onclick="shareDirectly()" class="px-4 bg-emerald-800 hover:bg-emerald-900 text-lime-300 font-black py-2.5 rounded-xl text-xs shadow-md active:scale-95 transition flex items-center justify-center gap-1">
+            <i class="fas fa-share-nodes"></i> 공유
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 사계절 테마 선택 모달 팝업 -->
+  <div id="themeModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="bg-white rounded-2xl p-4 w-full max-w-xs shadow-2xl border border-slate-200 transform scale-95 transition-transform duration-200" id="themeModalBox">
+      <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🎨</span>
+          <h3 class="text-sm font-black text-slate-800">사계절 클럽 테마 선택</h3>
+        </div>
+        <button onclick="closeThemeModal()" class="text-slate-400 hover:text-slate-700 text-sm p-1">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-2">
+        <!-- 봄 -->
+        <button onclick="setSeasonTheme('spring')" class="flex items-center justify-between p-2.5 rounded-xl border border-pink-200 bg-pink-50/70 hover:bg-pink-100 transition active:scale-95 text-left">
+          <div class="flex items-center gap-2.5">
+            <span class="text-xl">🌸</span>
+            <div>
+              <div class="text-xs font-black text-pink-900">화사한 봄 (Spring)</div>
+              <div class="text-[10px] text-pink-600 font-semibold">체리블라썸 & 핑크 코트</div>
+            </div>
+          </div>
+          <div class="w-4 h-4 rounded-full bg-pink-600 border border-white"></div>
+        </button>
+
+        <!-- 여름 -->
+        <button onclick="setSeasonTheme('summer')" class="flex items-center justify-between p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/70 hover:bg-emerald-100 transition active:scale-95 text-left">
+          <div class="flex items-center gap-2.5">
+            <span class="text-xl">🌿</span>
+            <div>
+              <div class="text-xs font-black text-emerald-950">싱그러운 여름 (Summer)</div>
+              <div class="text-[10px] text-emerald-700 font-semibold">윔블던 클래식 잔디 그린</div>
+            </div>
+          </div>
+          <div class="w-4 h-4 rounded-full bg-emerald-700 border border-white"></div>
+        </button>
+
+        <!-- 가을 -->
+        <button onclick="setSeasonTheme('autumn')" class="flex items-center justify-between p-2.5 rounded-xl border border-orange-200 bg-orange-50/70 hover:bg-orange-100 transition active:scale-95 text-left">
+          <div class="flex items-center gap-2.5">
+            <span class="text-xl">🍁</span>
+            <div>
+              <div class="text-xs font-black text-orange-950">풍요로운 가을 (Autumn)</div>
+              <div class="text-[10px] text-orange-700 font-semibold">롤랑가로스 클레이 & 단풍</div>
+            </div>
+          </div>
+          <div class="w-4 h-4 rounded-full bg-orange-600 border border-white"></div>
+        </button>
+
+        <!-- 겨울 -->
+        <button onclick="setSeasonTheme('winter')" class="flex items-center justify-between p-2.5 rounded-xl border border-blue-200 bg-blue-50/70 hover:bg-blue-100 transition active:scale-95 text-left">
+          <div class="flex items-center gap-2.5">
+            <span class="text-xl">❄️</span>
+            <div>
+              <div class="text-xs font-black text-blue-950">선명한 겨울 (Winter)</div>
+              <div class="text-[10px] text-blue-700 font-semibold">US오픈 딥블루 하드코트</div>
+            </div>
+          </div>
+          <div class="w-4 h-4 rounded-full bg-blue-600 border border-white"></div>
+        </button>
+      </div>
+
+      <div class="mt-3 pt-2 text-center text-[10px] text-slate-400 border-t border-slate-100">
+        타이틀의 테니스 공(🎾)을 누르면 언제든 변경 가능합니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 토스트 알림창 -->
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 bg-black/85 text-white text-xs px-4 py-2 rounded-full shadow-2xl z-50 transition-opacity duration-200 opacity-0 pointer-events-none">
+    알림 메시지
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'SEJONG_TENNIS_KDK_V6_STABLE';
+
+    let state = {
+      theme: 'summer',
+      currentTab: 'players',
+      eventTitle: '주말 친선 대회',
+      count: 8,
+      players: Array(8).fill(''),
+      matches: []
+    };
+
+    // 사계절 테마 관리 모달 및 설정 함수
+    function openThemeModal() {
+      const modal = document.getElementById('themeModal');
+      const box = document.getElementById('themeModalBox');
+      if (!modal || !box) return;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      box.classList.remove('scale-95');
+      box.classList.add('scale-100');
+    }
+
+    function closeThemeModal() {
+      const modal = document.getElementById('themeModal');
+      const box = document.getElementById('themeModalBox');
+      if (!modal || !box) return;
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      box.classList.add('scale-95');
+      box.classList.remove('scale-100');
+    }
+
+    function setSeasonTheme(themeKey) {
+      state.theme = themeKey;
+      applyTheme(themeKey);
+      closeThemeModal();
+      saveState();
+      
+      const themeNames = {
+        spring: '🌸 화사한 봄 테마',
+        summer: '🌿 싱그러운 여름 테마',
+        autumn: '🍁 풍요로운 가을 테마',
+        winter: '❄️ 선명한 겨울 테마'
+      };
+      showToast(`${themeNames[themeKey] || '테마'}가 적용되었습니다.`);
+    }
+
+    function applyTheme(themeKey) {
+      document.body.setAttribute('data-theme', themeKey || 'summer');
+      // 현재 선택된 탭 스타일 갱신
+      switchTab(state.currentTab);
+    }
+
+    // 실시간 초 단위 시계
+    function updateLiveClock() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      const day = days[now.getDay()];
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      
+      const el = document.getElementById('liveDateTime');
+      if (el) {
+        el.innerText = `${y}.${m}.${d} (${day}) ${hh}:${mm}:${ss}`;
+      }
+    }
+    setInterval(updateLiveClock, 1000);
+
+    // 3대 탭 전환
+    function switchTab(tabKey) {
+      state.currentTab = tabKey;
+      ['players', 'matches', 'results'].forEach(tab => {
+        const sec = document.getElementById(`tab-${tab}`);
+        const btn = document.getElementById(`tabBtn-${tab}`);
+        if (!sec || !btn) return;
+
+        if (tab === tabKey) {
+          sec.classList.remove('hidden');
+          sec.classList.add('flex');
+          btn.className = "py-2.5 sm:py-3 text-sm sm:text-base font-black tracking-tight rounded-xl transition-all duration-200 text-white theme-primary-bg shadow-md flex items-center justify-center gap-2 active:scale-95 border border-white/20";
+        } else {
+          sec.classList.add('hidden');
+          sec.classList.remove('flex');
+          btn.className = "py-2.5 sm:py-3 text-sm sm:text-base font-black tracking-tight rounded-xl transition-all duration-200 text-slate-700 bg-white/80 hover:bg-white hover:text-slate-900 border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 active:scale-95";
+        }
+      });
+
+      if (tabKey === 'matches') renderMatches();
+      if (tabKey === 'results') renderResults();
+      saveState();
+    }
+
+    // 선수 인원 선택
+    function changePlayerCount(val) {
+      const count = parseInt(val, 10);
+      state.count = count;
+
+      const newPlayers = [];
+      for (let i = 0; i < count; i++) {
+        newPlayers.push(state.players[i] || '');
+      }
+      state.players = newPlayers;
+
+      buildKdkSchedule(false);
+      renderPlayerInputs();
+      saveState();
+      showToast(`${count}명 대진표가 자동으로 배정되었습니다.`);
+    }
+
+    // 순번별 이름 입력창 (큰 글자 & 빈공간 흐릿한 선수입력)
+    function renderPlayerInputs() {
+      const container = document.getElementById('playerInputGrid');
+      if (!container) return;
+      container.innerHTML = '';
+
+      state.players.forEach((name, idx) => {
+        const item = document.createElement('div');
+        item.className = "flex items-center gap-2 bg-white border-2 border-slate-200 rounded-xl px-2.5 py-2 focus-within:border-emerald-700 shadow-sm transition";
+        item.innerHTML = `
+          <span class="w-6 h-6 bg-emerald-800 text-lime-300 text-xs font-black rounded-lg flex items-center justify-center shrink-0">
+            ${idx + 1}
+          </span>
+          <input 
+            id="player-input-${idx}"
+            type="text" 
+            value="${name || ''}" 
+            maxlength="8" 
+            placeholder="선수입력"
+            oninput="updatePlayerName(${idx}, this.value)"
+            onkeydown="handlePlayerEnter(event, ${idx})"
+            class="w-full text-sm font-black text-slate-800 placeholder:text-slate-300 placeholder:font-normal bg-transparent focus:outline-none truncate"
+          />
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // 엔터 누를 시 다음 선수 칸 이동
+    function handlePlayerEnter(e, currentIdx) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const nextInput = document.getElementById(`player-input-${currentIdx + 1}`);
+        if (nextInput) {
+          nextInput.focus();
+          nextInput.select();
+        } else {
+          e.target.blur();
+        }
+      }
+    }
+
+    function updatePlayerName(idx, val) {
+      state.players[idx] = val.trim();
+      saveState();
+      if (state.currentTab === 'matches') renderMatches();
+      if (state.currentTab === 'results') renderResults();
+    }
+
+    // 정통 KDK 공식 대진표 로테이션 생성기 (4, 5, 6, 7, 8, 9, 10, 12, 16)
+    function buildKdkSchedule(notify = true) {
+      const n = state.count;
+      if (n < 4) return;
+
+      const generated = [];
+
+      // 4인 공식 (1코트 3경기)
+      if (n === 4) {
+        const formula = [
+          { t1: [0, 1], t2: [2, 3] },
+          { t1: [0, 2], t2: [1, 3] },
+          { t1: [0, 3], t2: [1, 2] }
+        ];
+        formula.forEach((f, idx) => {
+          generated.push({ id: idx + 1, r: idx + 1, court: 1, t1: f.t1, t2: f.t2, rest: [], s1: 0, s2: 0 });
+        });
+      }
+      // 5인 공식 (1코트 5경기, 각 4경기 출전, 1명 휴식)
+      else if (n === 5) {
+        const formula = [
+          { t1: [0, 1], t2: [2, 3], rest: [4] },
+          { t1: [0, 2], t2: [3, 4], rest: [1] },
+          { t1: [1, 3], t2: [2, 4], rest: [0] },
+          { t1: [0, 4], t2: [1, 2], rest: [3] },
+          { t1: [0, 3], t2: [1, 4], rest: [2] }
+        ];
+        formula.forEach((f, idx) => {
+          generated.push({ id: idx + 1, r: idx + 1, court: 1, t1: f.t1, t2: f.t2, rest: f.rest, s1: 0, s2: 0 });
+        });
+      }
+      // 6인 공식 (1코트 6경기, 각 4경기 출전, 2명 휴식)
+      else if (n === 6) {
+        const formula = [
+          { t1: [0, 1], t2: [2, 3], rest: [4, 5] },
+          { t1: [4, 5], t2: [0, 2], rest: [1, 3] },
+          { t1: [1, 3], t2: [4, 0], rest: [2, 5] },
+          { t1: [2, 5], t2: [1, 4], rest: [0, 3] },
+          { t1: [0, 3], t2: [5, 1], rest: [2, 4] },
+          { t1: [2, 4], t2: [3, 5], rest: [0, 1] }
+        ];
+        formula.forEach((f, idx) => {
+          generated.push({ id: idx + 1, r: idx + 1, court: 1, t1: f.t1, t2: f.t2, rest: f.rest, s1: 0, s2: 0 });
+        });
+      }
+      // 7인 공식 (1코트 7경기, 각 4경기 출전, 3명 휴식)
+      else if (n === 7) {
+        const formula = [
+          { t1: [0, 1], t2: [2, 3], rest: [4, 5, 6] },
+          { t1: [4, 5], t2: [0, 6], rest: [1, 2, 3] },
+          { t1: [1, 2], t2: [4, 3], rest: [0, 5, 6] },
+          { t1: [5, 6], t2: [1, 0], rest: [2, 3, 4] },
+          { t1: [2, 4], t2: [5, 3], rest: [0, 1, 6] },
+          { t1: [6, 0], t2: [2, 1], rest: [3, 4, 5] },
+          { t1: [3, 4], t2: [6, 5], rest: [0, 1, 2] }
+        ];
+        formula.forEach((f, idx) => {
+          generated.push({ id: idx + 1, r: idx + 1, court: 1, t1: f.t1, t2: f.t2, rest: f.rest, s1: 0, s2: 0 });
+        });
+      }
+      // 8인 공식 (2코트 4라운드 총 8경기, 전원 4경기씩 공평 출전)
+      else if (n === 8) {
+        const formula = [
+          { r: 1, court: 1, t1: [0, 1], t2: [2, 3] },
+          { r: 1, court: 2, t1: [4, 5], t2: [6, 7] },
+          { r: 2, court: 1, t1: [0, 2], t2: [4, 6] },
+          { r: 2, court: 2, t1: [1, 3], t2: [5, 7] },
+          { r: 3, court: 1, t1: [0, 3], t2: [5, 6] },
+          { r: 3, court: 2, t1: [1, 2], t2: [4, 7] },
+          { r: 4, court: 1, t1: [0, 4], t2: [1, 5] },
+          { r: 4, court: 2, t1: [2, 6], t2: [3, 7] }
+        ];
+        formula.forEach((f, idx) => {
+          generated.push({ id: idx + 1, r: f.r, court: f.court, t1: f.t1, t2: f.t2, rest: [], s1: 0, s2: 0 });
+        });
+      }
+      // 9인 이상 정통 KDK 동적 최적 분배
+      else {
+        const matchesPerPlayer = 4;
+        const courtCount = n >= 12 ? 3 : 2;
+        const totalMatches = Math.floor((n * matchesPerPlayer) / 4);
+        const plays = new Array(n).fill(0);
+        const partnerHistory = Array.from({length: n}, () => new Set());
+        const opponentHistory = Array.from({length: n}, () => new Set());
+
+        let mId = 1;
+        let roundCounter = 1;
+        while (generated.length < totalMatches) {
+          for (let c = 1; c <= courtCount && generated.length < totalMatches; c++) {
+            let pool = Array.from({length: n}, (_, i) => i)
+              .sort((a, b) => (plays[a] - plays[b]) || (Math.random() - 0.5));
+            
+            const sel = pool.slice(0, 4);
+            const resting = pool.slice(4);
+
+            const combs = [
+              { t1: [sel[0], sel[1]], t2: [sel[2], sel[3]] },
+              { t1: [sel[0], sel[2]], t2: [sel[1], sel[3]] },
+              { t1: [sel[0], sel[3]], t2: [sel[1], sel[2]] }
+            ];
+
+            let best = combs[0];
+            let minPenalty = 99999;
+            combs.forEach(pair => {
+              let penalty = 0;
+              if (partnerHistory[pair.t1[0]].has(pair.t1[1])) penalty += 20;
+              if (partnerHistory[pair.t2[0]].has(pair.t2[1])) penalty += 20;
+              if (opponentHistory[pair.t1[0]].has(pair.t2[0])) penalty += 2;
+              if (opponentHistory[pair.t1[1]].has(pair.t2[1])) penalty += 2;
+              if (penalty < minPenalty) {
+                minPenalty = penalty;
+                best = pair;
+              }
+            });
+
+            best.t1.forEach(p => {
+              plays[p]++;
+              partnerHistory[p].add(best.t1[0] === p ? best.t1[1] : best.t1[0]);
+              best.t2.forEach(o => opponentHistory[p].add(o));
+            });
+            best.t2.forEach(p => {
+              plays[p]++;
+              partnerHistory[p].add(best.t2[0] === p ? best.t2[1] : best.t2[0]);
+              best.t1.forEach(o => opponentHistory[p].add(o));
+            });
+
+            generated.push({
+              id: mId++,
+              r: roundCounter,
+              court: c,
+              t1: best.t1,
+              t2: best.t2,
+              rest: n % 4 !== 0 ? resting.slice(0, n % 4) : [],
+              s1: 0,
+              s2: 0
+            });
+          }
+          roundCounter++;
+        }
+      }
+
+      state.matches = generated;
+      saveState();
+      if (notify) showToast(`${state.count}명 KDK 대진표(${generated.length}경기)가 배정되었습니다.`);
+    }
+
+    function rebuildMatchesFresh() {
+      buildKdkSchedule(true);
+      renderResults();
+      renderMatches();
+    }
+
+    function resetAllScores() {
+      state.matches.forEach(m => {
+        m.s1 = 0;
+        m.s2 = 0;
+      });
+      saveState();
+      renderMatches();
+      renderResults();
+      showToast('전체 경기 점수가 초기화되었습니다.');
+    }
+
+    // 대진표 렌더링: 선수(번호-이름)는 2줄 배치, 경기정보는 아이콘 및 1줄 처리
+    function renderMatches() {
+      const container = document.getElementById('matchesCompactList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!state.matches || state.matches.length === 0) {
+        buildKdkSchedule(false);
+      }
+
+      state.matches.forEach((m, matchIndex) => {
+        const pA1 = `${m.t1[0] + 1}-${state.players[m.t1[0]] || ('선수' + (m.t1[0] + 1))}`;
+        const pA2 = `${m.t1[1] + 1}-${state.players[m.t1[1]] || ('선수' + (m.t1[1] + 1))}`;
+        const pB1 = `${m.t2[0] + 1}-${state.players[m.t2[0]] || ('선수' + (m.t2[0] + 1))}`;
+        const pB2 = `${m.t2[1] + 1}-${state.players[m.t2[1]] || ('선수' + (m.t2[1] + 1))}`;
+        
+        const isPlayed = (m.s1 > 0 || m.s2 > 0);
+        const val1 = isPlayed ? m.s1 : '';
+        const val2 = isPlayed ? m.s2 : '';
+        const isT1Win = isPlayed && m.s1 > m.s2;
+        const isT2Win = isPlayed && m.s2 > m.s1;
+
+        // 휴식 표시 (아이콘 1줄 뱃지)
+        let restTag = '';
+        if (m.rest && m.rest.length > 0) {
+          const restNames = m.rest.map(rIdx => `${rIdx + 1}-${state.players[rIdx] || ('선수' + (rIdx + 1))}`).join(' ');
+          restTag = `<span class="inline-flex items-center gap-1 text-[10px] bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded font-bold shrink-0 whitespace-nowrap"><i class="fas fa-bed text-[9px] text-amber-600"></i> ${restNames}</span>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = `flex flex-col gap-1.5 p-2.5 rounded-xl border-2 transition ${isPlayed ? 'bg-emerald-50/95 border-emerald-500 shadow-sm' : 'bg-white border-slate-200'}`;
+        card.innerHTML = `
+          <!-- 상단 1줄: 테니스 아이콘 + 경기/코트 뱃지 + 휴식 뱃지 -->
+          <div class="flex items-center justify-between text-xs font-bold px-0.5 whitespace-nowrap">
+            <div class="flex items-center gap-1.5">
+              <span class="inline-flex items-center gap-1 bg-emerald-900 text-lime-300 font-black text-xs px-2.5 py-0.5 rounded-lg shadow-sm">
+                <span>🎾</span> ${m.id}경기
+              </span>
+              <span class="text-[11px] text-slate-600 font-bold bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                R${m.r} · C${m.court}
+              </span>
+            </div>
+            ${restTag}
+          </div>
+
+          <!-- 메인 매칭: 좌우 팀원 2줄(번호-이름) + 중앙 숫자 전용 점수칸 -->
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <!-- 1팀 (위아래 2줄 배치) -->
+            <div class="flex-1 min-w-0 bg-slate-50/90 border border-slate-200 rounded-lg p-1.5 flex flex-col justify-center ${isT1Win ? 'border-emerald-500 bg-emerald-100/60 font-black text-emerald-950' : (isT2Win ? 'text-slate-400 font-medium' : 'text-slate-900 font-bold')}">
+              <div class="text-xs sm:text-sm truncate py-0.5 flex items-center gap-1">
+                <span class="text-emerald-800 font-black shrink-0">${m.t1[0] + 1}-</span>
+                <span class="truncate">${state.players[m.t1[0]] || ('선수' + (m.t1[0] + 1))}</span>
+              </div>
+              <div class="text-xs sm:text-sm truncate py-0.5 flex items-center gap-1 border-t border-slate-200/60">
+                <span class="text-emerald-800 font-black shrink-0">${m.t1[1] + 1}-</span>
+                <span class="truncate">${state.players[m.t1[1]] || ('선수' + (m.t1[1] + 1))}</span>
+              </div>
+            </div>
+
+            <!-- 중앙: 숫자 전용 점수 입력창 (1줄 고정) -->
+            <div class="shrink-0 flex items-center gap-1 bg-slate-200/80 p-1.5 rounded-xl border border-slate-300 shadow-inner">
+              <input 
+                id="score-${matchIndex}-1"
+                type="number" 
+                inputmode="numeric" 
+                pattern="[0-9]*"
+                min="0"
+                max="99"
+                placeholder="0"
+                value="${val1}"
+                oninput="handleNumericScoreChange(${m.id}, 1, this.value, ${matchIndex})"
+                onfocus="this.select()"
+                class="w-10 h-9 text-center font-black text-base text-emerald-950 bg-white border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-sm"
+              />
+              <span class="font-black text-slate-500 text-sm sm:text-base">:</span>
+              <input 
+                id="score-${matchIndex}-2"
+                type="number" 
+                inputmode="numeric" 
+                pattern="[0-9]*"
+                min="0"
+                max="99"
+                placeholder="0"
+                value="${val2}"
+                oninput="handleNumericScoreChange(${m.id}, 2, this.value, ${matchIndex})"
+                onfocus="this.select()"
+                class="w-10 h-9 text-center font-black text-base text-emerald-950 bg-white border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-sm"
+              />
+            </div>
+
+            <!-- 2팀 (위아래 2줄 배치) -->
+            <div class="flex-1 min-w-0 bg-slate-50/90 border border-slate-200 rounded-lg p-1.5 flex flex-col justify-center ${isT2Win ? 'border-emerald-500 bg-emerald-100/60 font-black text-emerald-950' : (isT1Win ? 'text-slate-400 font-medium' : 'text-slate-900 font-bold')}">
+              <div class="text-xs sm:text-sm truncate py-0.5 flex items-center gap-1">
+                <span class="text-emerald-800 font-black shrink-0">${m.t2[0] + 1}-</span>
+                <span class="truncate">${state.players[m.t2[0]] || ('선수' + (m.t2[0] + 1))}</span>
+              </div>
+              <div class="text-xs sm:text-sm truncate py-0.5 flex items-center gap-1 border-t border-slate-200/60">
+                <span class="text-emerald-800 font-black shrink-0">${m.t2[1] + 1}-</span>
+                <span class="truncate">${state.players[m.t2[1]] || ('선수' + (m.t2[1] + 1))}</span>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      updateStats();
+    }
+
+    // 숫자 입력 시 즉시 반영 & 첫 번째 점수 입력 후 2번째 칸으로 자동 포커스 이동
+    function handleNumericScoreChange(matchId, teamSide, rawVal, matchIndex) {
+      const m = state.matches.find(item => item.id === matchId);
+      if (!m) return;
+
+      const num = rawVal === '' ? 0 : parseInt(rawVal, 10);
+      if (teamSide === 1) {
+        m.s1 = isNaN(num) ? 0 : num;
+        if (rawVal !== '') {
+          const nextScoreInput = document.getElementById(`score-${matchIndex}-2`);
+          if (nextScoreInput && nextScoreInput.value === '') {
+            nextScoreInput.focus();
+            nextScoreInput.select();
+          }
+        }
+      } else {
+        m.s2 = isNaN(num) ? 0 : num;
+        if (rawVal !== '') {
+          const nextMatchFirstInput = document.getElementById(`score-${matchIndex + 1}-1`);
+          if (nextMatchFirstInput) {
+            nextMatchFirstInput.focus();
+            nextMatchFirstInput.select();
+          }
+        }
+      }
+
+      saveState();
+      updateStats();
+    }
+
+    function updateStats() {
+      const tot = state.matches.length;
+      const done = state.matches.filter(m => m.s1 > 0 || m.s2 > 0).length;
+      const statEl = document.getElementById('matchStat');
+      if (statEl) statEl.innerText = `${done}/${tot} 완료`;
+    }
+
+    // 정통 KDK 순위 계산 로직 (승수 > 득실차 > 다득점 > 승률)
+    function getStandings() {
+      const stats = state.players.map((name, idx) => ({
+        idx: idx + 1,
+        name: name || `선수${idx + 1}`,
+        played: 0,
+        win: 0,
+        loss: 0,
+        gf: 0,
+        ga: 0,
+        diff: 0,
+        winRate: 0
+      }));
+
+      state.matches.forEach(m => {
+        const isPlayed = (m.s1 > 0 || m.s2 > 0);
+        if (!isPlayed) return;
+
+        const t1Win = m.s1 > m.s2;
+        const t2Win = m.s2 > m.s1;
+
+        // 1팀 통계
+        m.t1.forEach(pIdx => {
+          if (stats[pIdx]) {
+            stats[pIdx].played++;
+            stats[pIdx].gf += m.s1;
+            stats[pIdx].ga += m.s2;
+            if (t1Win) stats[pIdx].win++;
+            else if (t2Win) stats[pIdx].loss++;
+          }
+        });
+
+        // 2팀 통계
+        m.t2.forEach(pIdx => {
+          if (stats[pIdx]) {
+            stats[pIdx].played++;
+            stats[pIdx].gf += m.s2;
+            stats[pIdx].ga += m.s1;
+            if (t2Win) stats[pIdx].win++;
+            else if (t1Win) stats[pIdx].loss++;
+          }
+        });
+      });
+
+      stats.forEach(s => {
+        s.diff = s.gf - s.ga;
+        s.winRate = s.played > 0 ? Math.round((s.win / s.played) * 100) : 0;
+      });
+
+      // 정렬 순위: 승수 > 득실차 > 다득점 > 승률
+      stats.sort((a, b) => {
+        if (b.win !== a.win) return b.win - a.win;
+        if (b.diff !== a.diff) return b.diff - a.diff;
+        if (b.gf !== a.gf) return b.gf - a.gf;
+        return b.winRate - a.winRate;
+      });
+
+      return stats;
+    }
+
+    // 경기결과 렌더링
+    function renderResults() {
+      const tbody = document.getElementById('rankTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      const standings = getStandings();
+
+      const captureDateEl = document.getElementById('captureDate');
+      if (captureDateEl) {
+        const now = new Date();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        captureDateEl.innerText = `${m}.${d} 경기결과`;
+      }
+
+      standings.forEach((r, i) => {
+        let badge = `${i + 1}`;
+        if (i === 0) badge = '🥇 1';
+        else if (i === 1) badge = '🥈 2';
+        else if (i === 2) badge = '🥉 3';
+
+        const diffText = r.diff > 0 ? `+${r.diff}` : `${r.diff}`;
+        // 번호-선수이름 형식 적용 (예: 1-선수명)
+        const displayName = `${r.idx}-${r.name}`;
+
+        const tr = document.createElement('tr');
+        tr.className = i < 3 ? "bg-amber-50 font-black text-slate-900" : "text-slate-800";
+        tr.innerHTML = `
+          <td class="py-2.5 text-center font-black">${badge}</td>
+          <td class="py-2.5 text-left font-black text-emerald-950 truncate max-w-[130px] px-2 text-xs sm:text-sm">${displayName}</td>
+          <td class="py-2.5 text-slate-600 text-xs">${r.played}</td>
+          <td class="py-2.5 text-slate-900 font-black text-xs">${r.win}-${r.loss}</td>
+          <td class="py-2.5 ${r.diff >= 0 ? 'text-emerald-700' : 'text-rose-600'} font-black text-xs">${diffText}</td>
+          <td class="py-2.5 text-slate-600 text-xs">${r.winRate}%</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // [확정공유]: 결과 영역을 이미지로 캡처하여 클립보드에 복사하고 카카오톡 실행
+    async function handleConfirmShare() {
+      const targetArea = document.getElementById('resultsCaptureArea');
+      const shareBtn = document.getElementById('btnConfirmShare');
+      if (!targetArea) return;
+
+      const originalBtnHtml = shareBtn ? shareBtn.innerHTML : '';
+      if (shareBtn) {
+        shareBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-base"></i> 이미지 생성 중...';
+      }
+
+      try {
+        // html2canvas로 결과 테이블 영역을 이미지 캔버스로 변환
+        const canvas = await html2canvas(targetArea, {
+          scale: 2, // 고해상도 캡처
+          backgroundColor: '#ffffff',
+          useCORS: true
+        });
+
+        // 1. 이미지 클립보드 복사 시도
+        canvas.toBlob(async (blob) => {
+          let copiedImage = false;
+          if (blob && navigator.clipboard && window.ClipboardItem) {
+            try {
+              await navigator.clipboard.write([
+                new ClipboardItem({ 'image/png': blob })
+              ]);
+              copiedImage = true;
+            } catch (err) {
+              console.log('클립보드 이미지 쓰기 불가, 파일 공유로 폴백', err);
+            }
+          }
+
+          // 텍스트 폴백 복사도 함께 준비
+          const textBackup = getKakaoText();
+          const tempArea = document.createElement('textarea');
+          tempArea.value = textBackup;
+          document.body.appendChild(tempArea);
+          tempArea.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(tempArea);
+
+          showToast(copiedImage ? '결과 이미지가 복사되었습니다! 카톡에 붙여넣기하세요.' : '결과가 복사되었습니다! 카톡에 붙여넣기하세요.');
+
+          // 모바일 네이티브 공유 지원 시 이미지 파일 전송 창 우선 호출
+          if (blob && navigator.share && navigator.canShare) {
+            const file = new File([blob], 'tennis_results.png', { type: 'image/png' });
+            if (navigator.canShare({ files: [file] })) {
+              try {
+                await navigator.share({
+                  files: [file],
+                  title: '세종 대왕테니스 클럽 경기결과'
+                });
+                if (shareBtn) shareBtn.innerHTML = originalBtnHtml;
+                return;
+              } catch (shareErr) {
+                // 사용자가 취소했거나 실패 시 아래 카카오톡 스킴으로 이동
+              }
+            }
+          }
+
+          // 카카오톡 앱 직접 실행 (모바일 커스텀 URL 스킴)
+          setTimeout(() => {
+            window.location.href = 'kakaotalk://';
+          }, 300);
+
+          if (shareBtn) shareBtn.innerHTML = originalBtnHtml;
+        }, 'image/png');
+
+      } catch (e) {
+        console.error('이미지 변환 실패:', e);
+        copyKakaoReport();
+        setTimeout(() => {
+          window.location.href = 'kakaotalk://';
+        }, 300);
+        if (shareBtn) shareBtn.innerHTML = originalBtnHtml;
+      }
+    }
+
+    // 카톡 결과 텍스트 생성
+    function getKakaoText() {
+      const title = document.getElementById('eventTitle')?.value || state.eventTitle || '친선대회';
+      const standings = getStandings();
+
+      let txt = `🎾 [세종 대왕테니스 클럽 - ${title}] 🎾\n\n`;
+
+      standings.forEach((r, i) => {
+        const d = r.diff > 0 ? `+${r.diff}` : `${r.diff}`;
+        txt += `${i + 1}위- ${r.name} (${r.win}승${r.loss}패, ${d})\n`;
+      });
+
+      txt += `\n오늘도 수고 많으셨습니다. 세종 대왕테니스 클럽 화이팅! 🎾🔥`;
+      return txt;
+    }
+
+    function copyKakaoReport() {
+      const text = getKakaoText();
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      tempArea.setSelectionRange(0, 99999);
+      try {
+        document.execCommand('copy');
+        showToast('카톡 결과가 복사되었습니다! 단톡방에 붙여넣기하세요.');
+      } catch (e) {
+        showToast('복사 권한을 확인해주세요.');
+      }
+      document.body.removeChild(tempArea);
+    }
+
+    function shareDirectly() {
+      const text = getKakaoText();
+      if (navigator.share) {
+        navigator.share({
+          title: '세종 대왕테니스 클럽 경기결과',
+          text: text
+        }).catch(() => copyKakaoReport());
+      } else {
+        copyKakaoReport();
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.innerText = msg;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 1800);
+    }
+
+    function saveState() {
+      try {
+        const titleInput = document.getElementById('eventTitle');
+        if (titleInput) state.eventTitle = titleInput.value;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          state = Object.assign(state, JSON.parse(saved));
+          const countSel = document.getElementById('playerCountSelect');
+          if (countSel) countSel.value = state.count;
+          const titleInput = document.getElementById('eventTitle');
+          if (titleInput && state.eventTitle) titleInput.value = state.eventTitle;
+          if (!state.players || state.players.length === 0) {
+            state.players = Array(state.count).fill('');
+          }
+        }
+      } catch (e) {}
+    }
+
+    window.onload = function() {
+      loadState();
+      applyTheme(state.theme || 'summer');
+      updateLiveClock();
+      renderPlayerInputs();
+      if (!state.matches || state.matches.length === 0) {
+        buildKdkSchedule(false);
+      }
+      switchTab(state.currentTab || 'players');
+    };
+  </script>
+</body>
+</html>
