@@ -1,3 +1,12 @@
+
+
+콘텐츠로 건너뛰기
+스크린 리더로 Gmail 사용하기
+대화
+5,120GB 중 0% 사용됨
+약관 · 개인정보처리방침 · 프로그램 정책
+마지막 계정 활동: 0분 전
+세부정보
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,7 +19,6 @@
   <title>세종 대왕테니스 클럽</title>
 
   <style>
-    /* 기본 리셋 및 모바일 네이티브 세팅 */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -20,7 +28,6 @@
       touch-action: manipulation;
     }
 
-    /* 사계절 테마 변수 (다크/딥 톤) */
     :root, body[data-theme="summer"] {
       --bg-body: #064e3b;
       --hdr-from: #022c22;
@@ -78,7 +85,6 @@
       transition: background-color 0.3s ease;
     }
 
-    /* 메인 컨테이너 */
     .app-card {
       width: 100%;
       max-width: 440px;
@@ -92,7 +98,6 @@
       margin: auto 0;
     }
 
-    /* 헤더 스타일 */
     .app-header {
       background: linear-gradient(to bottom, var(--hdr-from), var(--hdr-to));
       color: #ffffff;
@@ -126,7 +131,6 @@
       letter-spacing: -0.5px;
     }
 
-    /* SVG 라켓 애니메이션 (잘림 방지 viewBox 및 변형 중심 수정) */
     .theme-trigger-btn {
       background: none;
       border: none;
@@ -193,7 +197,6 @@
       background: rgba(255, 255, 255, 0.15);
     }
 
-    /* 3대 탭 메뉴바 */
     .tab-nav {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -228,7 +231,6 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
     }
 
-    /* 메인 탭 컨텐츠 영역 */
     .app-main {
       padding: 12px;
       background: #ffffff;
@@ -248,7 +250,6 @@
       display: none !important;
     }
 
-    /* 서브헤더 공통 */
     .sub-bar {
       display: flex;
       align-items: center;
@@ -259,12 +260,11 @@
       white-space: nowrap;
     }
 
-    /* 선수 입력 그리드 */
     .player-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 6px;
-      max-height: 310px;
+      max-height: 275px;
       overflow-y: auto;
       padding-right: 2px;
     }
@@ -305,7 +305,6 @@
       font-weight: normal;
     }
 
-    /* 대진표 리스트 */
     .match-list {
       flex: 1;
       overflow-y: auto;
@@ -400,12 +399,21 @@
     .team-player-row {
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 900;
+    }
+    .pnum-tag {
+      background: rgba(21, 128, 61, 0.15);
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 4px;
+      flex-shrink: 0;
     }
     .team-player-divider {
       border-top: 1px solid rgba(226, 232, 240, 0.6);
@@ -467,12 +475,12 @@
       color: #475569;
       font-size: 12px;
       font-weight: 800;
-      padding: 6px 14px;
+      padding: 6px 10px;
       border-radius: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
       cursor: pointer;
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
@@ -481,7 +489,6 @@
       background: #f8fafc;
     }
 
-    /* 순위표 테이블 */
     .table-container {
       overflow-y: auto;
       max-height: 250px;
@@ -512,7 +519,6 @@
       border-bottom: 1px solid #f1f5f9;
     }
 
-    /* 원형 순위 디자인 */
     .rank-circle {
       display: inline-flex;
       align-items: center;
@@ -534,7 +540,6 @@
       background: var(--primary-light);
     }
 
-    /* 대형 버튼 공통 */
     .btn-primary-large {
       width: 100%;
       background-color: var(--primary);
@@ -572,7 +577,6 @@
       transform: scale(0.97);
     }
 
-    /* 하단 저작권 텍스트 */
     .footer-credit {
       width: 100%;
       max-width: 440px;
@@ -584,7 +588,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* 모달 팝업 공통 */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -611,7 +614,6 @@
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
     }
 
-    /* 캡처화면 오버레이 전용 (공백 제로, 빼곡한 압축 배치) */
     .capture-overlay {
       position: fixed;
       inset: 0;
@@ -746,27 +748,28 @@
       <!-- [탭 1] 선수 입력 -->
       <section id="tab-players" class="tab-section">
         <div>
-          <div class="sub-bar">
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span style="font-size: 13px; font-weight: 900; color: #1e293b;">참석인원</span>
-              <select id="playerCountSelect" onchange="changePlayerCount(this.value)" style="background: #f8fafc; border: 2px solid var(--primary); font-weight: 900; color:#0f172a; font-size: 12px; border-radius: 8px; padding: 3px 6px; outline: none;">
-                <option value="4">4명 (1코트)</option>
-                <option value="5">5명</option>
-                <option value="6">6명</option>
-                <option value="7">7명</option>
-                <option value="8" selected>8명 (2코트)</option>
-                <option value="9">9명</option>
-                <option value="10">10명</option>
-                <option value="12">12명 (3코트)</option>
-                <option value="16">16명 (4코트)</option>
-              </select>
-            </div>
-            <span style="font-size: 11px; color: #64748b; font-weight: 600;">이름 입력 시 즉시 연동</span>
+          <!-- KDK 버전 및 참석인원 드롭다운 한 줄 디자인 (라벨 완전 제거) -->
+          <div class="sub-bar" style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+            <select id="kdkVersionSelect" onchange="changeKdkVersion(this.value)" style="flex: 1; background: #f8fafc; border: 2px solid var(--primary); font-weight: 900; color:#0f172a; font-size: 12px; border-radius: 8px; padding: 5px 6px; outline: none; text-align: center;">
+              <option value="v2010" selected>KDK v2010</option>
+              <option value="v2010_4g">KDK v2010 (4게임)</option>
+            </select>
+            <select id="playerCountSelect" onchange="changePlayerCount(this.value)" style="flex: 1; background: #f8fafc; border: 2px solid var(--primary); font-weight: 900; color:#0f172a; font-size: 12px; border-radius: 8px; padding: 5px 6px; outline: none; text-align: center;">
+              <option value="4">4명 (1코트)</option>
+              <option value="5">5명</option>
+              <option value="6">6명</option>
+              <option value="7">7명</option>
+              <option value="8" selected>8명 (2코트)</option>
+              <option value="9">9명</option>
+              <option value="10">10명</option>
+              <option value="12">12명 (3코트)</option>
+              <option value="16">16명 (4코트)</option>
+            </select>
           </div>
           <div id="playerInputGrid" class="player-grid"></div>
         </div>
 
-        <div style="padding-top: 10px; margin-top: 8px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+        <div style="padding-top: 8px; margin-top: 6px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
           <span style="font-size: 11px; color: var(--primary); font-weight: 800;">⚡ 엔터 키 ➔ 다음 칸 이동</span>
           <button onclick="switchTab('matches')" class="btn-primary-large" style="width: auto; padding: 7px 14px; font-size: 13px;">
             경기대진 ➔
@@ -791,18 +794,19 @@
         <div id="matchesCompactList" class="match-list"></div>
       </section>
 
-      <!-- [탭 3] 결과 (공유/저장) -->
+      <!-- [탭 3] 결과 (클라우드 공유/저장 및 오늘 상품) -->
       <section id="tab-results" class="tab-section hidden">
         <div>
-          <!-- 대회 저장/불러오기 중앙 정렬 -->
-          <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 12px; padding-top: 4px;">
-            <button onclick="requestSaveEvent()" class="btn-outline-mini">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-              현재 대회 저장
+          <!-- 저장, 불러오기, 오늘 대회 상품 버튼 3개 배치 -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 10px; padding-top: 2px;">
+            <button onclick="requestSaveEvent()" class="btn-outline-mini" style="font-size:11px; padding:6px 2px;">
+              💾 현재저장
             </button>
-            <button onclick="openArchiveModal()" class="btn-outline-mini">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
-              불러오기
+            <button onclick="openArchiveModal()" class="btn-outline-mini" style="font-size:11px; padding:6px 2px;">
+              📂 불러오기
+            </button>
+            <button onclick="openPrizesModal()" class="btn-outline-mini" style="font-size:11px; padding:6px 2px; border-color: #f59e0b; color: #b45309; background: #fffbeb;">
+              🎁 오늘상품
             </button>
           </div>
 
@@ -828,7 +832,7 @@
           </div>
         </div>
 
-        <div style="padding-top: 10px; margin-top: 6px; border-top: 1px solid #f1f5f9; display: flex; gap: 6px;">
+        <div style="padding-top: 8px; margin-top: 4px; border-top: 1px solid #f1f5f9; display: flex; gap: 6px;">
           <button onclick="shareDirectly()" class="btn-kakao-share" style="flex: 1; padding: 10px; font-size: 12px;">
             <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-5.5 0-10 3.58-10 8 0 2.8 1.8 5.26 4.54 6.71l-1.16 4.25c-.1.38.32.7.67.48l5.12-3.38c.27.02.55.04.83.04 5.5 0 10-3.58 10-8s-4.5-8-10-8z"/></svg>
             <span>클럽카톡방 공유</span>
@@ -846,7 +850,6 @@
     Designed by Soo
   </div>
 
-  <!-- 📸 전체화면 캡처용 모달 (공백 제로, 빼곡한 압축 결과) -->
   <div id="captureOverlay" class="capture-overlay">
     <div class="capture-topbar">
       <span>📸 이 화면을 캡처하여 공유하세요</span>
@@ -855,7 +858,6 @@
     <div id="captureContent" class="capture-scroll"></div>
   </div>
 
-  <!-- 테마 모달 -->
   <div id="themeModal" class="modal-backdrop">
     <div class="modal-box">
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
@@ -883,7 +885,6 @@
     </div>
   </div>
 
-  <!-- 공통 확인(Confirm) 모달 -->
   <div id="confirmModal" class="modal-backdrop" style="z-index: 70;">
     <div class="modal-box" style="text-align: center; padding: 20px;">
       <h3 id="confirmTitle" style="font-size: 16px; font-weight: 900; color: #1e293b; margin-bottom: 8px;"></h3>
@@ -895,7 +896,6 @@
     </div>
   </div>
 
-  <!-- 선수 파트너 대진 분석 팝업 모달 (우측 스크롤바와 여유 공간 확보) -->
   <div id="partnerModal" class="modal-backdrop">
     <div class="modal-box" style="max-width: 360px;">
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px;">
@@ -907,52 +907,59 @@
     </div>
   </div>
 
-  <!-- 대회 저장/불러오기 목록 모달 -->
   <div id="archiveModal" class="modal-backdrop">
     <div class="modal-box" style="max-width: 360px;">
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
-        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📂 저장된 대회 목록</h3>
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📂 클라우드 저장된 대회 목록</h3>
         <button onclick="closeArchiveModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
       <div id="archiveList" style="display: flex; flex-direction: column; gap: 8px; max-height: 55vh; overflow-y: auto; padding-right: 4px;"></div>
     </div>
   </div>
 
-  <!-- 한마디 전하기 모달 (카톡 공유 전) -->
-  <div id="shareMessageModal" class="modal-backdrop" style="z-index: 70;">
-    <div class="modal-box">
-      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px;">
-        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">💬 한마디 전하기 (선택)</h3>
-        <button onclick="closeShareMessageModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
+  <div id="prizesModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width: 360px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">🎁 오늘 대회 상품 안내</h3>
+        <button onclick="closePrizesModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
-      <p style="font-size: 11px; color: #64748b; margin-bottom: 8px; line-height: 1.3;">결과 텍스트 맨 아래에 덧붙일 멘트를 자유롭게 입력하세요.</p>
-      <textarea id="customShareMessage" rows="3" placeholder="예: 다들 고생하셨습니다! 다음 주 모임은 00구장입니다." style="width: 100%; font-size: 13px; padding: 10px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; resize: none;"></textarea>
+      <p style="font-size: 11px; color: #64748b; margin-bottom: 8px; line-height: 1.3;">경기이사가 상품 내역을 입력 후 저장하면 다른 회원들도 실시간으로 확인할 수 있습니다.</p>
+      <textarea id="eventPrizesInput" rows="6" placeholder="예:&#10;1위: 고급 테니스 라켓백 1개&#10;2위: 기능성 테니스 양말 1세트&#10;3위: 그립 2개 세트" style="width: 100%; font-size: 13px; padding: 10px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; resize: none;"></textarea>
       <div style="display: flex; gap: 8px; margin-top: 12px;">
-        <button onclick="closeShareMessageModal()" style="flex: 1; padding: 10px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">취소</button>
-        <button onclick="proceedKakaoShare()" class="btn-kakao-share" style="flex: 1; padding: 10px; font-size: 13px;">바로 복사하기</button>
+        <button onclick="closePrizesModal()" style="flex: 1; padding: 10px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">닫기</button>
+        <button onclick="saveEventPrizes()" class="btn-primary-large" style="flex: 1; padding: 10px; font-size: 13px;">상품 저장하기</button>
       </div>
     </div>
   </div>
 
-  <!-- 카톡 복사 실패 대비 백업 모달 -->
+  <div id="shareMessageModal" class="modal-backdrop" style="z-index: 70;">
+    <div class="modal-box">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">💬 클럽카톡방 공유 멘트</h3>
+        <button onclick="closeShareMessageModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
+      </div>
+      <p style="font-size: 11px; color: #64748b; margin-bottom: 8px; line-height: 1.3;">추가로 전할 멘트를 입력하세요.</p>
+      <textarea id="customShareMessage" rows="3" placeholder="예: 오늘 하루도 수고하셨습니다." style="width: 100%; font-size: 13px; padding: 10px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; resize: none;"></textarea>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button onclick="closeShareMessageModal()" style="flex: 1; padding: 10px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">취소</button>
+        <button onclick="proceedKakaoShare()" class="btn-kakao-share" style="flex: 1; padding: 10px; font-size: 13px;">복사하기</button>
+      </div>
+    </div>
+  </div>
+
   <div id="copyBackupModal" class="modal-backdrop">
     <div class="modal-box">
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px;">
         <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📋 수동 복사</h3>
         <button onclick="closeCopyBackupModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
-      <p style="font-size: 11px; color: #64748b; margin-bottom: 8px; line-height: 1.3;">인앱 브라우저 보안으로 인해 자동 복사가 차단되었습니다.<br>아래 내용을 전체 선택하여 복사 후 붙여넣어주세요.</p>
       <textarea id="copyBackupText" readonly style="width: 100%; height: 160px; font-size: 13px; padding: 10px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; resize: none;"></textarea>
-      <button onclick="copyFromTextarea()" class="btn-kakao-share" style="margin-top: 12px; width: 100%; padding: 10px; font-size: 13px;">
-        전체 선택 및 복사 재시도
-      </button>
+      <button onclick="copyFromTextarea()" class="btn-kakao-share" style="margin-top: 12px; width: 100%; padding: 10px; font-size: 13px;">전체 선택 및 복사</button>
     </div>
   </div>
 
-  <!-- 토스트 알림창 -->
   <div id="toast" class="toast-msg">알림 메시지</div>
 
-  <!-- 시 팝업 (이스터에그) -->
   <div id="poemModal" class="modal-backdrop">
     <div class="modal-box" style="background: linear-gradient(135deg, #0f172a, #1e3a8a); color: #e2e8f0; border: 1px solid #3b82f6; text-align: center; position: relative; overflow: hidden; padding: 30px 20px; box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);">
       <svg style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0.1; pointer-events:none;" viewBox="0 0 100 100">
@@ -977,17 +984,35 @@
     </div>
   </div>
 
-  <script>
-    const STORAGE_KEY = 'SEJONG_TENNIS_KDK_V15_FINAL';
-    const ARCHIVE_KEY = 'SEJONG_TENNIS_KDK_ARCHIVES_V15';
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    let state = {
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-sejong-tennis';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "mock", projectId: "mock" };
+
+    let app, db, auth, userId = null;
+    let unsubLive = null;
+    let isRemoteUpdate = false;
+
+    try {
+      app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      auth = getAuth(app);
+    } catch(e) {
+      console.warn("Firebase Init Error:", e);
+    }
+
+    window.state = {
       theme: 'summer',
       currentTab: 'players',
       eventTitle: '',
+      kdkVersion: 'v2010',
       count: 8,
       players: Array(8).fill(''),
-      matches: []
+      matches: [],
+      prizes: ''
     };
 
     function updateLiveClock() {
@@ -1006,25 +1031,26 @@
     }
     setInterval(updateLiveClock, 1000);
 
-    function openThemeModal() { document.getElementById('themeModal').classList.add('show'); }
-    function closeThemeModal() { document.getElementById('themeModal').classList.remove('show'); }
-    function setSeasonTheme(themeKey) {
-      state.theme = themeKey;
+    window.openThemeModal = function() { document.getElementById('themeModal').classList.add('show'); }
+    window.closeThemeModal = function() { document.getElementById('themeModal').classList.remove('show'); }
+    window.setSeasonTheme = function(themeKey) {
+      window.state.theme = themeKey;
       applyTheme(themeKey);
       closeThemeModal();
-      saveState();
+      saveStateToCloud();
       showToast('테마가 적용되었습니다.');
     }
     function applyTheme(themeKey) { document.body.setAttribute('data-theme', themeKey || 'summer'); }
 
-    function handleEventTitleInput(inputEl) {
+    window.handleEventTitleInput = function(inputEl) {
       const val = inputEl.value;
+      window.state.eventTitle = val;
       inputEl.style.width = !val ? '7.5ch' : `${Math.max(val.length * 1.5, 3)}ch`;
-      saveState();
+      saveStateToCloud();
     }
 
-    function switchTab(tabKey) {
-      state.currentTab = tabKey;
+    window.switchTab = function(tabKey) {
+      window.state.currentTab = tabKey;
       ['players', 'matches', 'results'].forEach(tab => {
         const sec = document.getElementById(`tab-${tab}`);
         const btn = document.getElementById(`tabBtn-${tab}`);
@@ -1039,18 +1065,26 @@
       });
       if (tabKey === 'matches') renderMatches();
       if (tabKey === 'results') renderResults();
-      saveState();
+      saveStateToCloud();
     }
 
-    function changePlayerCount(val) {
-      const count = parseInt(val, 10);
-      state.count = count;
-      const newPlayers = [];
-      for (let i = 0; i < count; i++) newPlayers.push(state.players[i] || '');
-      state.players = newPlayers;
+    window.changeKdkVersion = function(val) {
+      window.state.kdkVersion = val;
       buildKdkSchedule(false);
       renderPlayerInputs();
-      saveState();
+      saveStateToCloud();
+      showToast(`KDK 버전이 [${val === 'v2010_4g' ? 'v2010 4게임' : 'v2010'}]로 변경되었습니다.`);
+    }
+
+    window.changePlayerCount = function(val) {
+      const count = parseInt(val, 10);
+      window.state.count = count;
+      const newPlayers = [];
+      for (let i = 0; i < count; i++) newPlayers.push(window.state.players[i] || '');
+      window.state.players = newPlayers;
+      buildKdkSchedule(false);
+      renderPlayerInputs();
+      saveStateToCloud();
       showToast(`${count}명 경기대진표가 배정되었습니다.`);
     }
 
@@ -1058,8 +1092,13 @@
       const container = document.getElementById('playerInputGrid');
       if (!container) return;
       
+      const vSel = document.getElementById('kdkVersionSelect');
+      if (vSel) vSel.value = window.state.kdkVersion || 'v2010';
+      const cSel = document.getElementById('playerCountSelect');
+      if (cSel) cSel.value = window.state.count || 8;
+
       let htmlArr = [];
-      state.players.forEach((name, idx) => {
+      window.state.players.forEach((name, idx) => {
         htmlArr.push(`
           <div class="player-slot">
             <div class="player-slot-badge">${idx + 1}</div>
@@ -1079,7 +1118,7 @@
       container.innerHTML = htmlArr.join('');
     }
 
-    function handlePlayerEnter(e, currentIdx) {
+    window.handlePlayerEnter = function(e, currentIdx) {
       if (e.key === 'Enter') {
         e.preventDefault();
         const nextInput = document.getElementById(`player-input-${currentIdx + 1}`);
@@ -1088,35 +1127,52 @@
       }
     }
 
-    function updatePlayerName(idx, val) {
-      state.players[idx] = val.trim();
-      saveState();
-      if (state.currentTab === 'matches') renderMatches();
-      if (state.currentTab === 'results') renderResults();
+    window.updatePlayerName = function(idx, val) {
+      window.state.players[idx] = val.trim();
+      saveStateToCloud();
+      if (window.state.currentTab === 'matches') renderMatches();
+      if (window.state.currentTab === 'results') renderResults();
     }
 
     let confirmAction = null;
-    function openConfirmModal(title, msg, onConfirm) {
+    window.openConfirmModal = function(title, msg, onConfirm) {
       document.getElementById('confirmTitle').innerText = title;
       document.getElementById('confirmMsg').innerHTML = msg;
       confirmAction = onConfirm;
       document.getElementById('confirmModal').classList.add('show');
     }
-    function closeConfirmModal() {
+    window.closeConfirmModal = function() {
       document.getElementById('confirmModal').classList.remove('show');
       confirmAction = null;
     }
-    function executeConfirm() {
+    window.executeConfirm = function() {
       if (confirmAction) confirmAction();
       closeConfirmModal();
     }
 
-    // 순위 클릭 시 상세 경기 분석 팝업 (대진표 형태 UI 및 이름 크기 14px)
-    function showPartnerPopup(playerIdx) {
-      const pName = state.players[playerIdx] || `선수${playerIdx + 1}`;
+    window.openPrizesModal = function() {
+      const area = document.getElementById('eventPrizesInput');
+      if (area) area.value = window.state.prizes || '';
+      document.getElementById('prizesModal').classList.add('show');
+    }
+    window.closePrizesModal = function() {
+      document.getElementById('prizesModal').classList.remove('show');
+    }
+    window.saveEventPrizes = function() {
+      const area = document.getElementById('eventPrizesInput');
+      if (area) {
+        window.state.prizes = area.value.trim();
+        saveStateToCloud();
+        closePrizesModal();
+        showToast('오늘 대회 상품 내역이 저장되었습니다.');
+      }
+    }
+
+    window.showPartnerPopup = function(playerIdx) {
+      const pName = window.state.players[playerIdx] || `선수${playerIdx + 1}`;
       const partnerRecords = [];
       
-      state.matches.forEach(m => {
+      window.state.matches.forEach(m => {
         const isT1 = m.t1.includes(playerIdx);
         const isT2 = m.t2.includes(playerIdx);
         
@@ -1136,19 +1192,19 @@
           }
 
           const renderTeam = (team, isWin, isMyTeam) => {
-              const p1 = state.players[team[0]] || `선수${team[0]+1}`;
-              const p2 = state.players[team[1]] || `선수${team[1]+1}`;
+              const p1 = window.state.players[team[0]] || `선수${team[0]+1}`;
+              const p2 = window.state.players[team[1]] || `선수${team[1]+1}`;
               const isMe1 = team[0] === playerIdx;
               const isMe2 = team[1] === playerIdx;
               
-              const highlightStyle = 'color: #ea580c; font-weight: 900; background: #ffedd5; padding: 2px 4px; border-radius: 4px; font-size: 14px;';
-              const normalStyle = 'font-size: 14px; font-weight: 900; color: #0f172a;';
+              const highlightStyle = 'color: #ea580c; font-weight: 900; background: #ffedd5; padding: 2px 4px; border-radius: 4px; font-size: 13px;';
+              const normalStyle = 'font-size: 13px; font-weight: 900; color: #0f172a;';
               const bg = isWin ? (isMyTeam ? '#dcfce7' : '#f1f5f9') : '#ffffff';
 
               return `
                 <div class="team-box" style="padding:4px 6px; background:${bg}; border-color:${isWin ? '#22c55e' : '#cbd5e1'};">
-                    <div class="team-player-row"><span style="${isMe1 ? highlightStyle : normalStyle}">${p1}</span></div>
-                    <div class="team-player-row team-player-divider"><span style="${isMe2 ? highlightStyle : normalStyle}">${p2}</span></div>
+                    <div class="team-player-row"><span class="pnum-tag">${team[0]+1}번</span><span style="${isMe1 ? highlightStyle : normalStyle}">${p1}</span></div>
+                    <div class="team-player-row team-player-divider"><span class="pnum-tag">${team[1]+1}번</span><span style="${isMe2 ? highlightStyle : normalStyle}">${p2}</span></div>
                 </div>
               `;
           };
@@ -1169,19 +1225,20 @@
         }
       });
 
-      document.getElementById('partnerModalTitle').innerText = `[ ${playerIdx + 1}-${pName} ] 님의 경기 분석`;
+      document.getElementById('partnerModalTitle').innerText = `[ ${playerIdx + 1}번 - ${pName} ] 님의 경기 분석`;
       let html = partnerRecords.length > 0 ? partnerRecords.join('') : '<div style="padding:20px;">배정된 대진이 없습니다.</div>';
       document.getElementById('partnerModalContent').innerHTML = html;
       document.getElementById('partnerModal').classList.add('show');
     }
-    function closePartnerModal() {
+    window.closePartnerModal = function() {
       document.getElementById('partnerModal').classList.remove('show');
     }
 
     function buildKdkSchedule(notify = true) {
-      const n = state.count;
+      const n = window.state.count;
       if (n < 4) return;
       const generated = [];
+      const isFourGamesMode = (window.state.kdkVersion === 'v2010_4g');
 
       if (n === 4) {
         const formula = [ { t1: [0, 1], t2: [2, 3] }, { t1: [0, 2], t2: [1, 3] }, { t1: [0, 3], t2: [1, 2] } ];
@@ -1217,7 +1274,7 @@
         ];
         formula.forEach((f, idx) => generated.push({ id: idx + 1, r: f.r, court: f.court, t1: f.t1, t2: f.t2, rest: [], s1: 0, s2: 0 }));
       } else {
-        const matchesPerPlayer = 4;
+        const matchesPerPlayer = isFourGamesMode ? 4 : 5;
         const courtCount = n >= 12 ? 3 : 2;
         const totalMatches = Math.floor((n * matchesPerPlayer) / 4);
         const plays = new Array(n).fill(0);
@@ -1253,23 +1310,23 @@
           roundCounter++;
         }
       }
-      state.matches = generated;
-      saveState();
-      if (notify) showToast(`${state.count}명 경기대진표가 배정되었습니다.`);
+      window.state.matches = generated;
+      saveStateToCloud();
+      if (notify) showToast(`${window.state.count}명 (${window.state.kdkVersion === 'v2010_4g' ? '4게임' : '표준'}) 대진표가 배정되었습니다.`);
     }
 
-    function requestRebuildMatches() {
-      openConfirmModal('대진 재배정', '기존 대진 결과가 모두 초기화되고 새로 배정됩니다. 진행하시겠습니까?', () => {
+    window.requestRebuildMatches = function() {
+      openConfirmModal('대회 재배정', '기존 대진 결과가 모두 초기화되고 새로 배정됩니다. 진행하시겠습니까?', () => {
         buildKdkSchedule(true);
         renderResults();
         renderMatches();
       });
     }
 
-    function requestResetScores() {
+    window.requestResetScores = function() {
       openConfirmModal('점수 초기화', '현재까지 입력된 모든 경기 점수를 0으로 초기화하시겠습니까?', () => {
-        state.matches.forEach(m => { m.s1 = 0; m.s2 = 0; });
-        saveState();
+        window.state.matches.forEach(m => { m.s1 = 0; m.s2 = 0; });
+        saveStateToCloud();
         renderMatches();
         renderResults();
         showToast('전체 경기 점수가 초기화되었습니다.');
@@ -1280,19 +1337,28 @@
       const container = document.getElementById('matchesCompactList');
       if (!container) return;
       
-      if (!state.matches || state.matches.length === 0) buildKdkSchedule(false);
+      if (!window.state.matches || window.state.matches.length === 0) buildKdkSchedule(false);
 
       let htmlArr = [];
-      state.matches.forEach((m, matchIndex) => {
+      window.state.matches.forEach((m, matchIndex) => {
         const isPlayed = (m.s1 > 0 || m.s2 > 0);
         const val1 = isPlayed ? m.s1 : '', val2 = isPlayed ? m.s2 : '';
         const isT1Win = isPlayed && m.s1 > m.s2, isT2Win = isPlayed && m.s2 > m.s1;
 
         let restTag = '';
         if (m.rest && m.rest.length > 0) {
-          const restNames = m.rest.map(rIdx => `${rIdx + 1}-${state.players[rIdx] || ('선수' + (rIdx + 1))}`).join(' ');
+          const restNames = m.rest.map(rIdx => `${rIdx + 1}번-${window.state.players[rIdx] || ('선수' + (rIdx + 1))}`).join(' ');
           restTag = `<span class="rest-badge">휴식: ${restNames}</span>`;
         }
+
+        const renderMatchTeam = (team) => {
+          const p1Name = window.state.players[team[0]] || (`선수${team[0] + 1}`);
+          const p2Name = window.state.players[team[1]] || (`선수${team[1] + 1}`);
+          return `
+            <div class="team-player-row"><span class="pnum-tag">${team[0] + 1}번</span><span>${p1Name}</span></div>
+            <div class="team-player-row team-player-divider"><span class="pnum-tag">${team[1] + 1}번</span><span>${p2Name}</span></div>
+          `;
+        };
 
         htmlArr.push(`
           <div class="match-card ${isPlayed ? 'played' : ''}">
@@ -1305,8 +1371,7 @@
             </div>
             <div class="match-body-row">
               <div class="team-box ${isT1Win ? 'win' : (isT2Win ? 'lose' : '')}">
-                <div class="team-player-row"><span style="color: var(--primary);">👤</span><span>${state.players[m.t1[0]] || ('선수' + (m.t1[0] + 1))}</span></div>
-                <div class="team-player-row team-player-divider"><span style="color: var(--primary);">👤</span><span>${state.players[m.t1[1]] || ('선수' + (m.t1[1] + 1))}</span></div>
+                ${renderMatchTeam(m.t1)}
               </div>
               <div class="score-inputs-wrap">
                 <input id="score-${matchIndex}-1" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="0" value="${val1}" oninput="handleNumericScoreChange(${m.id}, 1, this.value, ${matchIndex})" class="score-input"/>
@@ -1314,8 +1379,7 @@
                 <input id="score-${matchIndex}-2" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="0" value="${val2}" oninput="handleNumericScoreChange(${m.id}, 2, this.value, ${matchIndex})" class="score-input"/>
               </div>
               <div class="team-box ${isT2Win ? 'win' : (isT1Win ? 'lose' : '')}">
-                <div class="team-player-row"><span style="color: var(--primary);">👤</span><span>${state.players[m.t2[0]] || ('선수' + (m.t2[0] + 1))}</span></div>
-                <div class="team-player-row team-player-divider"><span style="color: var(--primary);">👤</span><span>${state.players[m.t2[1]] || ('선수' + (m.t2[1] + 1))}</span></div>
+                ${renderMatchTeam(m.t2)}
               </div>
             </div>
           </div>
@@ -1325,8 +1389,8 @@
       updateStats();
     }
 
-    function handleNumericScoreChange(matchId, teamSide, rawVal, matchIndex) {
-      const m = state.matches.find(item => item.id === matchId);
+    window.handleNumericScoreChange = function(matchId, teamSide, rawVal, matchIndex) {
+      const m = window.state.matches.find(item => item.id === matchId);
       if (!m) return;
       let num = rawVal === '' ? 0 : parseInt(rawVal, 10);
       
@@ -1350,26 +1414,26 @@
           if (nextMatch) nextMatch.focus();
         }
       }
-      saveState();
+      saveStateToCloud();
       updateStats();
     }
 
     function updateStats() {
-      const tot = state.matches.length;
-      const done = state.matches.filter(m => m.s1 > 0 || m.s2 > 0).length;
+      const tot = window.state.matches.length;
+      const done = window.state.matches.filter(m => m.s1 > 0 || m.s2 > 0).length;
       const statEl = document.getElementById('matchStat');
       if (statEl) statEl.innerText = `${done}/${tot} 완료`;
     }
 
     function getStandings() {
-      const stats = state.players.map((name, idx) => ({ 
+      const stats = window.state.players.map((name, idx) => ({ 
           originalIdx: idx, 
           idx: idx + 1, 
           name: name || `선수${idx + 1}`, 
           played: 0, win: 0, loss: 0, gf: 0, ga: 0, diff: 0, winRate: 0 
       }));
 
-      state.matches.forEach(m => {
+      window.state.matches.forEach(m => {
         if (!(m.s1 > 0 || m.s2 > 0)) return;
         const t1Win = m.s1 > m.s2, t2Win = m.s2 > m.s1;
         m.t1.forEach(pIdx => {
@@ -1401,7 +1465,9 @@
             <td style="font-weight: 900; text-align: center;">
               <div class="rank-circle" onclick="showPartnerPopup(${r.originalIdx})" title="상세 기록 보기">${i + 1}</div>
             </td>
-            <td style="text-align: left; font-weight: 900; color: #0f172a; padding-left: 8px; font-size: 14px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.name}</td>
+            <td style="text-align: left; font-weight: 900; color: #0f172a; padding-left: 8px; font-size: 14px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <span class="pnum-tag" style="margin-right: 3px;">${r.idx}번</span>${r.name}
+            </td>
             <td style="color: #64748b;">${r.played}</td>
             <td style="font-weight: 900; color: #0f172a;">${r.win}-${r.loss}</td>
             <td style="font-weight: 900; color: ${r.diff >= 0 ? '#15803d' : '#e11d48'};">${r.diff > 0 ? '+'+r.diff : r.diff}</td>
@@ -1412,16 +1478,21 @@
       tbody.innerHTML = htmlArr.join('');
     }
 
-    // 📸 캡처 화면 렌더링 (공백 제로, 빼곡한 압축 레이아웃 + '파트너' 문구 전면 제거)
-    function openCaptureView() {
+    window.openCaptureView = function() {
       const standings = getStandings();
-      const eventTitle = document.getElementById('eventTitle')?.value || state.eventTitle || '친선대회';
+      const eventTitle = document.getElementById('eventTitle')?.value || window.state.eventTitle || '친선대회';
       
       let htmlArr = [];
       htmlArr.push(`<div style="text-align:center; font-size:13px; margin-bottom:2px; color:#0f172a; font-weight:900;">🏆 세종 대왕테니스 클럽</div>`);
       htmlArr.push(`<div style="text-align:center; font-size:10.5px; font-weight:bold; color:#475569; margin-bottom:4px; border-bottom:1.5px solid #cbd5e1; padding-bottom:3px;">[ ${eventTitle} ] 결과 종합</div>`);
 
-      // 순위표 압축
+      if (window.state.prizes) {
+        htmlArr.push(`<div style="background:#fffbeb; border:1px solid #fde68a; padding:6px; border-radius:6px; margin-bottom:6px; font-size:10px; color:#b45309; text-align:left;">`);
+        htmlArr.push(`<div style="font-weight:900; margin-bottom:2px;">🎁 오늘 대회 상품 안내</div>`);
+        htmlArr.push(`<div style="white-space:pre-wrap; font-weight:700;">${window.state.prizes}</div>`);
+        htmlArr.push(`</div>`);
+      }
+
       htmlArr.push(`<table style="width:100%; border-collapse:collapse; font-size:10.5px; text-align:center; margin-bottom:6px;">
           <tr style="background:#f1f5f9; border-bottom:1.5px solid #cbd5e1; color:#334155; font-weight:900;">
               <th style="padding:2px;">순위</th>
@@ -1432,24 +1503,23 @@
       standings.forEach((r, i) => {
           htmlArr.push(`<tr style="border-bottom:1px solid #e2e8f0; color:#1e293b; font-weight:bold;">
               <td style="padding:1.5px;">${i+1}</td>
-              <td style="padding:1.5px;">${r.name}</td>
+              <td style="padding:1.5px;">[${r.idx}번] ${r.name}</td>
               <td style="padding:1.5px;">${r.win}승 ${r.loss}패</td>
               <td style="padding:1.5px;">${r.diff > 0 ? '+'+r.diff : r.diff}</td>
           </tr>`);
       });
       htmlArr.push(`</table>`);
 
-      // 선수별 상세 기록 (2단 그리드 - 공백 없이 꽉 채우기)
       htmlArr.push(`<div style="font-size:10.5px; margin-bottom:3px; color:#1e293b; font-weight:900; border-left:3px solid var(--primary); padding-left:3px;">📋 선수별 상세 경기 기록</div>`);
       htmlArr.push(`<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px;">`);
       
       standings.forEach((r, i) => {
           htmlArr.push(`<div style="font-size:9.5px; border:1px solid #cbd5e1; border-radius:3px; padding:3px; background:#f8fafc;">`);
-          htmlArr.push(`<div style="font-weight:900; margin-bottom:1.5px; font-size:10.5px; color:#0f172a; border-bottom:1px solid #e2e8f0; padding-bottom:1.5px;">${i+1}. ${r.name} <span style="font-weight:normal; color:#64748b; font-size:9px;">(${r.win}승${r.loss}패)</span></div>`);
+          htmlArr.push(`<div style="font-weight:900; margin-bottom:1.5px; font-size:10.5px; color:#0f172a; border-bottom:1px solid #e2e8f0; padding-bottom:1.5px;">${i+1}. [${r.idx}번] ${r.name} <span style="font-weight:normal; color:#64748b; font-size:9px;">(${r.win}승${r.loss}패)</span></div>`);
           
           const pIdx = r.originalIdx;
           let matchCount = 0;
-          state.matches.forEach(m => {
+          window.state.matches.forEach(m => {
               const isPlayed = m.s1 > 0 || m.s2 > 0;
               if(!isPlayed) return;
               
@@ -1466,10 +1536,10 @@
                   const isDraw = myScore === oppScore;
                   
                   const partnerIdx = myTeam[0] === pIdx ? myTeam[1] : myTeam[0];
-                  const partnerName = state.players[partnerIdx] || `선수${partnerIdx+1}`;
+                  const partnerName = window.state.players[partnerIdx] || `선수${partnerIdx+1}`;
                   
-                  const opp1Name = state.players[oppTeam[0]] || `선수${oppTeam[0]+1}`;
-                  const opp2Name = state.players[oppTeam[1]] || `선수${oppTeam[1]+1}`;
+                  const opp1Name = window.state.players[oppTeam[0]] || `선수${oppTeam[0]+1}`;
+                  const opp2Name = window.state.players[oppTeam[1]] || `선수${oppTeam[1]+1}`;
                   
                   let resBadge = '<span style="color:#e11d48; font-weight:900;">패</span>';
                   if(isWin) resBadge = '<span style="color:#15803d; font-weight:900;">승</span>';
@@ -1478,10 +1548,10 @@
                   htmlArr.push(`<div style="display:flex; flex-direction:column; padding:1.5px 0; border-bottom:1px dashed #e2e8f0; font-size:9px; line-height:1.1;">
                       <div style="display:flex; justify-content:space-between; margin-bottom:0.5px;">
                         <span style="font-weight:900;">${resBadge} ${myScore}:${oppScore}</span>
-                        <span style="color:#1d4ed8; font-weight:800; text-align:right;">${partnerName}</span>
+                        <span style="color:#1d4ed8; font-weight:800; text-align:right;">[${partnerIdx+1}번] ${partnerName}</span>
                       </div>
                       <div style="color:#475569; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                        vs ${opp1Name}, ${opp2Name}
+                        vs [${oppTeam[0]+1}]${opp1Name}, [${oppTeam[1]+1}]${opp2Name}
                       </div>
                   </div>`);
               }
@@ -1496,108 +1566,140 @@
       document.getElementById('captureContent').innerHTML = htmlArr.join('');
       document.getElementById('captureOverlay').classList.add('show');
     }
-
-    function closeCaptureView() {
+    window.closeCaptureView = function() {
       document.getElementById('captureOverlay').classList.remove('show');
     }
 
-    function getArchives() {
-      const data = localStorage.getItem(ARCHIVE_KEY);
-      return data ? JSON.parse(data) : [];
-    }
-    function saveArchives(archives) { localStorage.setItem(ARCHIVE_KEY, JSON.stringify(archives)); }
-
-    function requestSaveEvent() {
-      openConfirmModal('현재 대회 저장', '현재까지 진행된 대회 및 대진 결과를 저장하시겠습니까?', () => { saveCurrentEvent(); });
+    window.requestSaveEvent = function() {
+      openConfirmModal('현재 대회 저장', '클라우드에 현재 대회 및 대진 결과를 저장하시겠습니까?', () => { saveCurrentEventToCloud(); });
     }
 
-    function saveCurrentEvent() {
+    async function saveCurrentEventToCloud() {
       const titleInput = document.getElementById('eventTitle');
       const title = titleInput.value.trim() || '이름없는 대회';
       const now = new Date();
       const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
       
-      const archives = getArchives();
-      const newArchive = {
-        id: Date.now().toString(),
-        date: dateStr,
-        title: title,
-        stateData: JSON.parse(JSON.stringify(state)) 
-      };
-      archives.unshift(newArchive);
-      saveArchives(archives);
-      showToast(`[${title}] 저장 완료!`);
+      try {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'archives_' + Date.now());
+        await setDoc(docRef, {
+          id: Date.now().toString(),
+          date: dateStr,
+          title: title,
+          stateData: JSON.parse(JSON.stringify(window.state))
+        });
+        showToast(`[${title}] 클라우드 저장 완료!`);
+      } catch(e) {
+        showToast('저장 중 오류가 발생했습니다.');
+      }
     }
 
-    function openArchiveModal() {
+    window.openArchiveModal = async function() {
       const modal = document.getElementById('archiveModal');
       const listContainer = document.getElementById('archiveList');
-      const archives = getArchives();
-      listContainer.innerHTML = '';
-      
-      if (archives.length === 0) {
-        listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 30px 0;">저장된 대회가 없습니다.</p>';
-      } else {
-        archives.forEach(arc => {
-          const item = document.createElement('div');
-          item.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc;';
-          item.innerHTML = `
-            <div style="display: flex; flex-direction: column; min-width: 0; padding-right: 8px; flex: 1;">
-              <span style="font-size: 14px; font-weight: 900; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${arc.title}</span>
-              <span style="font-size: 11px; color: #64748b; font-weight: 600; margin-top: 4px;">${arc.date}</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
-              <button onclick="requestLoadArchive('${arc.id}', '${arc.title}')" style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; cursor: pointer;">불러오기</button>
-              <button onclick="requestDeleteArchive('${arc.id}')" style="background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; cursor: pointer;">삭제</button>
-            </div>
-          `;
-          listContainer.appendChild(item);
-        });
-      }
+      listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 20px 0;">불러오는 중...</p>';
       modal.classList.add('show');
+
+      try {
+        const qSnap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data'));
+        const archives = [];
+        qSnap.forEach(d => {
+          const data = d.data();
+          if (data && data.id && data.stateData) archives.push(data);
+        });
+        archives.sort((a,b) => parseInt(b.id) - parseInt(a.id));
+
+        listContainer.innerHTML = '';
+        if (archives.length === 0) {
+          listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 30px 0;">저장된 대회가 없습니다.</p>';
+        } else {
+          archives.forEach(arc => {
+            const item = document.createElement('div');
+            item.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc;';
+            item.innerHTML = `
+              <div style="display: flex; flex-direction: column; min-width: 0; padding-right: 8px; flex: 1;">
+                <span style="font-size: 14px; font-weight: 900; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${arc.title}</span>
+                <span style="font-size: 11px; color: #64748b; font-weight: 600; margin-top: 4px;">${arc.date}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
+                <button onclick="requestLoadArchive('${arc.id}', '${arc.title}')" style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; cursor: pointer;">불러오기</button>
+                <button onclick="requestDeleteArchive('${arc.id}')" style="background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; cursor: pointer;">삭제</button>
+              </div>
+            `;
+            listContainer.appendChild(item);
+          });
+        }
+      } catch(e) {
+        listContainer.innerHTML = '<p style="font-size: 13px; color: #e11d48; text-align: center; padding: 20px 0;">목록을 불러오지 못했습니다.</p>';
+      }
     }
-    function closeArchiveModal() { document.getElementById('archiveModal').classList.remove('show'); }
+    window.closeArchiveModal = function() { document.getElementById('archiveModal').classList.remove('show'); }
     
-    function requestLoadArchive(id, title) {
-      openConfirmModal('대회 불러오기', `'${title}' 대회를 불러오시겠습니까?<br><br><span style="color:#be123c;">※ 현재 진행 중인 데이터는 덮어씌워집니다.</span>`, () => { loadArchive(id); });
+    window.requestLoadArchive = function(id, title) {
+      openConfirmModal('대회 불러오기', `'${title}' 대회를 불러오시겠습니까?<br><br><span style="color:#be123c;">※ 현재 진행 중인 데이터는 덮어씌워집니다.</span>`, () => { loadArchiveFromCloud(id); });
     }
 
-    function loadArchive(id) {
-      const arc = getArchives().find(a => a.id === id);
-      if (arc) {
-        state = JSON.parse(JSON.stringify(arc.stateData));
-        const countSel = document.getElementById('playerCountSelect');
-        if (countSel) countSel.value = state.count;
-        const titleInput = document.getElementById('eventTitle');
-        if (titleInput) { titleInput.value = state.eventTitle || arc.title; handleEventTitleInput(titleInput); }
-        applyTheme(state.theme);
-        renderPlayerInputs();
-        renderMatches();
-        renderResults();
-        switchTab('players');
-        saveState();
-        closeArchiveModal();
-        showToast(`'${arc.title}' 불러오기 완료!`);
+    async function loadArchiveFromCloud(id) {
+      try {
+        const qSnap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data'));
+        let target = null;
+        qSnap.forEach(d => {
+          const data = d.data();
+          if (data && data.id === id) target = data;
+        });
+
+        if (target) {
+          window.state = JSON.parse(JSON.stringify(target.stateData));
+          const countSel = document.getElementById('playerCountSelect');
+          if (countSel) countSel.value = window.state.count;
+          const vSel = document.getElementById('kdkVersionSelect');
+          if (vSel) vSel.value = window.state.kdkVersion || 'v2010';
+          const titleInput = document.getElementById('eventTitle');
+          if (titleInput) { titleInput.value = window.state.eventTitle || target.title; handleEventTitleInput(titleInput); }
+          applyTheme(window.state.theme);
+          renderPlayerInputs();
+          renderMatches();
+          renderResults();
+          switchTab('players');
+          saveStateToCloud();
+          closeArchiveModal();
+          showToast(`'${target.title}' 불러오기 완료!`);
+        }
+      } catch(e) {
+        showToast('불러오기 실패');
       }
     }
 
-    function requestDeleteArchive(id) {
-      openConfirmModal('대회 삭제', '선택한 저장 기록을 완전히 삭제하시겠습니까?<br>(복구할 수 없습니다.)', () => {
-        let archives = getArchives().filter(a => a.id !== id);
-        saveArchives(archives);
-        openArchiveModal(); 
-        showToast('대회가 삭제되었습니다.');
+    window.requestDeleteArchive = function(id) {
+      openConfirmModal('대회 삭제', '선택한 클라우드 저장 기록을 완전히 삭제하시겠습니까?<br>(복구할 수 없습니다.)', async () => {
+        try {
+          const qSnap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data'));
+          qSnap.forEach(async (d) => {
+            const data = d.data();
+            if (data && data.id === id) {
+              await deleteDoc(d.ref);
+            }
+          });
+          openArchiveModal(); 
+          showToast('대회가 삭제되었습니다.');
+        } catch(e) {
+          showToast('삭제 실패');
+        }
       });
     }
 
-    // 카톡 공유 텍스트 포맷 구성 (공과 트로피 왼쪽 배치, 1열 포맷, 사용자 한마디 + "수고 하셨습니다.^^")
     function getKakaoText(customMsg = '') {
-      const title = document.getElementById('eventTitle')?.value || state.eventTitle || '친선대회';
+      const title = document.getElementById('eventTitle')?.value || window.state.eventTitle || '친선대회';
       let txt = `🎾 세종 대왕테니스 클럽 - ${title}\n\n`;
       
+      if (window.state.prizes) {
+        txt += `🎁 [오늘 대회 상품]\n${window.state.prizes}\n\n`;
+      }
+
+      txt += `🏆 [순위 결과]\n`;
       getStandings().forEach((r, i) => {
         const diffText = r.diff > 0 ? `+${r.diff}` : r.diff;
-        txt += `${i + 1}위 - ${r.name} - ${r.win}승 ${r.loss}패 (${diffText})\n`;
+        txt += `${i + 1}위 - [${r.idx}번] ${r.name} - ${r.win}승 ${r.loss}패 (${diffText})\n`;
       });
       
       if (customMsg) {
@@ -1608,17 +1710,15 @@
       return txt;
     }
 
-    function shareDirectly() {
+    window.shareDirectly = function() {
       const inputEl = document.getElementById('customShareMessage');
       if (inputEl) inputEl.value = '';
       document.getElementById('shareMessageModal').classList.add('show');
     }
-
-    function closeShareMessageModal() {
+    window.closeShareMessageModal = function() {
       document.getElementById('shareMessageModal').classList.remove('show');
     }
-
-    function proceedKakaoShare() {
+    window.proceedKakaoShare = function() {
       const customMsg = document.getElementById('customShareMessage').value.trim();
       const text = getKakaoText(customMsg);
       closeShareMessageModal();
@@ -1665,9 +1765,8 @@
       }
     }
 
-    function closeCopyBackupModal() { document.getElementById('copyBackupModal').classList.remove('show'); }
-    
-    function copyFromTextarea() {
+    window.closeCopyBackupModal = function() { document.getElementById('copyBackupModal').classList.remove('show'); }
+    window.copyFromTextarea = function() {
       const area = document.getElementById('copyBackupText');
       if (area) {
         if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
@@ -1697,48 +1796,74 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    function openPoemModal() { document.getElementById('poemModal').classList.add('show'); }
-    function closePoemModal() { document.getElementById('poemModal').classList.remove('show'); }
+    window.openPoemModal = function() { document.getElementById('poemModal').classList.add('show'); }
+    window.closePoemModal = function() { document.getElementById('poemModal').classList.remove('show'); }
 
-    function saveState() {
+    async function saveStateToCloud() {
+      if (isRemoteUpdate || !db || !userId) return;
       try {
         const titleInput = document.getElementById('eventTitle');
-        if (titleInput) state.eventTitle = titleInput.value;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if (titleInput) window.state.eventTitle = titleInput.value;
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'live_session_v1');
+        await setDoc(docRef, window.state);
       } catch (e) {}
     }
 
-    function loadState() {
+    async function initCloudSync() {
       try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          state = Object.assign(state, JSON.parse(saved));
-          const countSel = document.getElementById('playerCountSelect');
-          if (countSel) countSel.value = state.count;
-          const titleInput = document.getElementById('eventTitle');
-          if (titleInput && state.eventTitle) {
-            titleInput.value = state.eventTitle;
-            handleEventTitleInput(titleInput);
-          }
-          if (!state.players || state.players.length === 0) {
-            state.players = Array(state.count).fill('');
-          }
+        if (__initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
         }
-      } catch (e) {}
+        userId = auth.currentUser?.uid || crypto.randomUUID();
+
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'live_session_v1');
+        
+        unsubLive = onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) {
+            const cloudData = docSnap.data();
+            if (cloudData) {
+              isRemoteUpdate = true;
+              window.state = Object.assign(window.state, cloudData);
+              const countSel = document.getElementById('playerCountSelect');
+              if (countSel) countSel.value = window.state.count;
+              const vSel = document.getElementById('kdkVersionSelect');
+              if (vSel) vSel.value = window.state.kdkVersion || 'v2010';
+              const titleInput = document.getElementById('eventTitle');
+              if (titleInput && window.state.eventTitle) {
+                titleInput.value = window.state.eventTitle;
+                handleEventTitleInput(titleInput);
+              }
+              applyTheme(window.state.theme || 'summer');
+              renderPlayerInputs();
+              renderMatches();
+              renderResults();
+              isRemoteUpdate = false;
+            }
+          } else {
+            saveStateToCloud();
+          }
+        }, (err) => {
+          console.warn("Snapshot error:", err);
+        });
+
+      } catch (e) {
+        console.warn("Auth/Cloud error, fallback local:", e);
+      }
     }
 
     window.onload = function() {
-      loadState();
-      applyTheme(state.theme || 'summer');
       updateLiveClock();
       renderPlayerInputs();
-      if (!state.matches || state.matches.length === 0) {
+      if (!window.state.matches || window.state.matches.length === 0) {
         buildKdkSchedule(false);
       }
-      switchTab(state.currentTab || 'players');
+      switchTab('players');
+      initCloudSync();
     };
   </script>
 </body>
 </html>
-indexf.html
-indexf.html 표시 중입니다.
+indexfffff.html
+indexfffff.html 표시 중입니다.
