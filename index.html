@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#064e3b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>세종 대왕테니스 클럽</title>
+  <title>보화 테니스 클럽</title>
 
   <style>
     *, *::before, *::after {
@@ -118,8 +118,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 12px;
       letter-spacing: -0.5px;
+      position: relative;
     }
 
     .theme-trigger-btn {
@@ -136,6 +137,25 @@
       overflow: visible;
       color: var(--accent);
     }
+    .rules-trigger-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--border-accent);
+      color: var(--accent);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      font-size: 9px;
+      font-weight: 800;
+      transition: background 0.2s ease;
+    }
+    .rules-trigger-btn:active {
+      transform: scale(0.95);
+      background: rgba(255, 255, 255, 0.25);
+    }
+
     .anim-racket {
       transform-origin: 25px 35px;
       animation: racket-hit 2s infinite ease-out;
@@ -694,7 +714,10 @@
             <circle class="anim-ball" cx="25" cy="15" r="4.5" fill="var(--accent)" />
           </svg>
         </button>
-        <span>세종 대왕테니스 클럽</span>
+        <span>보화 테니스 클럽</span>
+        <button onclick="openRulesModal()" class="rules-trigger-btn" title="공식 규칙 및 협회 안내">
+          📖 규칙
+        </button>
       </h1>
 
       <div class="event-title-wrapper">
@@ -849,6 +872,32 @@
     <div id="captureContent" class="capture-scroll"></div>
   </div>
 
+  <!-- 공식 규칙 및 협회 링크 모달 -->
+  <div id="rulesModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width: 360px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="font-size: 15px; font-weight: 900; color: #1e293b;">🎾 테니스 공식 규칙 및 협회 안내</h3>
+        <button onclick="closeRulesModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
+      </div>
+      <div style="font-size: 13px; color: #475569; line-height: 1.6; max-height: 50vh; overflow-y: auto; padding-right: 4px; text-align: left;">
+        <p style="margin-bottom: 8px; font-weight: 700; color: #0f172a;">■ 주요 경기 규정 요약</p>
+        <ul style="padding-left: 18px; margin-bottom: 12px; font-size: 12px;">
+          <li><b>코트 규격:</b> 복식 기준 가로 10.97m, 세로 23.77m, 네트 중앙 높이 0.914m</li>
+          <li><b>스코어 산정:</b> 러브(0) ➔ 15 ➔ 30 ➔ 40 ➔ 게임 (40:40 듀스 시 연속 2포인트 득점 필요)</li>
+          <li><b>서브 규칙:</b> 각 포인트당 2번의 기회 (퍼스트/세컨드 서브), 실패 시 폴트 및 더블폴트</li>
+          <li><b>인/아웃 판정:</b> 공의 낙하지점이 라인에 닿으면 인(In)으로 인정</li>
+        </ul>
+        <p style="margin-bottom: 8px; font-weight: 700; color: #0f172a;">■ 공공 협회 및 공식 사이트 바로가기</p>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <a href="https://www.kta.or.kr" target="_blank" rel="noopener noreferrer" style="display: block; padding: 8px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #166534; font-weight: 900; text-decoration: none; text-align: center;">대한테니스협회 (KTA) 바로가기 ↗</a>
+          <a href="https://www.itftennis.com" target="_blank" rel="noopener noreferrer" style="display: block; padding: 8px 10px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; color: #1e40af; font-weight: 900; text-decoration: none; text-align: center;">국제테니스연맹 (ITF) 바로가기 ↗</a>
+          <a href="https://www.atptour.com" target="_blank" rel="noopener noreferrer" style="display: block; padding: 8px 10px; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; color: #c2410c; font-weight: 900; text-decoration: none; text-align: center;">세계프로테니스협회 (ATP) 바로가기 ↗</a>
+        </div>
+      </div>
+      <button onclick="closeRulesModal()" style="margin-top: 16px; width: 100%; padding: 10px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">닫기</button>
+    </div>
+  </div>
+
   <div id="themeModal" class="modal-backdrop">
     <div class="modal-box">
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
@@ -980,7 +1029,7 @@
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-sejong-tennis';
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'bohwa-tennis-club-kdk';
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "mock", projectId: "mock" };
 
     let app, db, auth, userId = null;
@@ -1032,6 +1081,9 @@
       showToast('테마가 적용되었습니다.');
     }
     function applyTheme(themeKey) { document.body.setAttribute('data-theme', themeKey || 'summer'); }
+
+    window.openRulesModal = function() { document.getElementById('rulesModal').classList.add('show'); }
+    window.closeRulesModal = function() { document.getElementById('rulesModal').classList.remove('show'); }
 
     window.handleEventTitleInput = function(inputEl) {
       const val = inputEl.value;
@@ -1474,7 +1526,7 @@
       const eventTitle = document.getElementById('eventTitle')?.value || window.state.eventTitle || '친선대회';
       
       let htmlArr = [];
-      htmlArr.push(`<div style="text-align:center; font-size:13px; margin-bottom:2px; color:#0f172a; font-weight:900;">🏆 세종 대왕테니스 클럽</div>`);
+      htmlArr.push(`<div style="text-align:center; font-size:13px; margin-bottom:2px; color:#0f172a; font-weight:900;">🏆 보화 테니스 클럽</div>`);
       htmlArr.push(`<div style="text-align:center; font-size:10.5px; font-weight:bold; color:#475569; margin-bottom:4px; border-bottom:1.5px solid #cbd5e1; padding-bottom:3px;">[ ${eventTitle} ] 결과 종합</div>`);
 
       if (window.state.prizes) {
@@ -1681,7 +1733,7 @@
 
     function getKakaoText(customMsg = '') {
       const title = document.getElementById('eventTitle')?.value || window.state.eventTitle || '친선대회';
-      let txt = `🎾 세종 대왕테니스 클럽 - ${title}\n\n`;
+      let txt = `🎾 보화 테니스 클럽 - ${title}\n\n`;
       
       if (window.state.prizes) {
         txt += `🎁 [오늘 대회 상품]\n${window.state.prizes}\n\n`;
@@ -1697,7 +1749,7 @@
         txt += `\n${customMsg}\n`;
       }
       
-      txt += `\n수고 하셨습니다.^^`;
+      txt += `\n오늘 하루도 수고하셨습니다.^^`;
       return txt;
     }
 
@@ -1856,5 +1908,5 @@
   </script>
 </body>
 </html>
-indexfffff.html
-indexfffff.html 표시 중입니다.
+보화_테니스_클럽_KDK_매니저.html
+추천이 업데이트됨보화_테니스_클럽_KDK_매니저.html 표시 중입니다.
