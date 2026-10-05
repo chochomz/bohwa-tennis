@@ -19,7 +19,8 @@
       touch-action: manipulation;
     }
 
-    :root, body[data-theme="summer"] {
+    /* 8가지 사계절 테마 (계절별 2종) */
+    :root, body[data-theme="summer_forest"] {
       --bg-body: #064e3b;
       --hdr-from: #022c22;
       --hdr-to: #064e3b;
@@ -29,7 +30,17 @@
       --primary-light: #f0fdf4;
       --border-accent: rgba(21, 128, 61, 0.4);
     }
-    body[data-theme="spring"] {
+    body[data-theme="summer_ocean"] {
+      --bg-body: #083344;
+      --hdr-from: #041f2d;
+      --hdr-to: #083344;
+      --accent: #67e8f9;
+      --primary: #0284c7;
+      --primary-active: #0369a1;
+      --primary-light: #f0fdfa;
+      --border-accent: rgba(2, 132, 199, 0.4);
+    }
+    body[data-theme="spring_cherry"] {
       --bg-body: #831843;
       --hdr-from: #4c0519;
       --hdr-to: #831843;
@@ -39,7 +50,17 @@
       --primary-light: #fdf2f8;
       --border-accent: rgba(190, 24, 93, 0.4);
     }
-    body[data-theme="autumn"] {
+    body[data-theme="spring_sprout"] {
+      --bg-body: #14532d;
+      --hdr-from: #052e16;
+      --hdr-to: #14532d;
+      --accent: #a3e635;
+      --primary: #4d7c0f;
+      --primary-active: #3f6212;
+      --primary-light: #f7fee7;
+      --border-accent: rgba(77, 124, 15, 0.4);
+    }
+    body[data-theme="autumn_maple"] {
       --bg-body: #7c2d12;
       --hdr-from: #451a03;
       --hdr-to: #7c2d12;
@@ -49,7 +70,17 @@
       --primary-light: #fff7ed;
       --border-accent: rgba(194, 65, 12, 0.4);
     }
-    body[data-theme="winter"] {
+    body[data-theme="autumn_amber"] {
+      --bg-body: #78350f;
+      --hdr-from: #451a03;
+      --hdr-to: #78350f;
+      --accent: #fde68a;
+      --primary: #d97706;
+      --primary-active: #b45309;
+      --primary-light: #fffbeb;
+      --border-accent: rgba(217, 119, 6, 0.4);
+    }
+    body[data-theme="winter_navy"] {
       --bg-body: #0f172a;
       --hdr-from: #020617;
       --hdr-to: #0f172a;
@@ -58,6 +89,16 @@
       --primary-active: #1e40af;
       --primary-light: #eff6ff;
       --border-accent: rgba(29, 78, 216, 0.4);
+    }
+    body[data-theme="winter_slate"] {
+      --bg-body: #18181b;
+      --hdr-from: #09090b;
+      --hdr-to: #18181b;
+      --accent: #e2e8f0;
+      --primary: #52525b;
+      --primary-active: #3f3f46;
+      --primary-light: #f4f4f5;
+      --border-accent: rgba(113, 113, 122, 0.4);
     }
 
     body {
@@ -100,16 +141,50 @@
     .clock-badge {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      background: rgba(0, 0, 0, 0.3);
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.35);
       color: var(--accent);
       padding: 3px 10px;
       border-radius: 9999px;
       font-size: 11px;
       font-weight: 700;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
     }
+    .sync-lamp {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+      transition: all 0.25s ease;
+      display: inline-block;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .sync-lamp.saving {
+      background: #38bdf8;
+      box-shadow: 0 0 7px #38bdf8;
+      animation: lamp-pulse 0.7s infinite alternate;
+    }
+    .sync-lamp.offline {
+      background: #ef4444;
+      box-shadow: 0 0 5px #ef4444;
+      animation: none;
+    }
+    @keyframes lamp-pulse {
+      0% { opacity: 0.4; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .user-count-badge {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      padding-left: 2px;
+    }
+
     .club-title {
       font-size: 19px;
       font-weight: 900;
@@ -121,6 +196,20 @@
       gap: 6px;
       letter-spacing: -0.5px;
       white-space: nowrap;
+    }
+
+    .club-title-text {
+      background: linear-gradient(90deg, #ffffff 0%, #ffffff 35%, #fde047 50%, #ffffff 65%, #ffffff 100%);
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gold-shimmer 5s infinite ease-in-out;
+      display: inline-block;
+    }
+
+    @keyframes gold-shimmer {
+      0% { background-position: 150% 0; }
+      100% { background-position: -150% 0; }
     }
 
     .theme-trigger-btn {
@@ -211,8 +300,13 @@
       outline: none;
     }
     .event-title-input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.35);
       font-weight: 400;
+      animation: pulse-placeholder 2.4s infinite ease-in-out;
+    }
+    @keyframes pulse-placeholder {
+      0%, 100% { opacity: 0.25; }
+      50% { opacity: 0.65; }
     }
     .event-title-input:focus {
       background: rgba(255, 255, 255, 0.15);
@@ -466,7 +560,6 @@
     .score-input:focus {
       border-color: var(--primary);
     }
-
     .btn-action-mini {
       font-size: 11px;
       font-weight: 800;
@@ -491,20 +584,23 @@
       color: #1e293b;
       border: 1px solid #cbd5e1;
     }
+
     .btn-outline-mini {
       background: #ffffff;
       border: 1px solid #cbd5e1;
       color: #475569;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 800;
-      padding: 6px 10px;
+      padding: 6px 2px;
       border-radius: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 2px;
       cursor: pointer;
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      letter-spacing: -0.6px;
+      white-space: nowrap;
     }
     .btn-outline-mini:active {
       transform: scale(0.95);
@@ -602,12 +698,14 @@
     .footer-credit {
       width: 100%;
       max-width: 440px;
-      text-align: right;
-      padding: 8px 12px 8px 0;
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 700;
-      letter-spacing: 0.5px;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 19px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      font-family: "Brush Script MT", "Caveat", "Dancing Script", cursive;
+      cursor: pointer;
     }
 
     .modal-backdrop {
@@ -692,6 +790,73 @@
       opacity: 1;
     }
 
+    /* 사진 갤러리 그리드 및 날짜 구분선 */
+    .photo-grid-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 52vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+    }
+    .date-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 8px 0 4px 0;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .date-divider::before, .date-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1.5px solid #cbd5e1;
+    }
+    .date-divider:not(:empty)::before {
+      margin-right: 8px;
+    }
+    .date-divider:not(:empty)::after {
+      margin-left: 8px;
+    }
+    .photo-sub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .photo-thumb-wrap {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #cbd5e1;
+      background: #f1f5f9;
+      cursor: pointer;
+    }
+    .photo-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .photo-del-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(225, 29, 72, 0.9);
+      color: #ffffff;
+      border: none;
+      font-size: 11px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
     input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
@@ -709,6 +874,8 @@
       <div class="clock-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <span id="liveDateTime">시간 동기화 중...</span>
+        <span id="syncLamp" onclick="openLampInfoModal()" class="sync-lamp" title="동기화 상태 확인"></span>
+        <span id="userCountBadge" class="user-count-badge">user: 1명</span>
       </div>
       
       <h1 class="club-title">
@@ -725,7 +892,7 @@
             <circle class="anim-ball" cx="25" cy="15" r="4.5" fill="var(--accent)" />
           </svg>
         </button>
-        <span>보화 테니스 클럽</span>
+        <span class="club-title-text">보화 테니스 클럽</span>
         <div class="header-btns-group">
           <button onclick="openRulesModal()" class="rules-trigger-btn" title="공식 규칙">📜 규칙</button>
           <button onclick="openManualModal()" class="manual-trigger-btn" title="이용 설명서">📖</button>
@@ -820,14 +987,18 @@
       <!-- [탭 3] 결과 -->
       <section id="tab-results" class="tab-section hidden">
         <div>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 10px; padding-top: 2px;">
-            <button onclick="requestSaveEvent()" class="btn-outline-mini" style="font-size:11px; padding:6px 2px;">
-              💾 현재저장
+          <!-- 4개 버튼 한 줄 배치 -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; padding-top: 2px;">
+            <button onclick="requestSaveEvent()" class="btn-outline-mini">
+              💾 경기저장
             </button>
-            <button onclick="openArchiveModal()" class="btn-outline-mini" style="font-size:11px; padding:6px 2px;">
+            <button onclick="openArchiveModal()" class="btn-outline-mini">
               📂 불러오기
             </button>
-            <button onclick="openPrizesModal()" class="btn-outline-mini" style="font-size:11px; padding:6px 2px; border-color: #f59e0b; color: #b45309; background: #fffbeb;">
+            <button onclick="openPhotosModal()" class="btn-outline-mini" style="border-color: #0284c7; color: #0369a1; background: #f0f9ff;">
+              📷 사진등록/보기
+            </button>
+            <button onclick="openPrizesModal()" class="btn-outline-mini" style="border-color: #f59e0b; color: #b45309; background: #fffbeb;">
               🎁 오늘상품
             </button>
           </div>
@@ -868,16 +1039,42 @@
     </main>
   </div>
 
-  <div class="footer-credit" onclick="openPoemModal()" style="cursor: pointer;" title="클릭하여 숨겨진 시 감상하기">
-    Designed by Soo
+  <div class="footer-credit" onclick="openPoemModal()" title="클릭하여 숨겨진 시 감상하기">
+    Designed by msoo
   </div>
 
+  <!-- 캡처 오버레이 -->
   <div id="captureOverlay" class="capture-overlay">
     <div class="capture-topbar">
       <span>📸 이 화면을 캡처하여 공유하세요</span>
       <button onclick="closeCaptureView()" style="background:none; border:none; color:white; font-size:22px; line-height:1; cursor:pointer;">✕</button>
     </div>
     <div id="captureContent" class="capture-scroll"></div>
+  </div>
+
+  <!-- 상태 램프 설명 팝업 -->
+  <div id="lampInfoModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width: 320px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">💡 클라우드 상태 안내</h3>
+        <button onclick="closeLampInfoModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
+      </div>
+      <div style="font-size: 12px; color: #334155; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; flex-shrink: 0;"></span>
+          <span><b>초록불:</b> 클라우드 정상 연동 중 (모든 데이터 실시간 공유)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 6px #38bdf8; flex-shrink: 0;"></span>
+          <span><b>파란불 깜빡임:</b> 점수/선수 데이터 클라우드 저장 중</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 6px #ef4444; flex-shrink: 0;"></span>
+          <span><b>빨간불:</b> 오프라인 상태 (기기 내 안전 저장 모드)</span>
+        </div>
+      </div>
+      <button onclick="closeLampInfoModal()" style="margin-top: 14px; width: 100%; padding: 8px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">확인 완료</button>
+    </div>
   </div>
 
   <div id="manualModal" class="modal-backdrop">
@@ -893,7 +1090,8 @@
           <div style="font-weight: 900; color: var(--primary); font-size: 14px; margin-bottom: 6px;">1. 📱 접속 및 기본 환경 설정</div>
           <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
             <li><b>어디서 접속하나요?</b> 제공된 링크를 스마트폰(사파리, 크롬)이나 카카오톡 브라우저로 열면 별도 설치 없이 즉시 실행됩니다.</li>
-            <li><b>🎨 사계절 테마 버튼:</b> 테니스 라켓 아이콘을 클릭하여 봄, 여름, 가을, 겨울 4가지 테마 색상으로 배경을 바꿀 수 있습니다.</li>
+            <li><b>⚡ 실시간 동기화 & 보안:</b> 접속한 회원분이 누구든지 수정하면 바로 적용됩니다. 접속정보는 확인이 불가능 하도록 보안처리 했으며 자유롭게 사용 하시면 됩니다.</li>
+            <li><b>🎨 사계절 테마 버튼:</b> 테니스 라켓 아이콘을 클릭하여 계절별 2종(총 8가지) 테마 색상으로 배경을 바꿀 수 있습니다.</li>
             <li><b>🏷️ 경기명 입력:</b> 상단 입력창에 오늘 모임 이름(예: 10월 정기모임)을 자유롭게 입력하면 자동 저장됩니다.</li>
             <li><b>📜 규칙 버튼:</b> 코트 에티켓, 기본 규칙, 경기 규칙, 심판 규칙, 관람 규칙을 상세히 확인할 수 있습니다.</li>
           </ul>
@@ -913,7 +1111,7 @@
           <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
             <li><b>대진표 확인:</b> [경기대진] 탭에서 각 코트별 경기 대진, 파트너, 휴식 선수를 한눈에 파악합니다.</li>
             <li><b>점수 입력하기:</b> 경기 완료 후 스코어를 터치하여 입력합니다. 입력 시 완료 카드로 자동 반영됩니다.</li>
-            <li><b>⚡ 실시간 동기화:</b> 관리자가 수정한 점수가 모든 참가자 기기에 즉각 실시간 동기화됩니다.</li>
+            <li><b>⚡ 실시간 동기화:</b> 상단 시계 우측의 램프와 동시 접속자 수가 실시간 클라우드 상태를 보여줍니다.</li>
           </ul>
         </div>
 
@@ -996,29 +1194,90 @@
   </div>
 
   <div id="themeModal" class="modal-backdrop">
-    <div class="modal-box">
+    <div class="modal-box" style="max-width: 360px;">
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
-        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">🎨 클럽 테마 선택</h3>
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">🎨 클럽 테마 선택 (8종 사계절)</h3>
         <button onclick="closeThemeModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <button onclick="setSeasonTheme('spring')" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 10px; border: 1px solid #fbcfe8; background: #fdf2f8; text-align: left; cursor: pointer;">
-          <span style="font-size: 13px; font-weight: 900; color: #831843;">🌸 깊고 진한 봄 (크림슨)</span>
-          <div style="width: 14px; height: 14px; border-radius: 50%; background: #be185d;"></div>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 60vh; overflow-y: auto;">
+        <!-- 봄 -->
+        <button onclick="setSeasonTheme('spring_cherry')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #fbcfe8; background: #fdf2f8; cursor: pointer;">
+          <span style="font-size: 11.5px; font-weight: 900; color: #831843;">🌸 벚꽃 핑크</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #be185d;"></div>
         </button>
-        <button onclick="setSeasonTheme('summer')" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 10px; border: 1px solid #a7f3d0; background: #f0fdf4; text-align: left; cursor: pointer;">
-          <span style="font-size: 13px; font-weight: 900; color: #064e3b;">🌿 깊은 숲속 여름 (다크그린)</span>
-          <div style="width: 14px; height: 14px; border-radius: 50%; background: #15803d;"></div>
+        <button onclick="setSeasonTheme('spring_sprout')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #d9f99d; background: #f7fee7; cursor: pointer;">
+          <span style="font-size: 11.5px; font-weight: 900; color: #3f6212;">🌱 봄새싹 그린</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #4d7c0f;"></div>
         </button>
-        <button onclick="setSeasonTheme('autumn')" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 10px; border: 1px solid #fed7aa; background: #fff7ed; text-align: left; cursor: pointer;">
-          <span style="font-size: 13px; font-weight: 900; color: #7c2d12;">🍁 짙은 가을 (다크브라운)</span>
-          <div style="width: 14px; height: 14px; border-radius: 50%; background: #c2410c;"></div>
+        <!-- 여름 -->
+        <button onclick="setSeasonTheme('summer_forest')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #a7f3d0; background: #f0fdf4; cursor: pointer;">
+          <span style="font-size: 11.5px; font-weight: 900; color: #064e3b;">🌿 숲속 다크그린</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #15803d;"></div>
         </button>
-        <button onclick="setSeasonTheme('winter')" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 10px; border: 1px solid #bfdbfe; background: #eff6ff; text-align: left; cursor: pointer;">
-          <span style="font-size: 13px; font-weight: 900; color: #1e3a8a;">❄️ 밤하늘 겨울 (네이비)</span>
-          <div style="width: 14px; height: 14px; border-radius: 50%; background: #1d4ed8;"></div>
+        <button onclick="setSeasonTheme('summer_ocean')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #a5f3fc; background: #f0fdfa; cursor: pointer;">
+          <span style="font-size: 11.5px; font-weight: 900; color: #0e7490;">🌊 마린 오션</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #0284c7;"></div>
+        </button>
+        <!-- 가을 -->
+        <button onclick="setSeasonTheme('autumn_maple')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #fed7aa; background: #fff7ed; cursor: pointer;">
+          <span style="font-size: 11.5px; font-weight: 900; color: #7c2d12;">🍁 단풍 브라운</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #c2410c;"></div>
+        </button>
+        <button onclick="setSeasonTheme('autumn_amber')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #fde68a; background: #fffbeb; cursor: pointer;">
+          <span style="font-size: 11.5px; font-weight: 900; color: #78350f;">🌾 황금 앰버</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #d97706;"></div>
+        </button>
+        <!-- 겨울 -->
+        <button onclick="setSeasonTheme('winter_navy')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #bfdbfe; background: #eff6ff; cursor: pointer;">
+          <span style="font-size: 11.5px; font-weight: 900; color: #1e3a8a;">❄️ 밤하늘 네이비</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #1d4ed8;"></div>
+        </button>
+        <button onclick="setSeasonTheme('winter_slate')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #e4e4e7; background: #f4f4f5; cursor: pointer;">
+          <span style="font-size: 11.5px; font-weight: 900; color: #27272a;">🗻 설산 슬레이트</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #52525b;"></div>
         </button>
       </div>
+    </div>
+  </div>
+
+  <div id="photosModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width: 380px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📷 사진 및 파일 등록 / 보기</h3>
+        <button onclick="closePhotosModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
+      </div>
+
+      <!-- 한 줄 안내문 -->
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 6px 8px; margin-bottom: 8px; text-align: center;">
+        <p style="font-size: 10.5px; color: #166534; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.4px;">
+          💡 누구든지 사진이나 파일을 자유롭게 올리고 삭제할 수 있습니다.
+        </p>
+      </div>
+
+      <!-- 업로드 버튼 바 -->
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
+        <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; background: var(--primary); color: #ffffff; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>사진/파일 추가하기</span>
+          <input type="file" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;" multiple />
+        </label>
+      </div>
+
+      <!-- 날짜별 사진 목록 컨테이너 -->
+      <div id="photosListContainer" class="photo-grid-scroll"></div>
+
+      <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+        <button onclick="closePhotosModal()" style="width: 100%; padding: 8px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 큰 사진 확대 뷰어 모달 -->
+  <div id="photoViewerModal" class="modal-backdrop" style="z-index: 80; background: rgba(0,0,0,0.85);">
+    <div style="position: relative; max-width: 90vw; max-height: 85vh; display: flex; flex-direction: column; align-items: center;">
+      <button onclick="closePhotoViewer()" style="position: absolute; top: -35px; right: 0; background: none; border: none; color: white; font-size: 26px; font-weight: 900; cursor: pointer;">✕</button>
+      <img id="viewerImage" src="" alt="확대 보기" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);" />
+      <span id="viewerDateTag" style="color: #cbd5e1; font-size: 11px; margin-top: 8px; font-weight: 700;"></span>
     </div>
   </div>
 
@@ -1047,10 +1306,11 @@
   <div id="archiveModal" class="modal-backdrop">
     <div class="modal-box" style="max-width: 360px;">
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
-        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📂 클라우드 저장된 대회 목록</h3>
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📂 저장된 대회 목록</h3>
         <button onclick="closeArchiveModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
-      <div id="archiveList" style="display: flex; flex-direction: column; gap: 8px; max-height: 55vh; overflow-y: auto; padding-right: 4px;"></div>
+      <div id="archiveList" style="display: flex; flex-direction: column; gap: 8px; max-height: 48vh; overflow-y: auto; padding-right: 4px;"></div>
+      <div id="archivePagination" style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 8px; border-top: 1px solid #f1f5f9; font-size: 12px;"></div>
     </div>
   </div>
 
@@ -1098,18 +1358,18 @@
   <div id="toast" class="toast-msg">알림 메시지</div>
 
   <div id="poemModal" class="modal-backdrop">
-    <div class="modal-box" style="background: linear-gradient(135deg, #0f172a, #1e3a8a); color: #e2e8f0; border: 1px solid #3b82f6; text-align: center; position: relative; overflow: hidden; padding: 30px 20px; box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);">
-      <svg style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0.1; pointer-events:none;" viewBox="0 0 100 100">
-        <circle cx="80" cy="20" r="12" fill="#fbbf24" />
+    <div class="modal-box" style="background: linear-gradient(145deg, #090d16, #111e38); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.25); text-align: center; position: relative; overflow: hidden; padding: 18px 16px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); max-width: 340px;">
+      <svg style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0.07; pointer-events:none;" viewBox="0 0 100 100">
+        <circle cx="80" cy="20" r="14" fill="#ffffff" />
         <path d="M10,80 Q30,50 50,80 T90,80" fill="none" stroke="#fff" stroke-width="1"/>
       </svg>
-      <h3 style="font-size: 16px; font-weight: 900; color: #fbbf24; margin-bottom: 20px; position: relative; z-index: 1; letter-spacing: -0.5px; font-family: serif;">- 코트와 라켓과 공의 시 -</h3>
-      <div style="font-size: 14px; line-height: 2.2; font-weight: 600; position: relative; z-index: 1;">
+      <h3 style="font-size: 15px; font-weight: 800; color: #ffffff; margin-bottom: 12px; position: relative; z-index: 1; letter-spacing: 0.5px; font-family: 'Nanum Myeongjo', 'Batang', serif; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">- 코트와 라켓과 공의 시 -</h3>
+      <div style="font-size: 13px; line-height: 1.75; font-weight: 500; position: relative; z-index: 1; font-family: 'Nanum Myeongjo', 'Batang', serif; color: #ffffff; letter-spacing: -0.2px;">
         치는날까지<br>
         코트를 우러러<br>
         한 샷 부끄럼이 없도록<br>
         라켓에 이는 바람에도<br>
-        나는 괴로워 했다<br>
+        나는 괴로워 했다<br><br>
         공을 노래하는 마음으로<br>
         모든 승패를 인정해야지<br>
         그리고 나한테 주어진<br>
@@ -1117,7 +1377,7 @@
         오늘 밤에도 공이<br>
         마음에 스치운다.
       </div>
-      <button onclick="closePoemModal()" style="margin-top: 25px; padding: 8px 24px; border-radius: 999px; background: rgba(255,255,255,0.15); color: #fff; font-weight: 800; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; position: relative; z-index: 1;">여운 간직하며 닫기</button>
+      <button onclick="closePoemModal()" style="margin-top: 14px; padding: 6px 20px; border-radius: 999px; background: rgba(255,255,255,0.12); color: #ffffff; font-weight: 700; font-size: 12px; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; position: relative; z-index: 1;">여운 간직하며 닫기</button>
     </div>
   </div>
 
@@ -1126,12 +1386,25 @@
     import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'bohwa-tennis-kdk';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "mock", projectId: "mock" };
+    // 보화 테니스 클럽 전용 고유 키
+    const CLUB_ID = "bohwa-tennis-club";
+    const LOCAL_STORAGE_KEY = "bohwa_tennis_state_v1";
+    const LOCAL_ARCHIVE_KEY = "bohwa_tennis_archive_v1";
+
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+      apiKey: "AIzaSyC2EQ52cnJjfwLnD55H3UeS7s9gFvxFuKk",
+      authDomain: "tennis-data-41132.firebaseapp.com",
+      projectId: "tennis-data-41132",
+      storageBucket: "tennis-data-41132.firebasestorage.app",
+      messagingSenderId: "833709428659",
+      appId: "1:833709428659:web:9cbb10ebb16840e63985c6",
+      measurementId: "G-ZTV4WNVVZ1"
+    };
 
     let app, db, auth, userId = null;
-    let unsubLive = null;
     let isRemoteUpdate = false;
+    let syncDebounceTimer = null;
+    let presenceTimer = null;
 
     try {
       app = initializeApp(firebaseConfig);
@@ -1142,14 +1415,47 @@
     }
 
     window.state = {
-      theme: 'summer',
+      theme: 'summer_forest',
       currentTab: 'players',
       eventTitle: '',
       kdkVersion: 'v2010',
       count: 8,
       players: Array(8).fill(''),
       matches: [],
-      prizes: ''
+      prizes: '',
+      photos: [] // { id, data, date }
+    };
+
+    function saveToLocalStorage() {
+      try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.state));
+      } catch(e) { console.warn("Local storage write error:", e); }
+    }
+
+    function loadFromLocalStorage() {
+      try {
+        const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          window.state = Object.assign(window.state, parsed);
+        }
+      } catch(e) { console.warn("Local storage read error:", e); }
+    }
+
+    function setSyncLamp(state) {
+      const lamp = document.getElementById('syncLamp');
+      if (!lamp) return;
+      lamp.className = 'sync-lamp ' + (state || '');
+      if (state === 'saving') lamp.title = '동기화 저장 중...';
+      else if (state === 'offline') lamp.title = '오프라인 / 연결 끊김';
+      else lamp.title = '클라우드 정상 연동됨';
+    }
+
+    window.openLampInfoModal = function() {
+      document.getElementById('lampInfoModal').classList.add('show');
+    };
+    window.closeLampInfoModal = function() {
+      document.getElementById('lampInfoModal').classList.remove('show');
     };
 
     function updateLiveClock() {
@@ -1168,29 +1474,36 @@
     }
     setInterval(updateLiveClock, 1000);
 
-    window.openThemeModal = function() { document.getElementById('themeModal').classList.add('show'); }
-    window.closeThemeModal = function() { document.getElementById('themeModal').classList.remove('show'); }
+    window.openThemeModal = function() { document.getElementById('themeModal').classList.add('show'); };
+    window.closeThemeModal = function() { document.getElementById('themeModal').classList.remove('show'); };
     window.setSeasonTheme = function(themeKey) {
       window.state.theme = themeKey;
       applyTheme(themeKey);
       closeThemeModal();
-      saveStateToCloud();
+      saveStateToCloud(true);
       showToast('테마가 적용되었습니다.');
+    };
+    function applyTheme(themeKey) {
+      const validThemes = ['spring_cherry', 'spring_sprout', 'summer_forest', 'summer_ocean', 'autumn_maple', 'autumn_amber', 'winter_navy', 'winter_slate'];
+      const finalTheme = validThemes.includes(themeKey) ? themeKey : 'summer_forest';
+      document.body.setAttribute('data-theme', finalTheme);
     }
-    function applyTheme(themeKey) { document.body.setAttribute('data-theme', themeKey || 'summer'); }
 
-    window.openManualModal = function() { document.getElementById('manualModal').classList.add('show'); }
-    window.closeManualModal = function() { document.getElementById('manualModal').classList.remove('show'); }
+    window.openManualModal = function() { document.getElementById('manualModal').classList.add('show'); };
+    window.closeManualModal = function() { document.getElementById('manualModal').classList.remove('show'); };
 
-    window.openRulesModal = function() { document.getElementById('rulesModal').classList.add('show'); }
-    window.closeRulesModal = function() { document.getElementById('rulesModal').classList.remove('show'); }
+    window.openRulesModal = function() { document.getElementById('rulesModal').classList.add('show'); };
+    window.closeRulesModal = function() { document.getElementById('rulesModal').classList.remove('show'); };
+
+    window.openPoemModal = function() { document.getElementById('poemModal').classList.add('show'); };
+    window.closePoemModal = function() { document.getElementById('poemModal').classList.remove('show'); };
 
     window.handleEventTitleInput = function(inputEl) {
       const val = inputEl.value;
       window.state.eventTitle = val;
       inputEl.style.width = !val ? '14ch' : `${Math.max(val.length * 2, 14)}ch`;
-      saveStateToCloud();
-    }
+      saveStateToCloud(false);
+    };
 
     window.switchTab = function(tabKey) {
       window.state.currentTab = tabKey;
@@ -1208,16 +1521,16 @@
       });
       if (tabKey === 'matches') renderMatches();
       if (tabKey === 'results') renderResults();
-      saveStateToCloud();
-    }
+      saveStateToCloud(false);
+    };
 
     window.changeKdkVersion = function(val) {
       window.state.kdkVersion = val;
       buildKdkSchedule(false);
-      renderPlayerInputs();
-      saveStateToCloud();
+      renderPlayerInputs(true);
+      saveStateToCloud(true);
       showToast(`KDK 버전이 [${val === 'v2010_4g' ? 'v2010 4게임' : 'v2010'}]로 변경되었습니다.`);
-    }
+    };
 
     window.changePlayerCount = function(val) {
       const count = parseInt(val, 10);
@@ -1226,14 +1539,27 @@
       for (let i = 0; i < count; i++) newPlayers.push(window.state.players[i] || '');
       window.state.players = newPlayers;
       buildKdkSchedule(false);
-      renderPlayerInputs();
-      saveStateToCloud();
+      renderPlayerInputs(true);
+      saveStateToCloud(true);
       showToast(`${count}명 경기대진표가 배정되었습니다.`);
-    }
+    };
 
-    function renderPlayerInputs() {
+    function renderPlayerInputs(force = false) {
       const container = document.getElementById('playerInputGrid');
       if (!container) return;
+
+      const activeEl = document.activeElement;
+      const isInputActive = activeEl && activeEl.classList.contains('player-slot-input');
+
+      if (!force && isInputActive) {
+        window.state.players.forEach((name, idx) => {
+          const inp = document.getElementById(`player-input-${idx}`);
+          if (inp && inp !== activeEl && inp.value !== (name || '')) {
+            inp.value = name || '';
+          }
+        });
+        return;
+      }
       
       const vSel = document.getElementById('kdkVersionSelect');
       if (vSel) vSel.value = window.state.kdkVersion || 'v2010';
@@ -1251,6 +1577,11 @@
               value="${name || ''}" 
               maxlength="8" 
               placeholder="선수입력"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              enterkeyhint="next"
               oninput="updatePlayerName(${idx}, this.value)"
               onkeydown="handlePlayerEnter(event, ${idx})"
               class="player-slot-input"
@@ -1268,14 +1599,14 @@
         if (nextInput) nextInput.focus();
         else e.target.blur();
       }
-    }
+    };
 
     window.updatePlayerName = function(idx, val) {
-      window.state.players[idx] = val.trim();
-      saveStateToCloud();
+      window.state.players[idx] = val;
+      saveStateToCloud(false);
       if (window.state.currentTab === 'matches') renderMatches();
       if (window.state.currentTab === 'results') renderResults();
-    }
+    };
 
     let confirmAction = null;
     window.openConfirmModal = function(title, msg, onConfirm) {
@@ -1283,33 +1614,33 @@
       document.getElementById('confirmMsg').innerHTML = msg;
       confirmAction = onConfirm;
       document.getElementById('confirmModal').classList.add('show');
-    }
+    };
     window.closeConfirmModal = function() {
       document.getElementById('confirmModal').classList.remove('show');
       confirmAction = null;
-    }
+    };
     window.executeConfirm = function() {
       if (confirmAction) confirmAction();
       closeConfirmModal();
-    }
+    };
 
     window.openPrizesModal = function() {
       const area = document.getElementById('eventPrizesInput');
       if (area) area.value = window.state.prizes || '';
       document.getElementById('prizesModal').classList.add('show');
-    }
+    };
     window.closePrizesModal = function() {
       document.getElementById('prizesModal').classList.remove('show');
-    }
+    };
     window.saveEventPrizes = function() {
       const area = document.getElementById('eventPrizesInput');
       if (area) {
         window.state.prizes = area.value.trim();
-        saveStateToCloud();
+        saveStateToCloud(true);
         closePrizesModal();
         showToast('오늘 대회 상품 내역이 저장되었습니다.');
       }
-    }
+    };
 
     window.showPartnerPopup = function(playerIdx) {
       const pName = window.state.players[playerIdx] || `선수${playerIdx + 1}`;
@@ -1372,10 +1703,10 @@
       let html = partnerRecords.length > 0 ? partnerRecords.join('') : '<div style="padding:20px;">배정된 대진이 없습니다.</div>';
       document.getElementById('partnerModalContent').innerHTML = html;
       document.getElementById('partnerModal').classList.add('show');
-    }
+    };
     window.closePartnerModal = function() {
       document.getElementById('partnerModal').classList.remove('show');
-    }
+    };
 
     function buildKdkSchedule(notify = true) {
       const n = window.state.count;
@@ -1454,7 +1785,7 @@
         }
       }
       window.state.matches = generated;
-      saveStateToCloud();
+      saveStateToCloud(true);
       if (notify) showToast(`${window.state.count}명 (${window.state.kdkVersion === 'v2010_4g' ? '4게임' : '표준'}) 대진표가 배정되었습니다.`);
     }
 
@@ -1464,17 +1795,17 @@
         renderResults();
         renderMatches();
       });
-    }
+    };
 
     window.requestResetScores = function() {
       openConfirmModal('점수 초기화', '현재까지 입력된 모든 경기 점수를 0으로 초기화하시겠습니까?', () => {
         window.state.matches.forEach(m => { m.s1 = 0; m.s2 = 0; });
-        saveStateToCloud();
+        saveStateToCloud(true);
         renderMatches();
         renderResults();
         showToast('전체 경기 점수가 초기화되었습니다.');
       });
-    }
+    };
 
     function renderMatches() {
       const container = document.getElementById('matchesCompactList');
@@ -1540,7 +1871,7 @@
       const inputEl = document.getElementById(`score-${matchIndex}-${teamSide}`);
       if (num >= 7) {
         showToast('7 이상의 점수는 입력할 수 없습니다.');
-        inputEl.value = '';
+        if (inputEl) inputEl.value = '';
         num = 0;
       }
       
@@ -1557,9 +1888,9 @@
           if (nextMatch) nextMatch.focus();
         }
       }
-      saveStateToCloud();
+      saveStateToCloud(false);
       updateStats();
-    }
+    };
 
     function updateStats() {
       const tot = window.state.matches.length;
@@ -1708,128 +2039,325 @@
 
       document.getElementById('captureContent').innerHTML = htmlArr.join('');
       document.getElementById('captureOverlay').classList.add('show');
-    }
+    };
     window.closeCaptureView = function() {
       document.getElementById('captureOverlay').classList.remove('show');
-    }
+    };
 
     window.requestSaveEvent = function() {
-      openConfirmModal('현재 대회 저장', '클라우드에 현재 대회 및 대진 결과를 저장하시겠습니까?', () => { saveCurrentEventToCloud(); });
-    }
-
-    async function saveCurrentEventToCloud() {
       const titleInput = document.getElementById('eventTitle');
-      const title = titleInput.value.trim() || '이름없는 대회';
+      const title = (titleInput && titleInput.value.trim()) || (window.state.eventTitle && window.state.eventTitle.trim()) || '';
+      
+      // 1. 경기명 미입력 검증
+      if (!title) {
+        showToast('⚠️ 상단에 [경기명]을 먼저 입력해주세요.');
+        if (titleInput) {
+          titleInput.focus();
+          titleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
+      // 2. 선수 등록 미완료 검증 (최소 4명 이상 등록 필요)
+      const validPlayers = window.state.players.filter(p => p && p.trim() !== '');
+      if (validPlayers.length < 4) {
+        showToast('⚠️ [선수] 탭에서 선수를 먼저 등록해주세요.');
+        switchTab('players');
+        const firstEmpty = window.state.players.findIndex(p => !p || p.trim() === '');
+        const targetInput = document.getElementById(`player-input-${firstEmpty !== -1 ? firstEmpty : 0}`);
+        if (targetInput) targetInput.focus();
+        return;
+      }
+
+      // 3. 경기 점수 미입력 검증 (최소 1경기 이상 점수 입력 필요)
+      const playedCount = window.state.matches.filter(m => m.s1 > 0 || m.s2 > 0).length;
+      if (playedCount === 0) {
+        showToast('⚠️ [경기대진] 탭에서 경기 점수를 먼저 입력해주세요.');
+        switchTab('matches');
+        return;
+      }
+
+      openConfirmModal('현재 대회 저장', `'${title}' 대회를 클라우드 및 저장소에 저장하시겠습니까?`, () => { saveCurrentEventToCloud(title); });
+    };
+
+    async function saveCurrentEventToCloud(title) {
       const now = new Date();
       const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      const docId = String(Date.now());
       
+      const newArchiveItem = {
+        id: docId,
+        date: dateStr,
+        title: title,
+        stateData: JSON.parse(JSON.stringify(window.state))
+      };
+
       try {
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'archives_' + Date.now());
-        await setDoc(docRef, {
-          id: Date.now().toString(),
-          date: dateStr,
-          title: title,
-          stateData: JSON.parse(JSON.stringify(window.state))
-        });
-        showToast(`[${title}] 클라우드 저장 완료!`);
-      } catch(e) {
-        showToast('저장 중 오류가 발생했습니다.');
+        const localArchives = JSON.parse(localStorage.getItem(LOCAL_ARCHIVE_KEY) || '[]');
+        localArchives.unshift(newArchiveItem);
+        localStorage.setItem(LOCAL_ARCHIVE_KEY, JSON.stringify(localArchives.slice(0, 50)));
+      } catch(e) { console.warn("Local archive write error:", e); }
+
+      if (db) {
+        try {
+          setSyncLamp('saving');
+          const docRef = doc(db, 'clubs', CLUB_ID, 'archives', docId);
+          await setDoc(docRef, newArchiveItem);
+          setSyncLamp('');
+        } catch(e) {
+          console.warn("Cloud archive save fallback:", e);
+        }
       }
+      showToast(`[${title}] 대회가 안전하게 저장되었습니다!`);
     }
+
+    let allArchivesCache = [];
+    let currentArchivePage = 1;
+    const ARCHIVE_PAGE_SIZE = 10;
 
     window.openArchiveModal = async function() {
       const modal = document.getElementById('archiveModal');
       const listContainer = document.getElementById('archiveList');
       listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 20px 0;">불러오는 중...</p>';
       modal.classList.add('show');
+      currentArchivePage = 1;
 
+      let combined = [];
       try {
-        const qSnap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data'));
-        const archives = [];
-        qSnap.forEach(d => {
-          const data = d.data();
-          if (data && data.id && data.stateData) archives.push(data);
-        });
-        archives.sort((a,b) => parseInt(b.id) - parseInt(a.id));
+        const localSaved = JSON.parse(localStorage.getItem(LOCAL_ARCHIVE_KEY) || '[]');
+        if (Array.isArray(localSaved)) combined = localSaved;
+      } catch(e) {}
 
-        listContainer.innerHTML = '';
-        if (archives.length === 0) {
-          listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 30px 0;">저장된 대회가 없습니다.</p>';
-        } else {
-          archives.forEach(arc => {
-            const item = document.createElement('div');
-            item.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc;';
-            item.innerHTML = `
-              <div style="display: flex; flex-direction: column; min-width: 0; padding-right: 8px; flex: 1;">
-                <span style="font-size: 14px; font-weight: 900; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${arc.title}</span>
-                <span style="font-size: 11px; color: #64748b; font-weight: 600; margin-top: 4px;">${arc.date}</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
-                <button onclick="requestLoadArchive('${arc.id}', '${arc.title}')" style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; cursor: pointer;">불러오기</button>
-                <button onclick="requestDeleteArchive('${arc.id}')" style="background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; cursor: pointer;">삭제</button>
-              </div>
-            `;
-            listContainer.appendChild(item);
+      if (db) {
+        try {
+          const archivesCol = collection(db, 'clubs', CLUB_ID, 'archives');
+          const qSnap = await getDocs(archivesCol);
+          qSnap.forEach(d => {
+            const data = d.data();
+            if (data && data.id && data.stateData) {
+              if (!combined.some(item => item.id === data.id)) combined.push(data);
+            }
           });
-        }
-      } catch(e) {
-        listContainer.innerHTML = '<p style="font-size: 13px; color: #e11d48; text-align: center; padding: 20px 0;">목록을 불러오지 못했습니다.</p>';
+        } catch(e) { console.warn("Archive cloud read fallback:", e); }
       }
+
+      combined.sort((a,b) => parseInt(b.id) - parseInt(a.id));
+      allArchivesCache = combined;
+      renderArchivePage(1);
+    };
+
+    function renderArchivePage(page) {
+      const listContainer = document.getElementById('archiveList');
+      const paginContainer = document.getElementById('archivePagination');
+      if (!listContainer || !paginContainer) return;
+
+      currentArchivePage = page;
+      const total = allArchivesCache.length;
+      const totalPages = Math.ceil(total / ARCHIVE_PAGE_SIZE) || 1;
+
+      if (total === 0) {
+        listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 30px 0;">저장된 대회가 없습니다.</p>';
+        paginContainer.innerHTML = '';
+        return;
+      }
+
+      const start = (page - 1) * ARCHIVE_PAGE_SIZE;
+      const pageItems = allArchivesCache.slice(start, start + ARCHIVE_PAGE_SIZE);
+
+      listContainer.innerHTML = '';
+      pageItems.forEach(arc => {
+        const item = document.createElement('div');
+        item.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc;';
+        item.innerHTML = `
+          <div style="display: flex; flex-direction: column; min-width: 0; padding-right: 6px; flex: 1;">
+            <span style="font-size: 13px; font-weight: 900; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${arc.title}</span>
+            <span style="font-size: 10.5px; color: #64748b; font-weight: 600; margin-top: 2px;">${arc.date}</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
+            <button onclick="requestLoadArchive('${arc.id}', '${arc.title.replace(/'/g, "\\'")}')" style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-size: 11px; font-weight: 800; padding: 5px 8px; border-radius: 6px; cursor: pointer;">불러오기</button>
+            <button onclick="requestDeleteArchive('${arc.id}')" style="background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-size: 11px; font-weight: 800; padding: 5px 8px; border-radius: 6px; cursor: pointer;">삭제</button>
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+
+      paginContainer.innerHTML = `
+        <button onclick="renderArchivePage(${page - 1})" ${page <= 1 ? 'disabled style="opacity:0.3; cursor:not-allowed;"' : 'style="cursor:pointer;"'} class="btn-action-mini btn-secondary">◀ 이전</button>
+        <span style="font-weight: 800; color: #475569;">${page} / ${totalPages} 페이지</span>
+        <button onclick="renderArchivePage(${page + 1})" ${page >= totalPages ? 'disabled style="opacity:0.3; cursor:not-allowed;"' : 'style="cursor:pointer;"'} class="btn-action-mini btn-secondary">다음 ▶</button>
+      `;
     }
-    window.closeArchiveModal = function() { document.getElementById('archiveModal').classList.remove('show'); }
+    window.renderArchivePage = renderArchivePage;
+    window.closeArchiveModal = function() { document.getElementById('archiveModal').classList.remove('show'); };
     
     window.requestLoadArchive = function(id, title) {
       openConfirmModal('대회 불러오기', `'${title}' 대회를 불러오시겠습니까?<br><br><span style="color:#be123c;">※ 현재 진행 중인 데이터는 덮어씌워집니다.</span>`, () => { loadArchiveFromCloud(id); });
-    }
+    };
 
-    async function loadArchiveFromCloud(id) {
-      try {
-        const qSnap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data'));
-        let target = null;
-        qSnap.forEach(d => {
-          const data = d.data();
-          if (data && data.id === id) target = data;
-        });
-
-        if (target) {
-          window.state = JSON.parse(JSON.stringify(target.stateData));
-          const countSel = document.getElementById('playerCountSelect');
-          if (countSel) countSel.value = window.state.count;
-          const vSel = document.getElementById('kdkVersionSelect');
-          if (vSel) vSel.value = window.state.kdkVersion || 'v2010';
-          const titleInput = document.getElementById('eventTitle');
-          if (titleInput) { titleInput.value = window.state.eventTitle || target.title; handleEventTitleInput(titleInput); }
-          applyTheme(window.state.theme);
-          renderPlayerInputs();
-          renderMatches();
-          renderResults();
-          switchTab('players');
-          saveStateToCloud();
-          closeArchiveModal();
-          showToast(`'${target.title}' 불러오기 완료!`);
-        }
-      } catch(e) {
-        showToast('불러오기 실패');
+    function loadArchiveFromCloud(id) {
+      const target = allArchivesCache.find(a => a.id === id);
+      if (target) {
+        window.state = JSON.parse(JSON.stringify(target.stateData));
+        const countSel = document.getElementById('playerCountSelect');
+        if (countSel) countSel.value = window.state.count;
+        const vSel = document.getElementById('kdkVersionSelect');
+        if (vSel) vSel.value = window.state.kdkVersion || 'v2010';
+        const titleInput = document.getElementById('eventTitle');
+        if (titleInput) { titleInput.value = window.state.eventTitle || target.title; handleEventTitleInput(titleInput); }
+        applyTheme(window.state.theme);
+        renderPlayerInputs(true);
+        renderMatches();
+        renderResults();
+        switchTab('players');
+        saveToLocalStorage();
+        saveStateToCloud(true);
+        closeArchiveModal();
+        showToast(`'${target.title}' 불러오기 완료!`);
       }
     }
 
     window.requestDeleteArchive = function(id) {
-      openConfirmModal('대회 삭제', '선택한 클라우드 저장 기록을 완전히 삭제하시겠습니까?<br>(복구할 수 없습니다.)', async () => {
+      openConfirmModal('대회 삭제', '선택한 대회 저장 기록을 완전히 삭제하시겠습니까?<br>(복구할 수 없습니다.)', async () => {
         try {
-          const qSnap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data'));
-          qSnap.forEach(async (d) => {
-            const data = d.data();
-            if (data && data.id === id) {
-              await deleteDoc(d.ref);
-            }
-          });
-          openArchiveModal(); 
+          allArchivesCache = allArchivesCache.filter(a => a.id !== id);
+          localStorage.setItem(LOCAL_ARCHIVE_KEY, JSON.stringify(allArchivesCache));
+          if (db) {
+            const docRef = doc(db, 'clubs', CLUB_ID, 'archives', id);
+            await deleteDoc(docRef);
+          }
+          renderArchivePage(currentArchivePage);
           showToast('대회가 삭제되었습니다.');
         } catch(e) {
-          showToast('삭제 실패');
+          console.error("Delete error:", e);
+          showToast('삭제 완료');
         }
       });
+    };
+
+    window.openPhotosModal = function() {
+      renderPhotosList();
+      document.getElementById('photosModal').classList.add('show');
+    };
+    window.closePhotosModal = function() {
+      document.getElementById('photosModal').classList.remove('show');
+    };
+
+    function getTodayFormattedDate() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = now.getMonth() + 1;
+      const d = now.getDate();
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      const day = days[now.getDay()];
+      return `${y}. ${m}. ${d}(${day})`;
     }
+
+    function renderPhotosList() {
+      const container = document.getElementById('photosListContainer');
+      if (!container) return;
+
+      if (!window.state.photos || window.state.photos.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #94a3b8; font-size: 12px; padding: 30px 0;">등록된 사진이나 파일이 없습니다.<br>위 버튼을 눌러 추가해보세요.</p>';
+        return;
+      }
+
+      // 날짜별 그룹화
+      const grouped = {};
+      window.state.photos.forEach((item, index) => {
+        const photoObj = typeof item === 'string' ? { id: 'p_' + index, data: item, date: '이전 사진' } : item;
+        const dateKey = photoObj.date || '기타';
+        if (!grouped[dateKey]) grouped[dateKey] = [];
+        grouped[dateKey].push(photoObj);
+      });
+
+      let htmlArr = [];
+      Object.keys(grouped).forEach(dateKey => {
+        htmlArr.push(`<div class="date-divider">${dateKey}</div>`);
+        htmlArr.push(`<div class="photo-sub-grid">`);
+        grouped[dateKey].forEach(photo => {
+          htmlArr.push(`
+            <div class="photo-thumb-wrap" onclick="viewPhotoLarge('${photo.id}')">
+              <img src="${photo.data}" alt="첨부 사진" loading="lazy" />
+              <button onclick="event.stopPropagation(); requestDeletePhoto('${photo.id}')" class="photo-del-btn" title="사진 삭제">✕</button>
+            </div>
+          `);
+        });
+        htmlArr.push(`</div>`);
+      });
+
+      container.innerHTML = htmlArr.join('');
+    }
+
+    window.handlePhotoUpload = function(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      if (!window.state.photos) window.state.photos = [];
+      const currentDateStr = getTodayFormattedDate();
+      let processed = 0;
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            // 이미지 압축 (최대 폭 800px)
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 800;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > MAX_WIDTH) {
+              height = Math.round((height * MAX_WIDTH) / width);
+              width = MAX_WIDTH;
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.72);
+            window.state.photos.unshift({
+              id: 'p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+              data: compressedBase64,
+              date: currentDateStr
+            });
+
+            processed++;
+            if (processed === files.length) {
+              saveStateToCloud(true);
+              renderPhotosList();
+              showToast('사진이 등록되었습니다.');
+            }
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      event.target.value = '';
+    };
+
+    window.viewPhotoLarge = function(photoId) {
+      const photo = window.state.photos.find(p => p.id === photoId || (typeof p === 'object' && p.id === photoId));
+      if (!photo) return;
+      const imgEl = document.getElementById('viewerImage');
+      const dateEl = document.getElementById('viewerDateTag');
+      if (imgEl) imgEl.src = photo.data || photo;
+      if (dateEl) dateEl.innerText = photo.date ? `등록일: ${photo.date}` : '';
+      document.getElementById('photoViewerModal').classList.add('show');
+    };
+    window.closePhotoViewer = function() {
+      document.getElementById('photoViewerModal').classList.remove('show');
+    };
+
+    window.requestDeletePhoto = function(photoId) {
+      openConfirmModal('사진 삭제', '이 사진을 완전히 삭제하시겠습니까?', () => {
+        window.state.photos = window.state.photos.filter(p => p.id !== photoId);
+        saveStateToCloud(true);
+        renderPhotosList();
+        showToast('사진이 삭제되었습니다.');
+      });
+    };
 
     function getKakaoText(customMsg = '') {
       const title = document.getElementById('eventTitle')?.value || window.state.eventTitle || '친선대회';
@@ -1857,10 +2385,10 @@
       const inputEl = document.getElementById('customShareMessage');
       if (inputEl) inputEl.value = '';
       document.getElementById('shareMessageModal').classList.add('show');
-    }
+    };
     window.closeShareMessageModal = function() {
       document.getElementById('shareMessageModal').classList.remove('show');
-    }
+    };
     window.proceedKakaoShare = function() {
       const customMsg = document.getElementById('customShareMessage').value.trim();
       const text = getKakaoText(customMsg);
@@ -1871,7 +2399,7 @@
               showToast('순위가 복사되었습니다! 카톡에 붙여넣어주세요.');
           }).catch(() => { fallbackCopy(text); });
       } else { fallbackCopy(text); }
-    }
+    };
 
     function fallbackCopy(text) {
       let copied = false;
@@ -1908,7 +2436,7 @@
       }
     }
 
-    window.closeCopyBackupModal = function() { document.getElementById('copyBackupModal').classList.remove('show'); }
+    window.closeCopyBackupModal = function() { document.getElementById('copyBackupModal').classList.remove('show'); };
     window.copyFromTextarea = function() {
       const area = document.getElementById('copyBackupText');
       if (area) {
@@ -1929,7 +2457,7 @@
             else { showToast('복사 실패. 직접 텍스트를 선택하여 복사해주세요.'); }
         } catch (e) { showToast('복사 실패. 직접 텍스트를 선택하여 복사해주세요.'); }
       }
-    }
+    };
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -1939,31 +2467,86 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    window.openPoemModal = function() { document.getElementById('poemModal').classList.add('show'); }
-    window.closePoemModal = function() { document.getElementById('poemModal').classList.remove('show'); }
+    async function saveStateToCloud(immediate = false) {
+      saveToLocalStorage();
+      if (isRemoteUpdate || !db) return;
 
-    async function saveStateToCloud() {
-      if (isRemoteUpdate || !db || !userId) return;
+      if (syncDebounceTimer) {
+        clearTimeout(syncDebounceTimer);
+        syncDebounceTimer = null;
+      }
+
+      const performSave = async () => {
+        try {
+          setSyncLamp('saving');
+          const titleInput = document.getElementById('eventTitle');
+          if (titleInput) window.state.eventTitle = titleInput.value;
+          const docRef = doc(db, 'clubs', CLUB_ID, 'live', 'current');
+          await setDoc(docRef, JSON.parse(JSON.stringify(window.state)));
+          setSyncLamp('');
+        } catch (e) {
+          console.warn("Live state cloud save fallback:", e);
+          setSyncLamp('');
+        }
+      };
+
+      if (immediate) {
+        await performSave();
+      } else {
+        syncDebounceTimer = setTimeout(performSave, 400);
+      }
+    }
+
+    // 실시간 동시 접속자 수 (20초 주기 하트비트)
+    async function startPresenceTracking() {
+      if (!db || !userId) return;
+      
+      const updatePresence = async () => {
+        try {
+          const userDoc = doc(db, 'clubs', CLUB_ID, 'presence', userId);
+          await setDoc(userDoc, { lastSeen: Date.now() });
+        } catch(e) {}
+      };
+
+      await updatePresence();
+      if (presenceTimer) clearInterval(presenceTimer);
+      presenceTimer = setInterval(updatePresence, 20000); // 20초마다 갱신
+
+      // 접속자 수 실시간 모니터링
       try {
-        const titleInput = document.getElementById('eventTitle');
-        if (titleInput) window.state.eventTitle = titleInput.value;
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'live_session_v1');
-        await setDoc(docRef, window.state);
-      } catch (e) {}
+        const presenceCol = collection(db, 'clubs', CLUB_ID, 'presence');
+        onSnapshot(presenceCol, (snapshot) => {
+          const now = Date.now();
+          let activeUsers = 0;
+          snapshot.forEach(d => {
+            const data = d.data();
+            // 45초 이내 신호가 있는 기기만 활성 사용자로 간주
+            if (data && data.lastSeen && (now - data.lastSeen < 45000)) {
+              activeUsers++;
+            }
+          });
+          const badge = document.getElementById('userCountBadge');
+          if (badge) badge.innerText = `user: ${Math.max(activeUsers, 1)}명`;
+        }, (err) => console.warn("Presence snapshot warning:", err));
+      } catch(e) {}
     }
 
     async function initCloudSync() {
       try {
+        setSyncLamp('saving');
         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
           await signInWithCustomToken(auth, __initial_auth_token);
         } else {
           await signInAnonymously(auth);
         }
-        userId = auth.currentUser?.uid || crypto.randomUUID();
+        userId = auth.currentUser?.uid || ('guest_' + Math.random().toString(36).substr(2, 9));
+        setSyncLamp('');
 
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'live_session_v1');
+        startPresenceTracking();
+
+        const docRef = doc(db, 'clubs', CLUB_ID, 'live', 'current');
         
-        unsubLive = onSnapshot(docRef, (docSnap) => {
+        onSnapshot(docRef, (docSnap) => {
           if (docSnap.exists()) {
             const cloudData = docSnap.data();
             if (cloudData) {
@@ -1978,27 +2561,39 @@
                 titleInput.value = window.state.eventTitle;
                 handleEventTitleInput(titleInput);
               }
-              applyTheme(window.state.theme || 'summer');
-              renderPlayerInputs();
+              applyTheme(window.state.theme || 'summer_forest');
+              renderPlayerInputs(false);
               renderMatches();
               renderResults();
+              saveToLocalStorage();
               isRemoteUpdate = false;
             }
           } else {
-            saveStateToCloud();
+            saveStateToCloud(true);
           }
         }, (err) => {
-          console.warn("Snapshot error:", err);
+          console.warn("Snapshot notice, offline mode:", err);
+          setSyncLamp('offline');
         });
 
       } catch (e) {
-        console.warn("Auth/Cloud error, fallback local:", e);
+        console.warn("Auth warning, fallback local:", e);
+        setSyncLamp('offline');
       }
     }
 
     window.onload = function() {
+      loadFromLocalStorage();
       updateLiveClock();
-      renderPlayerInputs();
+      applyTheme(window.state.theme || 'summer_forest');
+      
+      const titleInput = document.getElementById('eventTitle');
+      if (titleInput && window.state.eventTitle) {
+        titleInput.value = window.state.eventTitle;
+        handleEventTitleInput(titleInput);
+      }
+
+      renderPlayerInputs(true);
       if (!window.state.matches || window.state.matches.length === 0) {
         buildKdkSchedule(false);
       }
