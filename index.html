@@ -9,6 +9,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>보화 테니스 클럽</title>
 
+  <!-- 모바일 기종 무관하게 100% 동일하게 렌더링되는 전용 영문 필기체 구글 웹폰트 로드 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -19,8 +24,7 @@
       touch-action: manipulation;
     }
 
-    /* 8가지 사계절 테마 (계절별 2종) */
-    :root, body[data-theme="summer_forest"] {
+    :root, body[data-theme="summer"] {
       --bg-body: #064e3b;
       --hdr-from: #022c22;
       --hdr-to: #064e3b;
@@ -31,16 +35,16 @@
       --border-accent: rgba(21, 128, 61, 0.4);
     }
     body[data-theme="summer_ocean"] {
-      --bg-body: #083344;
-      --hdr-from: #041f2d;
-      --hdr-to: #083344;
-      --accent: #67e8f9;
+      --bg-body: #0c4a6e;
+      --hdr-from: #082f49;
+      --hdr-to: #0c4a6e;
+      --accent: #7dd3fc;
       --primary: #0284c7;
       --primary-active: #0369a1;
-      --primary-light: #f0fdfa;
+      --primary-light: #f0f9ff;
       --border-accent: rgba(2, 132, 199, 0.4);
     }
-    body[data-theme="spring_cherry"] {
+    body[data-theme="spring"] {
       --bg-body: #831843;
       --hdr-from: #4c0519;
       --hdr-to: #831843;
@@ -50,17 +54,17 @@
       --primary-light: #fdf2f8;
       --border-accent: rgba(190, 24, 93, 0.4);
     }
-    body[data-theme="spring_sprout"] {
-      --bg-body: #14532d;
-      --hdr-from: #052e16;
-      --hdr-to: #14532d;
-      --accent: #a3e635;
-      --primary: #4d7c0f;
-      --primary-active: #3f6212;
-      --primary-light: #f7fee7;
-      --border-accent: rgba(77, 124, 15, 0.4);
+    body[data-theme="spring_mint"] {
+      --bg-body: #134e4a;
+      --hdr-from: #042f2e;
+      --hdr-to: #134e4a;
+      --accent: #99f6e4;
+      --primary: #0d9488;
+      --primary-active: #0f766e;
+      --primary-light: #f0fdfa;
+      --border-accent: rgba(13, 148, 136, 0.4);
     }
-    body[data-theme="autumn_maple"] {
+    body[data-theme="autumn"] {
       --bg-body: #7c2d12;
       --hdr-from: #451a03;
       --hdr-to: #7c2d12;
@@ -80,7 +84,7 @@
       --primary-light: #fffbeb;
       --border-accent: rgba(217, 119, 6, 0.4);
     }
-    body[data-theme="winter_navy"] {
+    body[data-theme="winter"] {
       --bg-body: #0f172a;
       --hdr-from: #020617;
       --hdr-to: #0f172a;
@@ -90,15 +94,15 @@
       --primary-light: #eff6ff;
       --border-accent: rgba(29, 78, 216, 0.4);
     }
-    body[data-theme="winter_slate"] {
-      --bg-body: #18181b;
-      --hdr-from: #09090b;
-      --hdr-to: #18181b;
+    body[data-theme="winter_charcoal"] {
+      --bg-body: #1e293b;
+      --hdr-from: #0f172a;
+      --hdr-to: #1e293b;
       --accent: #e2e8f0;
-      --primary: #52525b;
-      --primary-active: #3f3f46;
-      --primary-light: #f4f4f5;
-      --border-accent: rgba(113, 113, 122, 0.4);
+      --primary: #475569;
+      --primary-active: #334155;
+      --primary-light: #f8fafc;
+      --border-accent: rgba(71, 85, 105, 0.4);
     }
 
     body {
@@ -141,7 +145,7 @@
     .clock-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       background: rgba(0, 0, 0, 0.35);
       color: var(--accent);
       padding: 3px 10px;
@@ -152,8 +156,8 @@
       box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
     }
     .sync-lamp {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: #22c55e;
       box-shadow: 0 0 6px #22c55e;
@@ -177,14 +181,6 @@
       100% { opacity: 1; transform: scale(1.2); }
     }
 
-    .user-count-badge {
-      font-size: 11px;
-      color: var(--accent);
-      font-weight: 800;
-      letter-spacing: -0.2px;
-      padding-left: 2px;
-    }
-
     .club-title {
       font-size: 19px;
       font-weight: 900;
@@ -197,16 +193,23 @@
       letter-spacing: -0.5px;
       white-space: nowrap;
     }
-
     .club-title-text {
-      background: linear-gradient(90deg, #ffffff 0%, #ffffff 35%, #fde047 50%, #ffffff 65%, #ffffff 100%);
+      background: linear-gradient(
+        110deg,
+        #ffffff 0%,
+        #ffffff 35%,
+        #fef08a 45%,
+        #fbbf24 50%,
+        #fef08a 55%,
+        #ffffff 65%,
+        #ffffff 100%
+      );
       background-size: 250% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: gold-shimmer 5s infinite ease-in-out;
+      animation: gold-shimmer 5s infinite linear;
       display: inline-block;
     }
-
     @keyframes gold-shimmer {
       0% { background-position: 150% 0; }
       100% { background-position: -150% 0; }
@@ -300,13 +303,13 @@
       outline: none;
     }
     .event-title-input::placeholder {
-      color: rgba(255, 255, 255, 0.35);
-      font-weight: 400;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 500;
       animation: pulse-placeholder 2.4s infinite ease-in-out;
     }
     @keyframes pulse-placeholder {
-      0%, 100% { opacity: 0.25; }
-      50% { opacity: 0.65; }
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.55; }
     }
     .event-title-input:focus {
       background: rgba(255, 255, 255, 0.15);
@@ -336,9 +339,7 @@
       background: #ffffff;
       color: #475569;
     }
-    .tab-btn:active {
-      transform: scale(0.96);
-    }
+    .tab-btn:active { transform: scale(0.96); }
     .tab-btn.active {
       color: #ffffff;
       background-color: var(--primary);
@@ -361,9 +362,7 @@
       justify-content: space-between;
       flex: 1;
     }
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     .sub-bar {
       display: flex;
@@ -420,6 +419,7 @@
       font-weight: normal;
     }
 
+    /* 대진표 및 점수 입력 UI 최적화 */
     .match-list {
       flex: 1;
       overflow-y: auto;
@@ -428,6 +428,7 @@
       gap: 8px;
       max-height: 330px;
       padding-right: 2px;
+      scroll-behavior: smooth;
     }
     .match-card {
       display: flex;
@@ -438,6 +439,7 @@
       border: 1px solid #e2e8f0;
       background: #f8fafc;
       box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
     .match-card.played {
       background: var(--primary-light);
@@ -499,6 +501,7 @@
       font-size: 14px;
       font-weight: 700;
       color: #0f172a;
+      transition: all 0.2s ease;
     }
     .team-box.win {
       border-color: #22c55e;
@@ -545,20 +548,26 @@
       border-radius: 10px;
       border: 1px solid #cbd5e1;
     }
+    /* 모바일 자동확대(zoom) 및 화면 덜컹거림 방지 16px 폰트 및 고정 규격 */
     .score-input {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       text-align: center;
       font-weight: 900;
       font-size: 16px;
       color: #0f172a;
       background: #ffffff;
-      border: 1px solid #cbd5e1;
+      border: 1.5px solid #cbd5e1;
       border-radius: 6px;
       outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      touch-action: manipulation;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
     .score-input:focus {
       border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(21, 128, 61, 0.2);
     }
     .btn-action-mini {
       font-size: 11px;
@@ -571,38 +580,29 @@
       gap: 3px;
       transition: transform 0.1s ease;
     }
-    .btn-action-mini:active {
-      transform: scale(0.95);
-    }
-    .btn-danger {
-      background: #fff1f2;
-      color: #be123c;
-      border: 1px solid #fecdd3;
-    }
-    .btn-secondary {
-      background: #f1f5f9;
-      color: #1e293b;
-      border: 1px solid #cbd5e1;
-    }
-
-    .btn-outline-mini {
+    .btn-action-mini:active { transform: scale(0.95); }
+    .btn-danger { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
+    .btn-secondary { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+    
+    .btn-outline-mini-compact {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      color: #475569;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 6px 2px;
+      color: #334155;
+      font-size: 9.5px;
+      font-weight: 900;
+      padding: 6px 1px;
       border-radius: 8px;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 1px;
       cursor: pointer;
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-      letter-spacing: -0.6px;
       white-space: nowrap;
+      letter-spacing: -0.6px;
+      line-height: 1;
     }
-    .btn-outline-mini:active {
+    .btn-outline-mini-compact:active {
       transform: scale(0.95);
       background: #f8fafc;
     }
@@ -633,9 +633,7 @@
       padding: 8px 4px;
       vertical-align: middle;
     }
-    .rank-table tbody tr {
-      border-bottom: 1px solid #f1f5f9;
-    }
+    .rank-table tbody tr { border-bottom: 1px solid #f1f5f9; }
 
     .rank-circle {
       display: inline-flex;
@@ -691,21 +689,23 @@
       gap: 6px;
       transition: transform 0.1s ease;
     }
-    .btn-kakao-share:active, .btn-primary-large:active {
-      transform: scale(0.97);
-    }
+    .btn-kakao-share:active, .btn-primary-large:active { transform: scale(0.97); }
 
     .footer-credit {
       width: 100%;
       max-width: 440px;
+      margin: 0 auto;
       text-align: center;
-      padding: 12px 0;
-      font-size: 19px;
-      color: rgba(255, 255, 255, 0.9);
+      padding: 8px 0 10px 0;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: 'Dancing Script', cursive, sans-serif;
       font-weight: 600;
-      letter-spacing: 0.8px;
-      font-family: "Brush Script MT", "Caveat", "Dancing Script", cursive;
-      cursor: pointer;
+      letter-spacing: 0.6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
     }
 
     .modal-backdrop {
@@ -786,84 +786,13 @@
       transition: opacity 0.2s ease;
       white-space: nowrap;
     }
-    .toast-msg.show {
-      opacity: 1;
-    }
-
-    /* 사진 갤러리 그리드 및 날짜 구분선 */
-    .photo-grid-scroll {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 52vh;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-right: 4px;
-    }
-    .date-divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      margin: 8px 0 4px 0;
-      color: #64748b;
-      font-size: 11px;
-      font-weight: 800;
-    }
-    .date-divider::before, .date-divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1.5px solid #cbd5e1;
-    }
-    .date-divider:not(:empty)::before {
-      margin-right: 8px;
-    }
-    .date-divider:not(:empty)::after {
-      margin-left: 8px;
-    }
-    .photo-sub-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    .photo-thumb-wrap {
-      position: relative;
-      aspect-ratio: 1;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid #cbd5e1;
-      background: #f1f5f9;
-      cursor: pointer;
-    }
-    .photo-thumb-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .photo-del-btn {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: rgba(225, 29, 72, 0.9);
-      color: #ffffff;
-      border: none;
-      font-size: 11px;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
+    .toast-msg.show { opacity: 1; }
 
     input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
+    input[type=number] { -moz-appearance: textfield; }
   </style>
 </head>
 <body>
@@ -874,8 +803,8 @@
       <div class="clock-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <span id="liveDateTime">시간 동기화 중...</span>
-        <span id="syncLamp" onclick="openLampInfoModal()" class="sync-lamp" title="동기화 상태 확인"></span>
-        <span id="userCountBadge" class="user-count-badge">user: 1명</span>
+        <span id="syncLamp" class="sync-lamp" onclick="openSyncInfoModal()" title="클릭하여 동기화 상태 설명 보기"></span>
+        <span id="userCountBadge" style="font-size: 10px; font-weight: 800; color: var(--accent); margin-left: 2px; border-left: 1px solid rgba(255,255,255,0.25); padding-left: 5px; cursor: default;">user: 1명</span>
       </div>
       
       <h1 class="club-title">
@@ -987,18 +916,17 @@
       <!-- [탭 3] 결과 -->
       <section id="tab-results" class="tab-section hidden">
         <div>
-          <!-- 4개 버튼 한 줄 배치 -->
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; padding-top: 2px;">
-            <button onclick="requestSaveEvent()" class="btn-outline-mini">
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-bottom: 10px; padding-top: 2px;">
+            <button onclick="requestSaveEvent()" class="btn-outline-mini-compact" title="현재 대회 저장">
               💾 경기저장
             </button>
-            <button onclick="openArchiveModal()" class="btn-outline-mini">
+            <button onclick="openArchiveModal()" class="btn-outline-mini-compact" title="저장된 대회 불러오기">
               📂 불러오기
             </button>
-            <button onclick="openPhotosModal()" class="btn-outline-mini" style="border-color: #0284c7; color: #0369a1; background: #f0f9ff;">
+            <button onclick="openPhotosModal()" class="btn-outline-mini-compact" style="border-color: #38bdf8; color: #0284c7; background: #f0f9ff;" title="사진 및 문서 등록/보기">
               📷 사진등록/보기
             </button>
-            <button onclick="openPrizesModal()" class="btn-outline-mini" style="border-color: #f59e0b; color: #b45309; background: #fffbeb;">
+            <button onclick="openPrizesModal()" class="btn-outline-mini-compact" style="border-color: #f59e0b; color: #b45309; background: #fffbeb;" title="오늘 대회 상품">
               🎁 오늘상품
             </button>
           </div>
@@ -1039,42 +967,16 @@
     </main>
   </div>
 
-  <div class="footer-credit" onclick="openPoemModal()" title="클릭하여 숨겨진 시 감상하기">
+  <div class="footer-credit" onclick="openPoemModal()" style="cursor: pointer;" title="클릭하여 숨겨진 시 감상하기">
     Designed by msoo
   </div>
 
-  <!-- 캡처 오버레이 -->
   <div id="captureOverlay" class="capture-overlay">
     <div class="capture-topbar">
       <span>📸 이 화면을 캡처하여 공유하세요</span>
       <button onclick="closeCaptureView()" style="background:none; border:none; color:white; font-size:22px; line-height:1; cursor:pointer;">✕</button>
     </div>
     <div id="captureContent" class="capture-scroll"></div>
-  </div>
-
-  <!-- 상태 램프 설명 팝업 -->
-  <div id="lampInfoModal" class="modal-backdrop">
-    <div class="modal-box" style="max-width: 320px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px;">
-        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">💡 클라우드 상태 안내</h3>
-        <button onclick="closeLampInfoModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
-      </div>
-      <div style="font-size: 12px; color: #334155; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="width: 10px; height: 10px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; flex-shrink: 0;"></span>
-          <span><b>초록불:</b> 클라우드 정상 연동 중 (모든 데이터 실시간 공유)</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="width: 10px; height: 10px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 6px #38bdf8; flex-shrink: 0;"></span>
-          <span><b>파란불 깜빡임:</b> 점수/선수 데이터 클라우드 저장 중</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 6px #ef4444; flex-shrink: 0;"></span>
-          <span><b>빨간불:</b> 오프라인 상태 (기기 내 안전 저장 모드)</span>
-        </div>
-      </div>
-      <button onclick="closeLampInfoModal()" style="margin-top: 14px; width: 100%; padding: 8px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">확인 완료</button>
-    </div>
   </div>
 
   <div id="manualModal" class="modal-backdrop">
@@ -1085,14 +987,13 @@
       </div>
 
       <div style="font-size: 12.5px; color: #334155; line-height: 1.6; max-height: 62vh; overflow-y: auto; padding-right: 6px; text-align: left; display: flex; flex-direction: column; gap: 14px;">
-        
         <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border-left: 4px solid var(--primary);">
           <div style="font-weight: 900; color: var(--primary); font-size: 14px; margin-bottom: 6px;">1. 📱 접속 및 기본 환경 설정</div>
           <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
             <li><b>어디서 접속하나요?</b> 제공된 링크를 스마트폰(사파리, 크롬)이나 카카오톡 브라우저로 열면 별도 설치 없이 즉시 실행됩니다.</li>
             <li><b>⚡ 실시간 동기화 & 보안:</b> 접속한 회원분이 누구든지 수정하면 바로 적용됩니다. 접속정보는 확인이 불가능 하도록 보안처리 했으며 자유롭게 사용 하시면 됩니다.</li>
-            <li><b>🎨 사계절 테마 버튼:</b> 테니스 라켓 아이콘을 클릭하여 계절별 2종(총 8가지) 테마 색상으로 배경을 바꿀 수 있습니다.</li>
-            <li><b>🏷️ 경기명 입력:</b> 상단 입력창에 오늘 모임 이름(예: 10월 정기모임)을 자유롭게 입력하면 자동 저장됩니다.</li>
+            <li><b>🎨 사계절 테마 버튼:</b> 테니스 라켓 아이콘을 클릭하여 봄, 여름, 가을, 겨울 8가지 테마 색상으로 배경을 바꿀 수 있습니다.</li>
+            <li><b>🏷️ 경기명 입력:</b> 상단 입력창에 오늘 모임 이름을 자유롭게 입력하면 자동 저장됩니다.</li>
             <li><b>📜 규칙 버튼:</b> 코트 에티켓, 기본 규칙, 경기 규칙, 심판 규칙, 관람 규칙을 상세히 확인할 수 있습니다.</li>
           </ul>
         </div>
@@ -1110,8 +1011,8 @@
           <div style="font-weight: 900; color: var(--primary); font-size: 14px; margin-bottom: 6px;">3. 🎯 2단계: 경기 진행 및 점수 입력</div>
           <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
             <li><b>대진표 확인:</b> [경기대진] 탭에서 각 코트별 경기 대진, 파트너, 휴식 선수를 한눈에 파악합니다.</li>
-            <li><b>점수 입력하기:</b> 경기 완료 후 스코어를 터치하여 입력합니다. 입력 시 완료 카드로 자동 반영됩니다.</li>
-            <li><b>⚡ 실시간 동기화:</b> 상단 시계 우측의 램프와 동시 접속자 수가 실시간 클라우드 상태를 보여줍니다.</li>
+            <li><b>⚡ 스마트 스코어 입력:</b> 모바일 화면 움직임 없이 6을 입력하면 바로 우측 점수로 넘어가고, 2를 마저 입력 완료하면 다음 경기 첫 번째 칸으로 안전하게 자동 이동합니다.</li>
+            <li><b>⚡ 실시간 동기화:</b> 상단 시계 우측의 램프가 실시간 연동 상태를 보여줍니다.</li>
           </ul>
         </div>
 
@@ -1119,12 +1020,11 @@
           <div style="font-weight: 900; color: var(--primary); font-size: 14px; margin-bottom: 6px;">4. 🏆 3단계: 실시간 순위 확인 및 공유</div>
           <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
             <li><b>실시간 순위표:</b> 승수 &gt; 득실차 &gt; 승률 순서로 완벽하게 자동 정렬됩니다.</li>
-            <li><b>🔍 상세 분석 팝업:</b> 순위 원형 번호를 터치하면 선수의 파트너별 상세 전적을 조회할 수 있습니다.</li>
+            <li><b>📷 사진/문서 등록:</b> 경기장 사진이나 안내 문서를 등록하여 회원들과 함께 공유할 수 있습니다.</li>
             <li><b>💬 클럽카톡방 공유:</b> 버튼 하나로 정돈된 순위 결과 텍스트를 복사하여 카카오톡에 전송합니다.</li>
             <li><b>📸 캡처공유(사진):</b> 모든 결과가 한 화면에 정리된 뷰가 열려 스크린샷으로 공유하기 편리합니다.</li>
           </ul>
         </div>
-
       </div>
 
       <button onclick="closeManualModal()" style="margin-top: 14px; width: 100%; padding: 10px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">이용 가이드 확인 완료</button>
@@ -1194,90 +1094,81 @@
   </div>
 
   <div id="themeModal" class="modal-backdrop">
-    <div class="modal-box" style="max-width: 360px;">
+    <div class="modal-box">
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
-        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">🎨 클럽 테마 선택 (8종 사계절)</h3>
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">🎨 사계절 테마 선택 (8종)</h3>
         <button onclick="closeThemeModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 60vh; overflow-y: auto;">
-        <!-- 봄 -->
-        <button onclick="setSeasonTheme('spring_cherry')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #fbcfe8; background: #fdf2f8; cursor: pointer;">
-          <span style="font-size: 11.5px; font-weight: 900; color: #831843;">🌸 벚꽃 핑크</span>
+        <button onclick="setSeasonTheme('spring')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; border: 1px solid #fbcfe8; background: #fdf2f8; text-align: left; cursor: pointer;">
+          <span style="font-size: 12px; font-weight: 900; color: #831843;">🌸 봄 (벚꽃핑크)</span>
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #be185d;"></div>
         </button>
-        <button onclick="setSeasonTheme('spring_sprout')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #d9f99d; background: #f7fee7; cursor: pointer;">
-          <span style="font-size: 11.5px; font-weight: 900; color: #3f6212;">🌱 봄새싹 그린</span>
-          <div style="width: 12px; height: 12px; border-radius: 50%; background: #4d7c0f;"></div>
+        <button onclick="setSeasonTheme('spring_mint')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; border: 1px solid #99f6e4; background: #f0fdfa; text-align: left; cursor: pointer;">
+          <span style="font-size: 12px; font-weight: 900; color: #134e4a;">🌱 봄 (싱그런민트)</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #0d9488;"></div>
         </button>
-        <!-- 여름 -->
-        <button onclick="setSeasonTheme('summer_forest')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #a7f3d0; background: #f0fdf4; cursor: pointer;">
-          <span style="font-size: 11.5px; font-weight: 900; color: #064e3b;">🌿 숲속 다크그린</span>
+
+        <button onclick="setSeasonTheme('summer')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; border: 1px solid #a7f3d0; background: #f0fdf4; text-align: left; cursor: pointer;">
+          <span style="font-size: 12px; font-weight: 900; color: #064e3b;">🌿 여름 (깊은숲속)</span>
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #15803d;"></div>
         </button>
-        <button onclick="setSeasonTheme('summer_ocean')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #a5f3fc; background: #f0fdfa; cursor: pointer;">
-          <span style="font-size: 11.5px; font-weight: 900; color: #0e7490;">🌊 마린 오션</span>
+        <button onclick="setSeasonTheme('summer_ocean')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; border: 1px solid #bae6fd; background: #f0f9ff; text-align: left; cursor: pointer;">
+          <span style="font-size: 12px; font-weight: 900; color: #0c4a6e;">🌊 여름 (마린오션)</span>
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #0284c7;"></div>
         </button>
-        <!-- 가을 -->
-        <button onclick="setSeasonTheme('autumn_maple')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #fed7aa; background: #fff7ed; cursor: pointer;">
-          <span style="font-size: 11.5px; font-weight: 900; color: #7c2d12;">🍁 단풍 브라운</span>
+
+        <button onclick="setSeasonTheme('autumn')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; border: 1px solid #fed7aa; background: #fff7ed; text-align: left; cursor: pointer;">
+          <span style="font-size: 12px; font-weight: 900; color: #7c2d12;">🍁 가을 (단풍오렌지)</span>
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #c2410c;"></div>
         </button>
-        <button onclick="setSeasonTheme('autumn_amber')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #fde68a; background: #fffbeb; cursor: pointer;">
-          <span style="font-size: 11.5px; font-weight: 900; color: #78350f;">🌾 황금 앰버</span>
+        <button onclick="setSeasonTheme('autumn_amber')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; border: 1px solid #fde68a; background: #fffbeb; text-align: left; cursor: pointer;">
+          <span style="font-size: 12px; font-weight: 900; color: #78350f;">🌾 가을 (황금앰버)</span>
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #d97706;"></div>
         </button>
-        <!-- 겨울 -->
-        <button onclick="setSeasonTheme('winter_navy')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #bfdbfe; background: #eff6ff; cursor: pointer;">
-          <span style="font-size: 11.5px; font-weight: 900; color: #1e3a8a;">❄️ 밤하늘 네이비</span>
+
+        <button onclick="setSeasonTheme('winter')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; border: 1px solid #bfdbfe; background: #eff6ff; text-align: left; cursor: pointer;">
+          <span style="font-size: 12px; font-weight: 900; color: #1e3a8a;">❄️ 겨울 (네이비)</span>
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #1d4ed8;"></div>
         </button>
-        <button onclick="setSeasonTheme('winter_slate')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; border: 1px solid #e4e4e7; background: #f4f4f5; cursor: pointer;">
-          <span style="font-size: 11.5px; font-weight: 900; color: #27272a;">🗻 설산 슬레이트</span>
-          <div style="width: 12px; height: 12px; border-radius: 50%; background: #52525b;"></div>
+        <button onclick="setSeasonTheme('winter_charcoal')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; border: 1px solid #cbd5e1; background: #f8fafc; text-align: left; cursor: pointer;">
+          <span style="font-size: 12px; font-weight: 900; color: #334155;">🗻 겨울 (차콜설산)</span>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #475569;"></div>
         </button>
       </div>
     </div>
   </div>
 
-  <div id="photosModal" class="modal-backdrop">
-    <div class="modal-box" style="max-width: 380px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px;">
-        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📷 사진 및 파일 등록 / 보기</h3>
-        <button onclick="closePhotosModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
+  <div id="syncInfoModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width: 320px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">💡 동기화 상태 램프 안내</h3>
+        <button onclick="closeSyncInfoModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
-
-      <!-- 한 줄 안내문 -->
-      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 6px 8px; margin-bottom: 8px; text-align: center;">
-        <p style="font-size: 10.5px; color: #166534; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.4px;">
-          💡 누구든지 사진이나 파일을 자유롭게 올리고 삭제할 수 있습니다.
-        </p>
+      <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; color: #334155;">
+        <div style="display: flex; align-items: flex-start; gap: 8px;">
+          <span class="sync-lamp" style="margin-top: 3px;"></span>
+          <div>
+            <b style="color: #15803d;">초록불 (연동 완료)</b>
+            <p style="color: #64748b; font-size: 11px;">클라우드와 실시간 연결되어 모든 회원과 데이터가 공유되고 있습니다.</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 8px;">
+          <span class="sync-lamp saving" style="margin-top: 3px;"></span>
+          <div>
+            <b style="color: #0284c7;">파란 깜빡임 (저장 중)</b>
+            <p style="color: #64748b; font-size: 11px;">점수나 설정 변경 내역을 클라우드에 안전하게 전송 중입니다.</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 8px;">
+          <span class="sync-lamp offline" style="margin-top: 3px;"></span>
+          <div>
+            <b style="color: #e11d48;">빨간불 (오프라인/로컬)</b>
+            <p style="color: #64748b; font-size: 11px;">통신 끊김 상태입니다. 기기 자체(로컬 저장소)에 안전하게 보관됩니다.</p>
+          </div>
+        </div>
       </div>
-
-      <!-- 업로드 버튼 바 -->
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
-        <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; background: var(--primary); color: #ffffff; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          <span>사진/파일 추가하기</span>
-          <input type="file" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;" multiple />
-        </label>
-      </div>
-
-      <!-- 날짜별 사진 목록 컨테이너 -->
-      <div id="photosListContainer" class="photo-grid-scroll"></div>
-
-      <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
-        <button onclick="closePhotosModal()" style="width: 100%; padding: 8px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">닫기</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 큰 사진 확대 뷰어 모달 -->
-  <div id="photoViewerModal" class="modal-backdrop" style="z-index: 80; background: rgba(0,0,0,0.85);">
-    <div style="position: relative; max-width: 90vw; max-height: 85vh; display: flex; flex-direction: column; align-items: center;">
-      <button onclick="closePhotoViewer()" style="position: absolute; top: -35px; right: 0; background: none; border: none; color: white; font-size: 26px; font-weight: 900; cursor: pointer;">✕</button>
-      <img id="viewerImage" src="" alt="확대 보기" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);" />
-      <span id="viewerDateTag" style="color: #cbd5e1; font-size: 11px; margin-top: 8px; font-weight: 700;"></span>
+      <button onclick="closeSyncInfoModal()" style="margin-top: 14px; width: 100%; padding: 8px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">확인 완료</button>
     </div>
   </div>
 
@@ -1309,8 +1200,36 @@
         <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📂 저장된 대회 목록</h3>
         <button onclick="closeArchiveModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
-      <div id="archiveList" style="display: flex; flex-direction: column; gap: 8px; max-height: 48vh; overflow-y: auto; padding-right: 4px;"></div>
-      <div id="archivePagination" style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 8px; border-top: 1px solid #f1f5f9; font-size: 12px;"></div>
+      <div id="archiveList" style="display: flex; flex-direction: column; gap: 8px; max-height: 50vh; overflow-y: auto; padding-right: 4px;"></div>
+      <div id="archivePagination" style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 8px; border-top: 1px solid #e2e8f0; font-size: 12px; font-weight: 800; color: #475569;"></div>
+    </div>
+  </div>
+
+  <div id="photosModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width: 380px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">📷 사진 및 파일 등록 / 보기</h3>
+        <button onclick="closePhotosModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: #f8fafc; padding: 8px 10px; border-radius: 10px; border: 1px dashed #cbd5e1;">
+        <span style="font-size: 11px; color: #475569; font-weight: 700;">사진 및 경기 파일 첨부 하세요.</span>
+        <label style="background: var(--primary); color: #ffffff; font-size: 11.5px; font-weight: 800; padding: 6px 12px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+          ➕ 파일선택
+          <input type="file" id="photoFileInput" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;" />
+        </label>
+      </div>
+
+      <div id="photosGrid" style="display: flex; flex-direction: column; gap: 10px; max-height: 60vh; overflow-y: auto; overflow-x: hidden; padding-right: 4px;"></div>
+
+      <button onclick="closePhotosModal()" style="margin-top: 14px; width: 100%; padding: 9px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">닫기</button>
+    </div>
+  </div>
+
+  <div id="photoLightbox" class="modal-backdrop" style="z-index: 120; background: rgba(0,0,0,0.9); padding: 10px;" onclick="closePhotoLightbox()">
+    <div style="position: relative; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; align-items: center;" onclick="event.stopPropagation();">
+      <img id="lightboxImg" src="" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);" />
+      <button onclick="closePhotoLightbox()" style="margin-top: 12px; padding: 8px 24px; border-radius: 9999px; background: rgba(255,255,255,0.25); color: #ffffff; font-weight: 800; border: 1px solid rgba(255,255,255,0.4); cursor: pointer;">닫기</button>
     </div>
   </div>
 
@@ -1320,7 +1239,7 @@
         <h3 style="font-size: 14px; font-weight: 900; color: #1e293b;">🎁 오늘 대회 상품 안내</h3>
         <button onclick="closePrizesModal()" style="border: none; background: none; font-size: 18px; color: #94a3b8; cursor: pointer;">✕</button>
       </div>
-      <p style="font-size: 11px; color: #64748b; margin-bottom: 8px; line-height: 1.3;">경기이사가 상품 내역을 입력 후 저장하면 다른 회원들도 실시간으로 확인할 수 있습니다.</p>
+      <p style="font-size: 11px; color: #64748b; margin-bottom: 8px; line-height: 1.3;">상품 내역을 입력 후 저장하면 다른 회원들도 실시간으로 확인할 수 있습니다.</p>
       <textarea id="eventPrizesInput" rows="6" placeholder="예:&#10;1위: 고급 테니스 라켓백 1개&#10;2위: 기능성 테니스 양말 1세트&#10;3위: 그립 2개 세트" style="width: 100%; font-size: 13px; padding: 10px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; resize: none;"></textarea>
       <div style="display: flex; gap: 8px; margin-top: 12px;">
         <button onclick="closePrizesModal()" style="flex: 1; padding: 10px; border-radius: 8px; background: #f1f5f9; color: #475569; font-weight: 800; border: none; cursor: pointer;">닫기</button>
@@ -1358,40 +1277,44 @@
   <div id="toast" class="toast-msg">알림 메시지</div>
 
   <div id="poemModal" class="modal-backdrop">
-    <div class="modal-box" style="background: linear-gradient(145deg, #090d16, #111e38); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.25); text-align: center; position: relative; overflow: hidden; padding: 18px 16px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); max-width: 340px;">
-      <svg style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0.07; pointer-events:none;" viewBox="0 0 100 100">
-        <circle cx="80" cy="20" r="14" fill="#ffffff" />
-        <path d="M10,80 Q30,50 50,80 T90,80" fill="none" stroke="#fff" stroke-width="1"/>
+    <div class="modal-box" style="background: linear-gradient(145deg, #091322, #172554 60%, #1e1b4b); color: #ffffff; border: 1.5px solid rgba(255, 255, 255, 0.25); text-align: center; position: relative; overflow: hidden; padding: 22px 20px 18px; box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 255, 255, 0.1); border-radius: 18px; max-width: 360px;">
+      <svg style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0.08; pointer-events:none;" viewBox="0 0 100 100">
+        <circle cx="82" cy="18" r="14" fill="#ffffff" filter="blur(1px)"/>
+        <path d="M10,82 Q35,48 55,82 T95,82" fill="none" stroke="#ffffff" stroke-width="1.2"/>
       </svg>
-      <h3 style="font-size: 15px; font-weight: 800; color: #ffffff; margin-bottom: 12px; position: relative; z-index: 1; letter-spacing: 0.5px; font-family: 'Nanum Myeongjo', 'Batang', serif; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">- 코트와 라켓과 공의 시 -</h3>
-      <div style="font-size: 13px; line-height: 1.75; font-weight: 500; position: relative; z-index: 1; font-family: 'Nanum Myeongjo', 'Batang', serif; color: #ffffff; letter-spacing: -0.2px;">
-        치는날까지<br>
+      <div style="font-size: 10px; letter-spacing: 2px; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; margin-bottom: 4px; font-weight: 700;">Tennis & Literature</div>
+      <h3 style="font-size: 17px; font-weight: 900; color: #ffffff; margin-bottom: 14px; position: relative; z-index: 1; letter-spacing: -0.2px; font-family: 'Nanum Myeongjo', 'Batang', '바탕', serif; text-shadow: 0 2px 10px rgba(255, 255, 255, 0.25);">
+        - 코트와 라켓과 공의 시 -
+      </h3>
+      <div style="font-size: 14.5px; line-height: 1.75; font-weight: 500; position: relative; z-index: 1; font-family: 'Nanum Myeongjo', 'Batang', '바탕', serif; color: #ffffff; letter-spacing: -0.3px;">
+        치는 날까지<br>
         코트를 우러러<br>
         한 샷 부끄럼이 없도록<br>
         라켓에 이는 바람에도<br>
-        나는 괴로워 했다<br><br>
+        나는 괴로워했다<br>
+        <span style="display:block; height: 10px;"></span>
         공을 노래하는 마음으로<br>
         모든 승패를 인정해야지<br>
         그리고 나한테 주어진<br>
-        공을 쳐내야겠다<br><br>
+        공을 쳐내야겠다<br>
+        <span style="display:block; height: 10px;"></span>
         오늘 밤에도 공이<br>
         마음에 스치운다.
       </div>
-      <button onclick="closePoemModal()" style="margin-top: 14px; padding: 6px 20px; border-radius: 999px; background: rgba(255,255,255,0.12); color: #ffffff; font-weight: 700; font-size: 12px; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; position: relative; z-index: 1;">여운 간직하며 닫기</button>
+      <button onclick="closePoemModal()" style="margin-top: 18px; padding: 8px 24px; border-radius: 9999px; background: rgba(255,255,255,0.15); color: #ffffff; font-weight: 800; font-size: 12.5px; border: 1px solid rgba(255, 255, 255, 0.35); cursor: pointer; position: relative; z-index: 1; transition: all 0.2s ease;">여운 간직하며 닫기</button>
     </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // 보화 테니스 클럽 전용 고유 키
     const CLUB_ID = "bohwa-tennis-club";
     const LOCAL_STORAGE_KEY = "bohwa_tennis_state_v1";
     const LOCAL_ARCHIVE_KEY = "bohwa_tennis_archive_v1";
 
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+    const firebaseConfig = {
       apiKey: "AIzaSyC2EQ52cnJjfwLnD55H3UeS7s9gFvxFuKk",
       authDomain: "tennis-data-41132.firebaseapp.com",
       projectId: "tennis-data-41132",
@@ -1401,21 +1324,34 @@
       measurementId: "G-ZTV4WNVVZ1"
     };
 
-    let app, db, auth, userId = null;
+    let app, db, auth;
+    let isCloudReady = false;
     let isRemoteUpdate = false;
     let syncDebounceTimer = null;
-    let presenceTimer = null;
+    let currentUserId = 'u_' + Math.random().toString(36).substring(2, 9);
+    let archiveCurrentPage = 1;
+    let cachedArchives = [];
+    const ARCHIVE_PAGE_SIZE = 10;
+
+    window.openSyncInfoModal = function() { document.getElementById('syncInfoModal').classList.add('show'); };
+    window.closeSyncInfoModal = function() { document.getElementById('syncInfoModal').classList.remove('show'); };
 
     try {
       app = initializeApp(firebaseConfig);
       db = getFirestore(app);
       auth = getAuth(app);
     } catch(e) {
-      console.warn("Firebase Init Error:", e);
+      console.warn("Firebase Init Warning:", e);
     }
 
-    window.state = {
-      theme: 'summer_forest',
+    let savedLocal = null;
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (stored) savedLocal = JSON.parse(stored);
+    } catch(e) {}
+
+    window.state = savedLocal || {
+      theme: 'summer',
       currentTab: 'players',
       eventTitle: '',
       kdkVersion: 'v2010',
@@ -1423,40 +1359,18 @@
       players: Array(8).fill(''),
       matches: [],
       prizes: '',
-      photos: [] // { id, data, date }
+      photos: []
     };
-
-    function saveToLocalStorage() {
-      try {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.state));
-      } catch(e) { console.warn("Local storage write error:", e); }
-    }
-
-    function loadFromLocalStorage() {
-      try {
-        const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          window.state = Object.assign(window.state, parsed);
-        }
-      } catch(e) { console.warn("Local storage read error:", e); }
-    }
+    if (!window.state.photos) window.state.photos = [];
 
     function setSyncLamp(state) {
       const lamp = document.getElementById('syncLamp');
       if (!lamp) return;
       lamp.className = 'sync-lamp ' + (state || '');
       if (state === 'saving') lamp.title = '동기화 저장 중...';
-      else if (state === 'offline') lamp.title = '오프라인 / 연결 끊김';
-      else lamp.title = '클라우드 정상 연동됨';
+      else if (state === 'offline') lamp.title = '로컬 모드 (오프라인/클라우드 연결 대기)';
+      else lamp.title = '실시간 클라우드 연동됨';
     }
-
-    window.openLampInfoModal = function() {
-      document.getElementById('lampInfoModal').classList.add('show');
-    };
-    window.closeLampInfoModal = function() {
-      document.getElementById('lampInfoModal').classList.remove('show');
-    };
 
     function updateLiveClock() {
       const now = new Date();
@@ -1474,36 +1388,29 @@
     }
     setInterval(updateLiveClock, 1000);
 
-    window.openThemeModal = function() { document.getElementById('themeModal').classList.add('show'); };
-    window.closeThemeModal = function() { document.getElementById('themeModal').classList.remove('show'); };
+    window.openThemeModal = function() { document.getElementById('themeModal').classList.add('show'); }
+    window.closeThemeModal = function() { document.getElementById('themeModal').classList.remove('show'); }
     window.setSeasonTheme = function(themeKey) {
       window.state.theme = themeKey;
       applyTheme(themeKey);
       closeThemeModal();
-      saveStateToCloud(true);
+      saveState(true);
       showToast('테마가 적용되었습니다.');
-    };
-    function applyTheme(themeKey) {
-      const validThemes = ['spring_cherry', 'spring_sprout', 'summer_forest', 'summer_ocean', 'autumn_maple', 'autumn_amber', 'winter_navy', 'winter_slate'];
-      const finalTheme = validThemes.includes(themeKey) ? themeKey : 'summer_forest';
-      document.body.setAttribute('data-theme', finalTheme);
     }
+    function applyTheme(themeKey) { document.body.setAttribute('data-theme', themeKey || 'summer'); }
 
-    window.openManualModal = function() { document.getElementById('manualModal').classList.add('show'); };
-    window.closeManualModal = function() { document.getElementById('manualModal').classList.remove('show'); };
+    window.openManualModal = function() { document.getElementById('manualModal').classList.add('show'); }
+    window.closeManualModal = function() { document.getElementById('manualModal').classList.remove('show'); }
 
-    window.openRulesModal = function() { document.getElementById('rulesModal').classList.add('show'); };
-    window.closeRulesModal = function() { document.getElementById('rulesModal').classList.remove('show'); };
-
-    window.openPoemModal = function() { document.getElementById('poemModal').classList.add('show'); };
-    window.closePoemModal = function() { document.getElementById('poemModal').classList.remove('show'); };
+    window.openRulesModal = function() { document.getElementById('rulesModal').classList.add('show'); }
+    window.closeRulesModal = function() { document.getElementById('rulesModal').classList.remove('show'); }
 
     window.handleEventTitleInput = function(inputEl) {
       const val = inputEl.value;
       window.state.eventTitle = val;
       inputEl.style.width = !val ? '14ch' : `${Math.max(val.length * 2, 14)}ch`;
-      saveStateToCloud(false);
-    };
+      saveState(false);
+    }
 
     window.switchTab = function(tabKey) {
       window.state.currentTab = tabKey;
@@ -1521,16 +1428,16 @@
       });
       if (tabKey === 'matches') renderMatches();
       if (tabKey === 'results') renderResults();
-      saveStateToCloud(false);
-    };
+      saveState(false);
+    }
 
     window.changeKdkVersion = function(val) {
       window.state.kdkVersion = val;
       buildKdkSchedule(false);
       renderPlayerInputs(true);
-      saveStateToCloud(true);
+      saveState(true);
       showToast(`KDK 버전이 [${val === 'v2010_4g' ? 'v2010 4게임' : 'v2010'}]로 변경되었습니다.`);
-    };
+    }
 
     window.changePlayerCount = function(val) {
       const count = parseInt(val, 10);
@@ -1540,9 +1447,9 @@
       window.state.players = newPlayers;
       buildKdkSchedule(false);
       renderPlayerInputs(true);
-      saveStateToCloud(true);
+      saveState(true);
       showToast(`${count}명 경기대진표가 배정되었습니다.`);
-    };
+    }
 
     function renderPlayerInputs(force = false) {
       const container = document.getElementById('playerInputGrid');
@@ -1599,14 +1506,14 @@
         if (nextInput) nextInput.focus();
         else e.target.blur();
       }
-    };
+    }
 
     window.updatePlayerName = function(idx, val) {
       window.state.players[idx] = val;
-      saveStateToCloud(false);
+      saveState(false);
       if (window.state.currentTab === 'matches') renderMatches();
       if (window.state.currentTab === 'results') renderResults();
-    };
+    }
 
     let confirmAction = null;
     window.openConfirmModal = function(title, msg, onConfirm) {
@@ -1614,33 +1521,174 @@
       document.getElementById('confirmMsg').innerHTML = msg;
       confirmAction = onConfirm;
       document.getElementById('confirmModal').classList.add('show');
-    };
+    }
     window.closeConfirmModal = function() {
       document.getElementById('confirmModal').classList.remove('show');
       confirmAction = null;
-    };
+    }
     window.executeConfirm = function() {
       if (confirmAction) confirmAction();
       closeConfirmModal();
+    }
+
+    window.openPhotosModal = function() {
+      renderPhotosGrid();
+      document.getElementById('photosModal').classList.add('show');
+    };
+    window.closePhotosModal = function() {
+      document.getElementById('photosModal').classList.remove('show');
+    };
+
+    function getNormalizedPhotos() {
+      if (!window.state.photos) return [];
+      return window.state.photos.map((item, idx) => {
+        if (typeof item === 'string') {
+          return { id: 'old_' + idx, url: item, date: '이전 등록 사진', timestamp: 0 };
+        }
+        return item;
+      });
+    }
+
+    function renderPhotosGrid() {
+      const container = document.getElementById('photosGrid');
+      if (!container) return;
+
+      const photos = getNormalizedPhotos();
+      if (photos.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: #94a3b8; font-size: 12px; padding: 30px 0;">등록된 사진이나 문서가 없습니다.</div>`;
+        return;
+      }
+
+      const dateGroups = {};
+      photos.forEach(item => {
+        const d = item.date || '기타';
+        if (!dateGroups[d]) dateGroups[d] = [];
+        dateGroups[d].push(item);
+      });
+
+      let html = '';
+      Object.keys(dateGroups).forEach((dateKey) => {
+        html += `
+          <div style="text-align: center; margin: 10px 0 6px 0;">
+            <span style="font-size: 11px; font-weight: 800; color: #64748b; letter-spacing: -0.2px;">
+              ────────── ${dateKey} ──────────
+            </span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 6px;">
+        `;
+
+        dateGroups[dateKey].forEach(photo => {
+          const photoUrl = photo.url || photo;
+          const photoId = photo.id || '';
+          html += `
+            <div style="position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 1; border: 1px solid #cbd5e1; background: #0f172a;">
+              <img src="${photoUrl}" onclick="showPhotoLightbox('${photoUrl}')" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" />
+              <button onclick="deletePhoto('${photoId}')" style="position: absolute; top: 3px; right: 3px; background: rgba(225, 29, 72, 0.88); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 1px 3px rgba(0,0,0,0.4);">✕</button>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    window.handlePhotoUpload = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 800;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.72);
+          if (!window.state.photos) window.state.photos = [];
+
+          const now = new Date();
+          const days = ['일', '월', '화', '수', '목', '금', '토'];
+          const dateStr = `${now.getFullYear()}. ${now.getMonth() + 1}. ${now.getDate()}(${days[now.getDay()]})`;
+
+          const newPhoto = {
+            id: 'p_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+            url: compressedBase64,
+            date: dateStr,
+            timestamp: Date.now()
+          };
+
+          window.state.photos.unshift(newPhoto);
+
+          if (window.state.photos.length > 15) window.state.photos.pop();
+
+          saveState(true);
+          renderPhotosGrid();
+          showToast('사진이 등록되었습니다.');
+          event.target.value = '';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.deletePhoto = function(photoId) {
+      openConfirmModal('사진 삭제', '이 사진을 목록에서 삭제하시겠습니까?', () => {
+        if (!window.state.photos) return;
+        window.state.photos = window.state.photos.filter((p, idx) => {
+          if (typeof p === 'string') return ('old_' + idx) !== photoId;
+          return p.id !== photoId;
+        });
+        saveState(true);
+        renderPhotosGrid();
+        showToast('사진이 삭제되었습니다.');
+      });
+    };
+
+    window.showPhotoLightbox = function(src) {
+      const img = document.getElementById('lightboxImg');
+      if (img) img.src = src;
+      document.getElementById('photoLightbox').classList.add('show');
+    };
+    window.closePhotoLightbox = function() {
+      document.getElementById('photoLightbox').classList.remove('show');
     };
 
     window.openPrizesModal = function() {
       const area = document.getElementById('eventPrizesInput');
       if (area) area.value = window.state.prizes || '';
       document.getElementById('prizesModal').classList.add('show');
-    };
+    }
     window.closePrizesModal = function() {
       document.getElementById('prizesModal').classList.remove('show');
-    };
+    }
     window.saveEventPrizes = function() {
       const area = document.getElementById('eventPrizesInput');
       if (area) {
         window.state.prizes = area.value.trim();
-        saveStateToCloud(true);
+        saveState(true);
         closePrizesModal();
         showToast('오늘 대회 상품 내역이 저장되었습니다.');
       }
-    };
+    }
 
     window.showPartnerPopup = function(playerIdx) {
       const pName = window.state.players[playerIdx] || `선수${playerIdx + 1}`;
@@ -1703,10 +1751,10 @@
       let html = partnerRecords.length > 0 ? partnerRecords.join('') : '<div style="padding:20px;">배정된 대진이 없습니다.</div>';
       document.getElementById('partnerModalContent').innerHTML = html;
       document.getElementById('partnerModal').classList.add('show');
-    };
+    }
     window.closePartnerModal = function() {
       document.getElementById('partnerModal').classList.remove('show');
-    };
+    }
 
     function buildKdkSchedule(notify = true) {
       const n = window.state.count;
@@ -1785,7 +1833,7 @@
         }
       }
       window.state.matches = generated;
-      saveStateToCloud(true);
+      saveState(true);
       if (notify) showToast(`${window.state.count}명 (${window.state.kdkVersion === 'v2010_4g' ? '4게임' : '표준'}) 대진표가 배정되었습니다.`);
     }
 
@@ -1795,29 +1843,48 @@
         renderResults();
         renderMatches();
       });
-    };
+    }
 
     window.requestResetScores = function() {
-      openConfirmModal('점수 초기화', '현재까지 입력된 모든 경기 점수를 0으로 초기화하시겠습니까?', () => {
-        window.state.matches.forEach(m => { m.s1 = 0; m.s2 = 0; });
-        saveStateToCloud(true);
-        renderMatches();
-        renderResults();
-        showToast('전체 경기 점수가 초기화되었습니다.');
-      });
-    };
+      openConfirmModal(
+        '경기 전체 초기화', 
+        '이 경기의 입력된 자료들이 삭제 되므로 먼저 결과 페이지에서 저장 한 후 진행해 주세요.', 
+        () => {
+          // 선수 명단 및 경기 대진 기록 초기화
+          window.state.players = Array(window.state.count).fill('');
+          if (window.state.matches) {
+            window.state.matches.forEach(m => { m.s1 = 0; m.s2 = 0; });
+          }
+          saveState(true);
+          renderPlayerInputs(true);
+          renderMatches();
+          renderResults();
+          showToast('선수 및 대진 기록이 초기화되었습니다.');
+        }
+      );
+    }
 
     function renderMatches() {
       const container = document.getElementById('matchesCompactList');
       if (!container) return;
       
+      // 사용자가 점수 입력 중일 때는 전체 DOM을 날려 포커스가 튀거나 키패드가 닫히는 현상 방지
+      const activeEl = document.activeElement;
+      if (activeEl && activeEl.classList.contains('score-input')) {
+        updateAllMatchCardStates();
+        updateStats();
+        return;
+      }
+
       if (!window.state.matches || window.state.matches.length === 0) buildKdkSchedule(false);
 
       let htmlArr = [];
       window.state.matches.forEach((m, matchIndex) => {
         const isPlayed = (m.s1 > 0 || m.s2 > 0);
-        const val1 = isPlayed ? m.s1 : '', val2 = isPlayed ? m.s2 : '';
-        const isT1Win = isPlayed && m.s1 > m.s2, isT2Win = isPlayed && m.s2 > m.s1;
+        const val1 = isPlayed ? m.s1 : '';
+        const val2 = isPlayed ? m.s2 : '';
+        const isT1Win = isPlayed && m.s1 > m.s2;
+        const isT2Win = isPlayed && m.s2 > m.s1;
 
         let restTag = '';
         if (m.rest && m.rest.length > 0) {
@@ -1835,7 +1902,7 @@
         };
 
         htmlArr.push(`
-          <div class="match-card ${isPlayed ? 'played' : ''}">
+          <div id="match-card-${matchIndex}" class="match-card ${isPlayed ? 'played' : ''}">
             <div class="match-top-row">
               <div style="display: flex; align-items: center;">
                 <span class="match-badge">🎾 ${m.id}경기</span>
@@ -1844,15 +1911,39 @@
               ${restTag}
             </div>
             <div class="match-body-row">
-              <div class="team-box ${isT1Win ? 'win' : (isT2Win ? 'lose' : '')}">
+              <div id="team1-box-${matchIndex}" class="team-box ${isT1Win ? 'win' : (isT2Win ? 'lose' : '')}">
                 ${renderMatchTeam(m.t1)}
               </div>
               <div class="score-inputs-wrap">
-                <input id="score-${matchIndex}-1" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="0" value="${val1}" oninput="handleNumericScoreChange(${m.id}, 1, this.value, ${matchIndex})" class="score-input"/>
+                <input 
+                  id="score-${matchIndex}-1" 
+                  type="text" 
+                  inputmode="numeric" 
+                  pattern="[0-9]*"
+                  maxlength="1" 
+                  placeholder="0" 
+                  value="${val1}" 
+                  onfocus="handleScoreFocus(this)"
+                  oninput="handleNumericScoreChange(${m.id}, 1, this.value, ${matchIndex})" 
+                  class="score-input"
+                  autocomplete="off"
+                />
                 <span style="font-weight: 900; color: #64748b; font-size: 14px;">:</span>
-                <input id="score-${matchIndex}-2" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="0" value="${val2}" oninput="handleNumericScoreChange(${m.id}, 2, this.value, ${matchIndex})" class="score-input"/>
+                <input 
+                  id="score-${matchIndex}-2" 
+                  type="text" 
+                  inputmode="numeric" 
+                  pattern="[0-9]*"
+                  maxlength="1" 
+                  placeholder="0" 
+                  value="${val2}" 
+                  onfocus="handleScoreFocus(this)"
+                  oninput="handleNumericScoreChange(${m.id}, 2, this.value, ${matchIndex})" 
+                  class="score-input"
+                  autocomplete="off"
+                />
               </div>
-              <div class="team-box ${isT2Win ? 'win' : (isT1Win ? 'lose' : '')}">
+              <div id="team2-box-${matchIndex}" class="team-box ${isT2Win ? 'win' : (isT1Win ? 'lose' : '')}">
                 ${renderMatchTeam(m.t2)}
               </div>
             </div>
@@ -1863,38 +1954,110 @@
       updateStats();
     }
 
+    // 터치 시 기존 값 전체 선택으로 편리한 재입력 지원
+    window.handleScoreFocus = function(inputEl) {
+      if (inputEl) {
+        setTimeout(() => {
+          try { inputEl.select(); } catch(e) {}
+        }, 30);
+      }
+    };
+
+    // [핵심 개선] 모바일에서 화면이 튀거나 넘어가지 않고, 6:2 입력 완료 시에만 다음 칸으로 안전하게 커서 대기
     window.handleNumericScoreChange = function(matchId, teamSide, rawVal, matchIndex) {
       const m = window.state.matches.find(item => item.id === matchId);
       if (!m) return;
-      let num = rawVal === '' ? 0 : parseInt(rawVal, 10);
-      
+
       const inputEl = document.getElementById(`score-${matchIndex}-${teamSide}`);
-      if (num >= 7) {
-        showToast('7 이상의 점수는 입력할 수 없습니다.');
+      
+      // 숫자 이외의 문자 제거 및 단일 글자 보정
+      const cleanVal = rawVal.replace(/[^0-9]/g, '');
+      if (inputEl && inputEl.value !== cleanVal) {
+        inputEl.value = cleanVal;
+      }
+
+      let num = cleanVal === '' ? 0 : parseInt(cleanVal, 10);
+      
+      if (num > 7) {
+        showToast('7 이하의 점수를 입력해주세요.');
         if (inputEl) inputEl.value = '';
         num = 0;
       }
-      
+
       if (teamSide === 1) {
         m.s1 = isNaN(num) ? 0 : num;
-        if (rawVal !== '' && num < 7) {
-          const nextInput = document.getElementById(`score-${matchIndex}-2`);
-          if (nextInput && nextInput.value === '') nextInput.focus();
+        updateSingleMatchCardState(matchIndex, m);
+
+        // 첫 번째 점수(예: 6) 입력 시 화면을 고정 상태로 두고 즉시 오른쪽 점수칸으로 포커스
+        if (cleanVal !== '' && num <= 7) {
+          const nextSideInput = document.getElementById(`score-${matchIndex}-2`);
+          if (nextSideInput) {
+            // preventScroll로 모바일 브라우저가 화면을 마구 위아래로 흔드는 현상 원천 차단
+            nextSideInput.focus({ preventScroll: true });
+            setTimeout(() => {
+              try { nextSideInput.select(); } catch(e) {}
+            }, 20);
+          }
         }
       } else {
         m.s2 = isNaN(num) ? 0 : num;
-        if (rawVal !== '' && num < 7) {
-          const nextMatch = document.getElementById(`score-${matchIndex + 1}-1`);
-          if (nextMatch) nextMatch.focus();
+        updateSingleMatchCardState(matchIndex, m);
+
+        // 두 번째 점수(예: 2)까지 입력이 완료되면 다음 경기 첫 번째 칸으로 안전 이동
+        if (cleanVal !== '' && num <= 7) {
+          const nextMatchInput = document.getElementById(`score-${matchIndex + 1}-1`);
+          if (nextMatchInput) {
+            // 화면 흔들림 없이 다음 매치 입력칸으로 포커스 이동 후 커서 대기
+            nextMatchInput.focus({ preventScroll: true });
+            
+            // 키보드에 가려지지 않도록 필요한 경우에만 부드럽게 위치 정돈
+            const rect = nextMatchInput.getBoundingClientRect();
+            if (rect.bottom > window.innerHeight - 120) {
+              nextMatchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            setTimeout(() => {
+              try { nextMatchInput.select(); } catch(e) {}
+            }, 20);
+          } else {
+            // 마지막 경기 입력 완료 시 키패드 닫기
+            inputEl.blur();
+            showToast('모든 경기 점수가 입력되었습니다! 🏆');
+          }
         }
       }
-      saveStateToCloud(false);
+
+      saveState(false);
       updateStats();
     };
 
+    // DOM을 다시 생성하지 않고 해당 카드의 상태와 색상만 가볍게 변경 (화면 흔들림 제로)
+    function updateSingleMatchCardState(matchIndex, m) {
+      const card = document.getElementById(`match-card-${matchIndex}`);
+      const t1Box = document.getElementById(`team1-box-${matchIndex}`);
+      const t2Box = document.getElementById(`team2-box-${matchIndex}`);
+      if (!card || !t1Box || !t2Box) return;
+
+      const isPlayed = (m.s1 > 0 || m.s2 > 0);
+      const isT1Win = isPlayed && m.s1 > m.s2;
+      const isT2Win = isPlayed && m.s2 > m.s1;
+
+      if (isPlayed) card.classList.add('played');
+      else card.classList.remove('played');
+
+      t1Box.className = `team-box ${isT1Win ? 'win' : (isT2Win ? 'lose' : '')}`;
+      t2Box.className = `team-box ${isT2Win ? 'win' : (isT1Win ? 'lose' : '')}`;
+    }
+
+    function updateAllMatchCardStates() {
+      if (!window.state.matches) return;
+      window.state.matches.forEach((m, idx) => {
+        updateSingleMatchCardState(idx, m);
+      });
+    }
+
     function updateStats() {
-      const tot = window.state.matches.length;
-      const done = window.state.matches.filter(m => m.s1 > 0 || m.s2 > 0).length;
+      const tot = window.state.matches ? window.state.matches.length : 0;
+      const done = window.state.matches ? window.state.matches.filter(m => m.s1 > 0 || m.s2 > 0).length : 0;
       const statEl = document.getElementById('matchStat');
       if (statEl) statEl.innerText = `${done}/${tot} 완료`;
     }
@@ -1978,7 +2141,7 @@
           htmlArr.push(`<tr style="border-bottom:1px solid #e2e8f0; color:#1e293b; font-weight:bold;">
               <td style="padding:1.5px;">${i+1}</td>
               <td style="padding:1.5px;">${r.idx}-${r.name}</td>
-              <td style="padding:1.5px;">${r.win}승 ${r.loss}패</td>
+              <td style="padding:1.5px;">${r.win}승리 ${r.loss}양보</td>
               <td style="padding:1.5px;">${r.diff > 0 ? '+'+r.diff : r.diff}</td>
           </tr>`);
       });
@@ -1989,7 +2152,7 @@
       
       standings.forEach((r, i) => {
           htmlArr.push(`<div style="font-size:9.5px; border:1px solid #cbd5e1; border-radius:3px; padding:3px; background:#f8fafc;">`);
-          htmlArr.push(`<div style="font-weight:900; margin-bottom:1.5px; font-size:10.5px; color:#0f172a; border-bottom:1px solid #e2e8f0; padding-bottom:1.5px;">${i+1}. ${r.idx}-${r.name} <span style="font-weight:normal; color:#64748b; font-size:9px;">(${r.win}승${r.loss}패)</span></div>`);
+          htmlArr.push(`<div style="font-weight:900; margin-bottom:1.5px; font-size:10.5px; color:#0f172a; border-bottom:1px solid #e2e8f0; padding-bottom:1.5px;">${i+1}. ${r.idx}-${r.name} <span style="font-weight:normal; color:#64748b; font-size:9px;">(${r.win}승리, ${r.loss}양보)</span></div>`);
           
           const pIdx = r.originalIdx;
           let matchCount = 0;
@@ -2039,16 +2202,14 @@
 
       document.getElementById('captureContent').innerHTML = htmlArr.join('');
       document.getElementById('captureOverlay').classList.add('show');
-    };
+    }
     window.closeCaptureView = function() {
       document.getElementById('captureOverlay').classList.remove('show');
-    };
+    }
 
     window.requestSaveEvent = function() {
       const titleInput = document.getElementById('eventTitle');
       const title = (titleInput && titleInput.value.trim()) || (window.state.eventTitle && window.state.eventTitle.trim()) || '';
-      
-      // 1. 경기명 미입력 검증
       if (!title) {
         showToast('⚠️ 상단에 [경기명]을 먼저 입력해주세요.');
         if (titleInput) {
@@ -2058,34 +2219,33 @@
         return;
       }
 
-      // 2. 선수 등록 미완료 검증 (최소 4명 이상 등록 필요)
-      const validPlayers = window.state.players.filter(p => p && p.trim() !== '');
-      if (validPlayers.length < 4) {
-        showToast('⚠️ [선수] 탭에서 선수를 먼저 등록해주세요.');
+      const enteredPlayers = (window.state.players || []).filter(name => name && name.trim() !== '');
+      if (enteredPlayers.length < 4) {
+        showToast('⚠️️ [선수] 탭에서 선수를 먼저 등록해주세요.');
         switchTab('players');
-        const firstEmpty = window.state.players.findIndex(p => !p || p.trim() === '');
-        const targetInput = document.getElementById(`player-input-${firstEmpty !== -1 ? firstEmpty : 0}`);
-        if (targetInput) targetInput.focus();
+        const firstInput = document.getElementById('player-input-0');
+        if (firstInput) firstInput.focus();
         return;
       }
 
-      // 3. 경기 점수 미입력 검증 (최소 1경기 이상 점수 입력 필요)
-      const playedCount = window.state.matches.filter(m => m.s1 > 0 || m.s2 > 0).length;
-      if (playedCount === 0) {
+      const playedMatches = (window.state.matches || []).filter(m => m.s1 > 0 || m.s2 > 0);
+      if (playedMatches.length === 0) {
         showToast('⚠️ [경기대진] 탭에서 경기 점수를 먼저 입력해주세요.');
         switchTab('matches');
         return;
       }
 
-      openConfirmModal('현재 대회 저장', `'${title}' 대회를 클라우드 및 저장소에 저장하시겠습니까?`, () => { saveCurrentEventToCloud(title); });
-    };
+      openConfirmModal('현재 경기 저장', `'${title}' 대회 및 대진 결과를 안전하게 저장하시겠습니까?`, () => { saveCurrentEvent(); });
+    }
 
-    async function saveCurrentEventToCloud(title) {
+    async function saveCurrentEvent() {
+      const titleInput = document.getElementById('eventTitle');
+      const title = (titleInput && titleInput.value.trim()) || (window.state.eventTitle && window.state.eventTitle.trim()) || '대회';
       const now = new Date();
       const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
       const docId = String(Date.now());
       
-      const newArchiveItem = {
+      const newArchive = {
         id: docId,
         date: dateStr,
         title: title,
@@ -2093,111 +2253,141 @@
       };
 
       try {
-        const localArchives = JSON.parse(localStorage.getItem(LOCAL_ARCHIVE_KEY) || '[]');
-        localArchives.unshift(newArchiveItem);
-        localStorage.setItem(LOCAL_ARCHIVE_KEY, JSON.stringify(localArchives.slice(0, 50)));
-      } catch(e) { console.warn("Local archive write error:", e); }
+        let localArcs = JSON.parse(localStorage.getItem(LOCAL_ARCHIVE_KEY) || '[]');
+        localArcs.unshift(newArchive);
+        localStorage.setItem(LOCAL_ARCHIVE_KEY, JSON.stringify(localArcs.slice(0, 100)));
+      } catch(e) {}
 
-      if (db) {
+      if (isCloudReady && db) {
         try {
           setSyncLamp('saving');
           const docRef = doc(db, 'clubs', CLUB_ID, 'archives', docId);
-          await setDoc(docRef, newArchiveItem);
+          await setDoc(docRef, newArchive);
           setSyncLamp('');
+          showToast(`[${title}] 클라우드 저장 완료!`);
+          return;
         } catch(e) {
-          console.warn("Cloud archive save fallback:", e);
+          console.warn("Cloud save archive error, local only:", e);
         }
       }
-      showToast(`[${title}] 대회가 안전하게 저장되었습니다!`);
+      showToast(`[${title}] 로컬 저장 완료!`);
     }
-
-    let allArchivesCache = [];
-    let currentArchivePage = 1;
-    const ARCHIVE_PAGE_SIZE = 10;
 
     window.openArchiveModal = async function() {
       const modal = document.getElementById('archiveModal');
       const listContainer = document.getElementById('archiveList');
-      listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 20px 0;">불러오는 중...</p>';
+      const paginationContainer = document.getElementById('archivePagination');
+      listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 20px 0;">목록 불러오는 중...</p>';
+      if (paginationContainer) paginationContainer.innerHTML = '';
       modal.classList.add('show');
-      currentArchivePage = 1;
 
-      let combined = [];
-      try {
-        const localSaved = JSON.parse(localStorage.getItem(LOCAL_ARCHIVE_KEY) || '[]');
-        if (Array.isArray(localSaved)) combined = localSaved;
-      } catch(e) {}
+      let archives = [];
 
-      if (db) {
+      if (isCloudReady && db) {
         try {
           const archivesCol = collection(db, 'clubs', CLUB_ID, 'archives');
           const qSnap = await getDocs(archivesCol);
           qSnap.forEach(d => {
             const data = d.data();
-            if (data && data.id && data.stateData) {
-              if (!combined.some(item => item.id === data.id)) combined.push(data);
-            }
+            if (data && data.id && data.stateData) archives.push(data);
           });
-        } catch(e) { console.warn("Archive cloud read fallback:", e); }
+        } catch(e) {
+          console.warn("Cloud load failed, reading local:", e);
+        }
       }
 
-      combined.sort((a,b) => parseInt(b.id) - parseInt(a.id));
-      allArchivesCache = combined;
-      renderArchivePage(1);
-    };
+      if (archives.length === 0) {
+        try {
+          archives = JSON.parse(localStorage.getItem(LOCAL_ARCHIVE_KEY) || '[]');
+        } catch(e) {}
+      }
 
-    function renderArchivePage(page) {
+      archives.sort((a,b) => parseInt(b.id) - parseInt(a.id));
+      cachedArchives = archives;
+      archiveCurrentPage = 1;
+      renderArchivePage();
+    }
+
+    function renderArchivePage() {
       const listContainer = document.getElementById('archiveList');
-      const paginContainer = document.getElementById('archivePagination');
-      if (!listContainer || !paginContainer) return;
+      const paginationContainer = document.getElementById('archivePagination');
+      if (!listContainer) return;
 
-      currentArchivePage = page;
-      const total = allArchivesCache.length;
-      const totalPages = Math.ceil(total / ARCHIVE_PAGE_SIZE) || 1;
-
-      if (total === 0) {
+      listContainer.innerHTML = '';
+      if (!cachedArchives || cachedArchives.length === 0) {
         listContainer.innerHTML = '<p style="font-size: 13px; color: #64748b; text-align: center; padding: 30px 0;">저장된 대회가 없습니다.</p>';
-        paginContainer.innerHTML = '';
+        if (paginationContainer) paginationContainer.innerHTML = '';
         return;
       }
 
-      const start = (page - 1) * ARCHIVE_PAGE_SIZE;
-      const pageItems = allArchivesCache.slice(start, start + ARCHIVE_PAGE_SIZE);
+      const totalItems = cachedArchives.length;
+      const totalPages = Math.ceil(totalItems / ARCHIVE_PAGE_SIZE);
+      if (archiveCurrentPage > totalPages) archiveCurrentPage = totalPages;
+      if (archiveCurrentPage < 1) archiveCurrentPage = 1;
 
-      listContainer.innerHTML = '';
+      const startIndex = (archiveCurrentPage - 1) * ARCHIVE_PAGE_SIZE;
+      const pageItems = cachedArchives.slice(startIndex, startIndex + ARCHIVE_PAGE_SIZE);
+
       pageItems.forEach(arc => {
         const item = document.createElement('div');
-        item.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc;';
+        item.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc;';
         item.innerHTML = `
-          <div style="display: flex; flex-direction: column; min-width: 0; padding-right: 6px; flex: 1;">
-            <span style="font-size: 13px; font-weight: 900; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${arc.title}</span>
-            <span style="font-size: 10.5px; color: #64748b; font-weight: 600; margin-top: 2px;">${arc.date}</span>
+          <div style="display: flex; flex-direction: column; min-width: 0; padding-right: 8px; flex: 1;">
+            <span style="font-size: 14px; font-weight: 900; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${arc.title}</span>
+            <span style="font-size: 11px; color: #64748b; font-weight: 600; margin-top: 4px;">${arc.date}</span>
           </div>
-          <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
-            <button onclick="requestLoadArchive('${arc.id}', '${arc.title.replace(/'/g, "\\'")}')" style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-size: 11px; font-weight: 800; padding: 5px 8px; border-radius: 6px; cursor: pointer;">불러오기</button>
-            <button onclick="requestDeleteArchive('${arc.id}')" style="background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-size: 11px; font-weight: 800; padding: 5px 8px; border-radius: 6px; cursor: pointer;">삭제</button>
+          <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
+            <button onclick="requestLoadArchive('${arc.id}', '${arc.title.replace(/'/g, "\\'")}')" style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; cursor: pointer;">불러오기</button>
+            <button onclick="requestDeleteArchive('${arc.id}')" style="background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; cursor: pointer;">삭제</button>
           </div>
         `;
         listContainer.appendChild(item);
       });
 
-      paginContainer.innerHTML = `
-        <button onclick="renderArchivePage(${page - 1})" ${page <= 1 ? 'disabled style="opacity:0.3; cursor:not-allowed;"' : 'style="cursor:pointer;"'} class="btn-action-mini btn-secondary">◀ 이전</button>
-        <span style="font-weight: 800; color: #475569;">${page} / ${totalPages} 페이지</span>
-        <button onclick="renderArchivePage(${page + 1})" ${page >= totalPages ? 'disabled style="opacity:0.3; cursor:not-allowed;"' : 'style="cursor:pointer;"'} class="btn-action-mini btn-secondary">다음 ▶</button>
-      `;
+      if (paginationContainer) {
+        paginationContainer.innerHTML = `
+          <button onclick="changeArchivePage(-1)" ${archiveCurrentPage <= 1 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : 'style="cursor:pointer;"'} class="btn-action-mini btn-secondary" style="padding:4px 8px; font-size:11px;">◀ 이전</button>
+          <span>${archiveCurrentPage} / ${totalPages} 페이지 (총 ${totalItems}개)</span>
+          <button onclick="changeArchivePage(1)" ${archiveCurrentPage >= totalPages ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : 'style="cursor:pointer;"'} class="btn-action-mini btn-secondary" style="padding:4px 8px; font-size:11px;">다음 ▶</button>
+        `;
+      }
     }
-    window.renderArchivePage = renderArchivePage;
-    window.closeArchiveModal = function() { document.getElementById('archiveModal').classList.remove('show'); };
+
+    window.changeArchivePage = function(delta) {
+      archiveCurrentPage += delta;
+      renderArchivePage();
+    }
+
+    window.closeArchiveModal = function() { document.getElementById('archiveModal').classList.remove('show'); }
     
     window.requestLoadArchive = function(id, title) {
-      openConfirmModal('대회 불러오기', `'${title}' 대회를 불러오시겠습니까?<br><br><span style="color:#be123c;">※ 현재 진행 중인 데이터는 덮어씌워집니다.</span>`, () => { loadArchiveFromCloud(id); });
-    };
+      openConfirmModal('대회 불러오기', `'${title}' 대회를 불러오시겠습니까?<br><br><span style="color:#be123c;">※ 현재 진행 중인 데이터는 덮어씌워집니다.</span>`, () => { loadArchiveData(id); });
+    }
 
-    function loadArchiveFromCloud(id) {
-      const target = allArchivesCache.find(a => a.id === id);
+    async function loadArchiveData(id) {
+      let target = null;
+
+      if (isCloudReady && db) {
+        try {
+          const archivesCol = collection(db, 'clubs', CLUB_ID, 'archives');
+          const qSnap = await getDocs(archivesCol);
+          qSnap.forEach(d => {
+            const data = d.data();
+            if (data && data.id === id) target = data;
+          });
+        } catch(e) {}
+      }
+
+      if (!target) {
+        try {
+          const localArcs = JSON.parse(localStorage.getItem(LOCAL_ARCHIVE_KEY) || '[]');
+          target = localArcs.find(a => a.id === id);
+        } catch(e) {}
+      }
+
       if (target) {
         window.state = JSON.parse(JSON.stringify(target.stateData));
+        if (!window.state.photos) window.state.photos = [];
         const countSel = document.getElementById('playerCountSelect');
         if (countSel) countSel.value = window.state.count;
         const vSel = document.getElementById('kdkVersionSelect');
@@ -2209,155 +2399,33 @@
         renderMatches();
         renderResults();
         switchTab('players');
-        saveToLocalStorage();
-        saveStateToCloud(true);
+        saveState(true);
         closeArchiveModal();
         showToast(`'${target.title}' 불러오기 완료!`);
+      } else {
+        showToast('대회 기록을 찾지 못했습니다.');
       }
     }
 
     window.requestDeleteArchive = function(id) {
-      openConfirmModal('대회 삭제', '선택한 대회 저장 기록을 완전히 삭제하시겠습니까?<br>(복구할 수 없습니다.)', async () => {
+      openConfirmModal('대회 삭제', '선택한 저장 기록을 삭제하시겠습니까?<br>(복구할 수 없습니다.)', async () => {
         try {
-          allArchivesCache = allArchivesCache.filter(a => a.id !== id);
-          localStorage.setItem(LOCAL_ARCHIVE_KEY, JSON.stringify(allArchivesCache));
-          if (db) {
+          if (isCloudReady && db) {
             const docRef = doc(db, 'clubs', CLUB_ID, 'archives', id);
             await deleteDoc(docRef);
           }
-          renderArchivePage(currentArchivePage);
-          showToast('대회가 삭제되었습니다.');
-        } catch(e) {
-          console.error("Delete error:", e);
-          showToast('삭제 완료');
-        }
+        } catch(e) {}
+
+        try {
+          let localArcs = JSON.parse(localStorage.getItem(LOCAL_ARCHIVE_KEY) || '[]');
+          localArcs = localArcs.filter(a => a.id !== id);
+          localStorage.setItem(LOCAL_ARCHIVE_KEY, JSON.stringify(localArcs));
+        } catch(e) {}
+
+        openArchiveModal(); 
+        showToast('대회가 삭제되었습니다.');
       });
-    };
-
-    window.openPhotosModal = function() {
-      renderPhotosList();
-      document.getElementById('photosModal').classList.add('show');
-    };
-    window.closePhotosModal = function() {
-      document.getElementById('photosModal').classList.remove('show');
-    };
-
-    function getTodayFormattedDate() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = now.getMonth() + 1;
-      const d = now.getDate();
-      const days = ['일', '월', '화', '수', '목', '금', '토'];
-      const day = days[now.getDay()];
-      return `${y}. ${m}. ${d}(${day})`;
     }
-
-    function renderPhotosList() {
-      const container = document.getElementById('photosListContainer');
-      if (!container) return;
-
-      if (!window.state.photos || window.state.photos.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: #94a3b8; font-size: 12px; padding: 30px 0;">등록된 사진이나 파일이 없습니다.<br>위 버튼을 눌러 추가해보세요.</p>';
-        return;
-      }
-
-      // 날짜별 그룹화
-      const grouped = {};
-      window.state.photos.forEach((item, index) => {
-        const photoObj = typeof item === 'string' ? { id: 'p_' + index, data: item, date: '이전 사진' } : item;
-        const dateKey = photoObj.date || '기타';
-        if (!grouped[dateKey]) grouped[dateKey] = [];
-        grouped[dateKey].push(photoObj);
-      });
-
-      let htmlArr = [];
-      Object.keys(grouped).forEach(dateKey => {
-        htmlArr.push(`<div class="date-divider">${dateKey}</div>`);
-        htmlArr.push(`<div class="photo-sub-grid">`);
-        grouped[dateKey].forEach(photo => {
-          htmlArr.push(`
-            <div class="photo-thumb-wrap" onclick="viewPhotoLarge('${photo.id}')">
-              <img src="${photo.data}" alt="첨부 사진" loading="lazy" />
-              <button onclick="event.stopPropagation(); requestDeletePhoto('${photo.id}')" class="photo-del-btn" title="사진 삭제">✕</button>
-            </div>
-          `);
-        });
-        htmlArr.push(`</div>`);
-      });
-
-      container.innerHTML = htmlArr.join('');
-    }
-
-    window.handlePhotoUpload = function(event) {
-      const files = event.target.files;
-      if (!files || files.length === 0) return;
-
-      if (!window.state.photos) window.state.photos = [];
-      const currentDateStr = getTodayFormattedDate();
-      let processed = 0;
-
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = new Image();
-          img.onload = function() {
-            // 이미지 압축 (최대 폭 800px)
-            const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 800;
-            let width = img.width;
-            let height = img.height;
-
-            if (width > MAX_WIDTH) {
-              height = Math.round((height * MAX_WIDTH) / width);
-              width = MAX_WIDTH;
-            }
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.72);
-            window.state.photos.unshift({
-              id: 'p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-              data: compressedBase64,
-              date: currentDateStr
-            });
-
-            processed++;
-            if (processed === files.length) {
-              saveStateToCloud(true);
-              renderPhotosList();
-              showToast('사진이 등록되었습니다.');
-            }
-          };
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
-      event.target.value = '';
-    };
-
-    window.viewPhotoLarge = function(photoId) {
-      const photo = window.state.photos.find(p => p.id === photoId || (typeof p === 'object' && p.id === photoId));
-      if (!photo) return;
-      const imgEl = document.getElementById('viewerImage');
-      const dateEl = document.getElementById('viewerDateTag');
-      if (imgEl) imgEl.src = photo.data || photo;
-      if (dateEl) dateEl.innerText = photo.date ? `등록일: ${photo.date}` : '';
-      document.getElementById('photoViewerModal').classList.add('show');
-    };
-    window.closePhotoViewer = function() {
-      document.getElementById('photoViewerModal').classList.remove('show');
-    };
-
-    window.requestDeletePhoto = function(photoId) {
-      openConfirmModal('사진 삭제', '이 사진을 완전히 삭제하시겠습니까?', () => {
-        window.state.photos = window.state.photos.filter(p => p.id !== photoId);
-        saveStateToCloud(true);
-        renderPhotosList();
-        showToast('사진이 삭제되었습니다.');
-      });
-    };
 
     function getKakaoText(customMsg = '') {
       const title = document.getElementById('eventTitle')?.value || window.state.eventTitle || '친선대회';
@@ -2385,10 +2453,10 @@
       const inputEl = document.getElementById('customShareMessage');
       if (inputEl) inputEl.value = '';
       document.getElementById('shareMessageModal').classList.add('show');
-    };
+    }
     window.closeShareMessageModal = function() {
       document.getElementById('shareMessageModal').classList.remove('show');
-    };
+    }
     window.proceedKakaoShare = function() {
       const customMsg = document.getElementById('customShareMessage').value.trim();
       const text = getKakaoText(customMsg);
@@ -2399,7 +2467,7 @@
               showToast('순위가 복사되었습니다! 카톡에 붙여넣어주세요.');
           }).catch(() => { fallbackCopy(text); });
       } else { fallbackCopy(text); }
-    };
+    }
 
     function fallbackCopy(text) {
       let copied = false;
@@ -2436,7 +2504,7 @@
       }
     }
 
-    window.closeCopyBackupModal = function() { document.getElementById('copyBackupModal').classList.remove('show'); };
+    window.closeCopyBackupModal = function() { document.getElementById('copyBackupModal').classList.remove('show'); }
     window.copyFromTextarea = function() {
       const area = document.getElementById('copyBackupText');
       if (area) {
@@ -2457,7 +2525,7 @@
             else { showToast('복사 실패. 직접 텍스트를 선택하여 복사해주세요.'); }
         } catch (e) { showToast('복사 실패. 직접 텍스트를 선택하여 복사해주세요.'); }
       }
-    };
+    }
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -2467,9 +2535,17 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    async function saveStateToCloud(immediate = false) {
-      saveToLocalStorage();
-      if (isRemoteUpdate || !db) return;
+    window.openPoemModal = function() { document.getElementById('poemModal').classList.add('show'); }
+    window.closePoemModal = function() { document.getElementById('poemModal').classList.remove('show'); }
+
+    async function saveState(immediate = false) {
+      try {
+        const titleInput = document.getElementById('eventTitle');
+        if (titleInput) window.state.eventTitle = titleInput.value;
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.state));
+      } catch(e) {}
+
+      if (isRemoteUpdate || !isCloudReady || !db) return;
 
       if (syncDebounceTimer) {
         clearTimeout(syncDebounceTimer);
@@ -2479,14 +2555,12 @@
       const performSave = async () => {
         try {
           setSyncLamp('saving');
-          const titleInput = document.getElementById('eventTitle');
-          if (titleInput) window.state.eventTitle = titleInput.value;
           const docRef = doc(db, 'clubs', CLUB_ID, 'live', 'current');
           await setDoc(docRef, JSON.parse(JSON.stringify(window.state)));
           setSyncLamp('');
         } catch (e) {
-          console.warn("Live state cloud save fallback:", e);
-          setSyncLamp('');
+          console.warn("Live state save error:", e);
+          setSyncLamp('offline');
         }
       };
 
@@ -2497,52 +2571,52 @@
       }
     }
 
-    // 실시간 동시 접속자 수 (20초 주기 하트비트)
-    async function startPresenceTracking() {
-      if (!db || !userId) return;
-      
+    function setupUserPresence() {
+      if (!isCloudReady || !db) return;
+
+      const presenceRef = doc(db, 'clubs', CLUB_ID, 'presence', currentUserId);
       const updatePresence = async () => {
         try {
-          const userDoc = doc(db, 'clubs', CLUB_ID, 'presence', userId);
-          await setDoc(userDoc, { lastSeen: Date.now() });
-        } catch(e) {}
+          await setDoc(presenceRef, { lastSeen: Date.now() });
+        } catch (e) {}
       };
 
-      await updatePresence();
-      if (presenceTimer) clearInterval(presenceTimer);
-      presenceTimer = setInterval(updatePresence, 20000); // 20초마다 갱신
+      updatePresence();
+      setInterval(updatePresence, 20000);
 
-      // 접속자 수 실시간 모니터링
-      try {
-        const presenceCol = collection(db, 'clubs', CLUB_ID, 'presence');
-        onSnapshot(presenceCol, (snapshot) => {
-          const now = Date.now();
-          let activeUsers = 0;
-          snapshot.forEach(d => {
-            const data = d.data();
-            // 45초 이내 신호가 있는 기기만 활성 사용자로 간주
-            if (data && data.lastSeen && (now - data.lastSeen < 45000)) {
-              activeUsers++;
-            }
-          });
-          const badge = document.getElementById('userCountBadge');
-          if (badge) badge.innerText = `user: ${Math.max(activeUsers, 1)}명`;
-        }, (err) => console.warn("Presence snapshot warning:", err));
-      } catch(e) {}
+      const presenceCol = collection(db, 'clubs', CLUB_ID, 'presence');
+      onSnapshot(presenceCol, (snapshot) => {
+        const now = Date.now();
+        let activeCount = 0;
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data && data.lastSeen && (now - data.lastSeen < 45000)) {
+            activeCount++;
+          }
+        });
+        const badge = document.getElementById('userCountBadge');
+        if (badge) {
+          badge.innerText = `user: ${Math.max(activeCount, 1)}명`;
+        }
+      }, (err) => {
+        console.warn("Presence snapshot error:", err);
+      });
     }
 
     async function initCloudSync() {
+      if (!auth || !db) {
+        setSyncLamp('offline');
+        return;
+      }
       try {
         setSyncLamp('saving');
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
+        const userCred = await signInAnonymously(auth);
+        if (userCred && userCred.user) {
+          currentUserId = userCred.user.uid;
         }
-        userId = auth.currentUser?.uid || ('guest_' + Math.random().toString(36).substr(2, 9));
+        isCloudReady = true;
         setSyncLamp('');
-
-        startPresenceTracking();
+        setupUserPresence();
 
         const docRef = doc(db, 'clubs', CLUB_ID, 'live', 'current');
         
@@ -2552,6 +2626,7 @@
             if (cloudData) {
               isRemoteUpdate = true;
               window.state = Object.assign(window.state, cloudData);
+              if (!window.state.photos) window.state.photos = [];
               const countSel = document.getElementById('playerCountSelect');
               if (countSel) countSel.value = window.state.count;
               const vSel = document.getElementById('kdkVersionSelect');
@@ -2561,43 +2636,50 @@
                 titleInput.value = window.state.eventTitle;
                 handleEventTitleInput(titleInput);
               }
-              applyTheme(window.state.theme || 'summer_forest');
+              applyTheme(window.state.theme || 'summer');
               renderPlayerInputs(false);
-              renderMatches();
+              
+              // 사용자가 현재 점수를 타이핑 중이지 않을 때만 전체 재렌더링
+              const activeEl = document.activeElement;
+              if (!activeEl || !activeEl.classList.contains('score-input')) {
+                renderMatches();
+              } else {
+                updateAllMatchCardStates();
+                updateStats();
+              }
+
               renderResults();
-              saveToLocalStorage();
               isRemoteUpdate = false;
             }
           } else {
-            saveStateToCloud(true);
+            saveState(true);
           }
         }, (err) => {
-          console.warn("Snapshot notice, offline mode:", err);
+          console.warn("Snapshot error (fallback to local):", err);
+          isCloudReady = false;
           setSyncLamp('offline');
         });
 
       } catch (e) {
-        console.warn("Auth warning, fallback local:", e);
+        console.warn("Auth/Cloud error, running in local mode:", e);
+        isCloudReady = false;
         setSyncLamp('offline');
       }
     }
 
     window.onload = function() {
-      loadFromLocalStorage();
       updateLiveClock();
-      applyTheme(window.state.theme || 'summer_forest');
-      
+      applyTheme(window.state.theme || 'summer');
+      renderPlayerInputs(true);
+      if (!window.state.matches || window.state.matches.length === 0) {
+        buildKdkSchedule(false);
+      }
       const titleInput = document.getElementById('eventTitle');
       if (titleInput && window.state.eventTitle) {
         titleInput.value = window.state.eventTitle;
         handleEventTitleInput(titleInput);
       }
-
-      renderPlayerInputs(true);
-      if (!window.state.matches || window.state.matches.length === 0) {
-        buildKdkSchedule(false);
-      }
-      switchTab('players');
+      switchTab(window.state.currentTab || 'players');
       initCloudSync();
     };
   </script>
